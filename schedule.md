@@ -14,11 +14,13 @@ Time | Activity | Speaker
 13:30 -- 14:00 | Natural number game demo | Kevin Buzzard
 14:00 -- 15:00 | Natural number game "exercise session" |
 
-(×) Getting Lean and VScode up and running.
-Installation videos (prerecorded)
-Volunteers available on Zulip + screensharing.
-Git + github demo (prerecorded talk)
-Make a PR to participants.md that adds your name
+(×) Details:
+
+* Getting Lean and VScode up and running.
+* Installation videos (prerecorded).
+* Volunteers available on Zulip + screensharing.
+* Git + github demo (prerecorded talk).
+* Make a PR to `participants.md` that adds your name
 
 ### Tuesday: 
 ####   Morning:
