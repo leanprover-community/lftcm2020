@@ -7,16 +7,18 @@ image: mountains.jpg
 
 ### Monday:
 
-* 07:00 -- 13:00 :: Tech support
-   Getting Lean and VScode up and running.
-   Installation videos (prerecorded)
-   Volunteers available on Zulip + screensharing.
-  Git + github demo (prerecorded talk)
-  Make a PR to participants.md that adds your name
-* 13:00 -- 13:30 :: Welcome + 1st Lean proof (Scott Morrison)
-* 13:30 -- 14:00 :: Natural number game demo (Kevin Buzzard)
-* 14:00 -- 15:00 :: Natural number game "exercise session"
+Time | Activity | Speaker
+---- | -------- | -------
+07:00 -- 13:00 | Tech support (×) |
+13:00 -- 13:30 | Welcome + 1st Lean proof | Scott Morrison
+13:30 -- 14:00 | Natural number game demo | Kevin Buzzard
+14:00 -- 15:00 | Natural number game "exercise session" |
 
+(×) Getting Lean and VScode up and running.
+Installation videos (prerecorded)
+Volunteers available on Zulip + screensharing.
+Git + github demo (prerecorded talk)
+Make a PR to participants.md that adds your name
 
 ### Tuesday: 
 ####   Morning:
