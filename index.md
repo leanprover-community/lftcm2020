@@ -23,7 +23,9 @@ the cap-set problem, the definition of manifolds (with boundaries/corners/etc),
 and the definition of schemes and perfectoid spaces.
 
 ## Organisation
-Main organisation by: Johan Commelin and Patrick Massot.
+Main organisation by: 
+[Johan Commelin](https://math.commelin.net) and
+[Patrick Massot](https://www.imo.universite-paris-saclay.fr/~pmassot/en/).
 
 Feel free to contact us on
 [Zulip](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020).
