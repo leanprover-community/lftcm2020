@@ -2,6 +2,8 @@
 layout: post
 title: "Schedule"
 author: "Community"
+categories: all
+tags: [organization]
 image: mountains.jpg
 ---
 
