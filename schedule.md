@@ -5,6 +5,10 @@ author: "Community"
 image: mountains.jpg
 ---
 
+The workshop will take place from **Monday 13** till **Friday 17 July 2020**.
+
+All times mentioned below are CEST (UTC+2:00).
+
 ### Monday:
 
 Time | Activity | Speaker
