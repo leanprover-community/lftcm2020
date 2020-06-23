@@ -18,5 +18,6 @@ Instructions on how to create a Pull Request will be added as soon as possible.
 
 * Kevin Buzzard (Imperial College London, UK)
 * Johan Commelin (Universität Freiburg, DE)
-* Patrick Massot (Université Paris-Sud, FR)
 * Yury Kudryashov (University of Toronto, CA)
+* Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
+* Patrick Massot (Université Paris-Sud, FR)
