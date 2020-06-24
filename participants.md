@@ -21,3 +21,4 @@ Instructions on how to create a Pull Request will be added as soon as possible.
 * Yury Kudryashov (University of Toronto, CA)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Patrick Massot (Université Paris-Sud, FR)
+* Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
