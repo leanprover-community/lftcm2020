@@ -67,7 +67,7 @@ Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 12:00 | Structures and classes               | TBA
 13:00 -- 15:00 | Rebuilding a algebraic hierarchy     | Kevin Buzzard
-15:00 -- 17:00 | Rebuilding a topological hierarchy   | TBA
+15:00 -- 17:00 | Rebuilding a topological hierarchy   | Alex J. Best
 
 
 ### Thursday:
