@@ -4,7 +4,7 @@ title: "Schedule"
 author: "Community"
 ---
 
-The workshop will take place from **Monday 13th** till **Friday 17th July 2020**.
+The workshop will take place from **Monday 13th** through **Friday 17th July 2020**.
 
 All times mentioned below are in **central European time** (CEST, UTC+2:00).
 Most of the schedule below form the *beginner track* of the workshop.
@@ -96,4 +96,3 @@ Time | Activity | Speaker
 11:00 -- 12:00 | “Calculus”                             | Yury Kudrayshov
 13:00 -- 15:00 | “Measure theory and integration”       | TBA
 15:00 -- 18:00 | “Differential geometry”                | Heather MacBeth
-
