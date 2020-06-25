@@ -5,7 +5,7 @@ title: Home
 
 # Lean for the curious mathematician
 
-A workshop on computer-checked mathematics — [13–17 July 2020]
+A virtual workshop on computer-checked mathematics — [13–17 July 2020]
 
 ## Description
 
@@ -39,6 +39,11 @@ compared to other proof assistants, has a very strong focus on
 mathematics instead of computer science and software engineering.
 
 ## Organisation
+
+Although this event was originally intended to happen in Feiburg, the
+Covid pandemic turned it into a *virtual* meeting.
+See the [participants](participants.html) and [schedule](schedule.html)
+pages for details.
 
 Main organisation by: 
 [Johan Commelin](https://math.commelin.net) and
