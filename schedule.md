@@ -17,6 +17,7 @@ Time | Activity | Speaker
 13:00 -- 13:30 | Welcome + 1st Lean proof | Scott Morrison
 13:30 -- 14:00 | Natural number game demo | Kevin Buzzard
 14:00 -- 15:00 | Natural number game “exercise session” |
+15:00 -- 17:00 | Exercises and Q&A on Zulip |
 
 (×) Details:
 
@@ -27,13 +28,15 @@ Time | Activity | Speaker
 * Make a PR to `participants.md` that adds your name
 
 ### Tuesday: 
-####   Morning:
-* Top-down approach to type theory for mathematicians 
-* MIL walkthrough + exercises tutoring (Jeremy Avigad)
 
-####   Afternoon:
-* Set/finset/set.finite What's the difference? How to use them?  How to navigate between them.
-* Dealing with numbers; nat subtraction/division; int division; `norm_cast` and friends
+Time | Activity | Speaker
+---- | -------- | -------
+10:00 -- 13:00 | Natural number game “exercise session” |
+13:00 -- 13:30 | Mathematics in Lean: walkthrough                 | Jeremy Avigad
+13:30 -- 14:00 | Mathematics in Lean: exercises                   | Jeremy Avigad
+14:00 -- 14:30 | Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ              | Rob Lewis(?)
+14:30 -- 15:00 | Dealing with sets: `set`, `finset`, `set.finite` | TBA
+15:00 -- 17:00 | Exercises and Q&A on Zulip |
 
 ### Wednesday:
 ####   Morning:
