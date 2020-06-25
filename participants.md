@@ -17,8 +17,9 @@ we invite you to make a [Pull Request](https://help.github.com/en/github/collabo
 
 * Kevin Buzzard (Imperial College London, UK)
 * Johan Commelin (Universität Freiburg, DE)
+* Cameron Freer (Massachusetts Institute of Technology, US)
 * Yury Kudryashov (University of Toronto, CA)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
-* Cameron Freer (Massachusetts Institute of Technology, US)
+* David Wärn (University of Cambridge, UK)
