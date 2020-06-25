@@ -19,5 +19,5 @@ we invite you to make a [Pull Request](https://help.github.com/en/github/collabo
 * Johan Commelin (Universität Freiburg, DE)
 * Yury Kudryashov (University of Toronto, CA)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
-* Patrick Massot (Université Paris-Sud, FR)
+* Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
