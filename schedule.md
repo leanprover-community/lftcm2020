@@ -94,5 +94,5 @@ Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 11:00 | “Topology”, including filters          | Patrick Massot
 11:00 -- 12:00 | “Calculus”                             | Yury Kudrayshov
-13:00 -- 15:00 | “Measure theory and integration”       | TBA
+13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudrayshov
 15:00 -- 18:00 | “Differential geometry”                | Heather MacBeth
