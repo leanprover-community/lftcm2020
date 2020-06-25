@@ -7,7 +7,7 @@ author: "Community"
 The workshop will take place from **Monday 13th** through **Friday 17th July 2020**.
 
 All times mentioned below are in **central European time** (CEST, UTC+2:00).
-Most of the schedule below form the *beginner track* of the workshop.
+Most of the schedule below forms the *beginner track* of the workshop.
 Intermediate users can work on pair programming with more advanced
 users at any time, using the 
 [dedicated Zulip stream](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020)
@@ -27,7 +27,7 @@ without knowing anything about foundations or theory building,
 using the [Natural Number Game](http://wwwf.imperial.ac.uk/~buzzard/xena/natural_number_game/).
 
 In parallel during the afternoon, intermediate users will have the
-opportunity to learn about Lean meta-programming framework, which allows
+opportunity to learn about Lean's meta-programming framework, which allows
 to automate some proofs.
 
 Time | Activity | Speaker
@@ -81,13 +81,13 @@ Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 11:00 | “Order”, including Galois connections  | Kevin Buzzard
 11:00 -- 12:00 | “Groups, rings and fields”             | Johan Commelin
-13:00 -- 15:00 | “Linear algebra”                       | TBA
+13:00 -- 15:00 | “Linear algebra”                       | Anne Baanen
 15:00 -- 18:00 | “Category theory”                      | Scott Morrison
 
 
 ### Friday:
 
-This will be similar to Thursday, but focussing on topology, analysis,
+This will be similar to Thursday, but focusing on topology, analysis,
 and differential geometry.
 
 Time | Activity | Speaker
