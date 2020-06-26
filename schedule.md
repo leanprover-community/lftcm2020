@@ -96,6 +96,6 @@ and differential geometry.
 Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 11:00 | “Topology”, including filters          | Patrick Massot
-11:00 -- 12:00 | “Calculus”                             | Yury Kudrayshov
-13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudrayshov
-15:00 -- 18:00 | “Differential geometry”                | Heather MacBeth
+11:00 -- 12:00 | “Calculus”                             | Yury Kudryashov
+13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudryashov
+15:00 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather MacBeth
