@@ -23,3 +23,4 @@ we invite you to make a [Pull Request](https://help.github.com/en/github/collabo
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * David Wärn (University of Cambridge, UK)
+* Aniruddh Agarwal (University of Michigan, US)
