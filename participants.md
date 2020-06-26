@@ -9,8 +9,13 @@ image: mountains.jpg
 
 Registration is not required,
 you can simply show up at any of the activities of the workshop.
+Please visit our
+[**dedicated Zulip stream**](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020)
+at the start of the workshop.
+It will function as virtual “common room”.
 
-Nevertheless, as a first exercise in using GitHub (a central tool in the lean community)
+Even though registration is not required,
+as a first exercise in using GitHub (a central tool in the lean community)
 we invite you to make a
 [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests)
 modifying this webpage's

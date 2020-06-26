@@ -7,11 +7,14 @@ author: "Community"
 The workshop will take place from **Monday 13th** through **Friday 17th July 2020**.
 
 All times mentioned below are in **central European time** (CEST, UTC+2:00).
+
+The virtual “common room” for this workshop is the
+[**dedicated Zulip stream**](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020).
+In this stream we will post announcements, answer questions, and host any further discussion.
+
 Most of the schedule below forms the *beginner track* of the workshop.
 Intermediate users can work on pair programming with more advanced
-users at any time, using the 
-[dedicated Zulip stream](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020)
-for coordination.
+users at any time, using the Zulip stream for coordination.
 
 Each session will start with a short presentation that either will have
 been pre-recorded or will be live-recorded and available here during and
