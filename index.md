@@ -40,7 +40,7 @@ mathematics instead of computer science and software engineering.
 
 ## Organisation
 
-Although this event was originally intended to happen in Feiburg, the
+Although this event was originally intended to happen in Freiburg, the
 Covid pandemic turned it into a *virtual* meeting.
 See the [participants](participants.html) and [schedule](schedule.html)
 pages for details.
