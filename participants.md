@@ -24,6 +24,7 @@ to add your name to the list below (in alphabetical order).
 
 # Participants
 
+* Barinder S. Banwait
 * Peter Bruin (Universiteit Leiden, NL)
 * Kevin Buzzard (Imperial College London, UK)
 * Johan Commelin (Universität Freiburg, DE)
