@@ -9,8 +9,8 @@ A virtual workshop on computer-checked mathematics — [13–17 July 2020]
 
 ## Description
 
-[Lean](http://leanprover.github.io/) is a proof assistant software.
-It means you can use it to explain mathematics to a computer, and the
+[Lean](http://leanprover.github.io/) is a proof assistant.
+This means that you can use it to explain mathematics to a computer, and the
 computer will check everything makes sense.
 This workshop is intended for mathematicians who use Lean or wish to learn Lean.
 We will have introductory tutorials, presentations,
@@ -18,7 +18,7 @@ and break-out sessions for specific areas of interest as directed by the attende
 Experienced users will be available to answer questions, supervise
 exercises sessions, and participate in pair programming.
 
-There is no initial knowledge needed, everyone is welcome.
+There is no initial knowledge needed; everyone is welcome.
 Intermediate users will be able to start pair programming immediately
 while beginners will first learn the basics, including installing the
 software and its supporting tools.
@@ -40,7 +40,7 @@ mathematics instead of computer science and software engineering.
 
 ## Organisation
 
-Although this event was originally intended to happen in Feiburg, the
+Although this event was originally intended to happen in Freiburg, the
 Covid pandemic turned it into a *virtual* meeting.
 See the [participants](participants.html) and [schedule](schedule.html)
 pages for details.

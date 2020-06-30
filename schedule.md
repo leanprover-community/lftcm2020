@@ -7,11 +7,14 @@ author: "Community"
 The workshop will take place from **Monday 13th** through **Friday 17th July 2020**.
 
 All times mentioned below are in **central European time** (CEST, UTC+2:00).
+
+The virtual “common room” for this workshop is the
+[**dedicated Zulip stream**](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020).
+In this stream we will post announcements, answer questions, and host any further discussion.
+
 Most of the schedule below forms the *beginner track* of the workshop.
 Intermediate users can work on pair programming with more advanced
-users at any time, using the 
-[dedicated Zulip stream](https://leanprover.zulipchat.com/#narrow/stream/238830-Lean-for.20the.20curious.20mathematician.202020)
-for coordination.
+users at any time, using the Zulip stream for coordination.
 
 Each session will start with a short presentation that either will have
 been pre-recorded or will be live-recorded and available here during and
@@ -32,7 +35,7 @@ to automate some proofs.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-07:00 -- 12:00 | Tech support (installing Lean, using git + GitHub |
+07:00 -- 12:00 | Tech support (installing Lean, using git + GitHub) |
 13:00 -- 13:30 | Welcome + 1st Lean proof                 | Scott Morrison
 13:30 -- 18:00 | Natural number game (demo and exercises) | Kevin Buzzard
 13:30 -- 18:00 | Meta-programming and tactic writing      | Rob Lewis
@@ -65,8 +68,8 @@ but we will explain how build them from scratch.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Structures and classes               | TBA
-13:00 -- 15:00 | Rebuilding a algebraic hierarchy     | Kevin Buzzard
+10:00 -- 12:00 | Structures and classes               | Floris van Doorn
+13:00 -- 15:00 | Rebuilding an algebraic hierarchy    | Kevin Buzzard
 15:00 -- 17:00 | Rebuilding a topological hierarchy   | Alex J. Best
 
 
@@ -93,6 +96,6 @@ and differential geometry.
 Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 11:00 | “Topology”, including filters          | Patrick Massot
-11:00 -- 12:00 | “Calculus”                             | Yury Kudrayshov
-13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudrayshov
-15:00 -- 18:00 | “Differential geometry”                | Heather MacBeth
+11:00 -- 12:00 | “Calculus”                             | Yury Kudryashov
+13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudryashov
+15:00 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather Macbeth
