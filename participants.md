@@ -28,6 +28,7 @@ to add your name to the list below (in alphabetical order).
 * Peter Bruin (Universiteit Leiden, NL)
 * Kevin Buzzard (Imperial College London, UK)
 * Johan Commelin (Universität Freiburg, DE)
+* John Cremona (University of Warwick, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Yury Kudryashov (University of Toronto, CA)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
