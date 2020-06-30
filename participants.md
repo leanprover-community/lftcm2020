@@ -15,6 +15,7 @@ we invite you to make a [Pull Request](https://help.github.com/en/github/collabo
 
 # Participants
 
+* Aniruddh Agarwal (University of Michigan, US)
 * Kevin Buzzard (Imperial College London, UK)
 * Johan Commelin (Universität Freiburg, DE)
 * Cameron Freer (Massachusetts Institute of Technology, US)
@@ -23,4 +24,3 @@ we invite you to make a [Pull Request](https://help.github.com/en/github/collabo
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * David Wärn (University of Cambridge, UK)
-* Aniruddh Agarwal (University of Michigan, US)
