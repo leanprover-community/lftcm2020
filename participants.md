@@ -30,6 +30,7 @@ to add your name to the list below (in alphabetical order).
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
+* Sébastien Gouëzel (University of Nantes, FR)
 * Yury Kudryashov (University of Toronto, CA)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
