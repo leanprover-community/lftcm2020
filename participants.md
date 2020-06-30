@@ -24,6 +24,7 @@ to add your name to the list below (in alphabetical order).
 
 # Participants
 
+* Aniruddh Agarwal (University of Michigan, US)
 * Barinder S. Banwait
 * Peter Bruin (Universiteit Leiden, NL)
 * Kevin Buzzard (Imperial College London, UK)
