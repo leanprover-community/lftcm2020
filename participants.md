@@ -32,6 +32,7 @@ to add your name to the list below (in alphabetical order).
 * Victoria Cantoral (KU Leuven, BE)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
+* Thomas Eckl (University of Liverpool, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Yury Kudryashov (University of Toronto, CA)
