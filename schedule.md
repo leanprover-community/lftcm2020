@@ -51,7 +51,7 @@ doing the exercises.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Mathematics in Lean: basics              | Patrick Massot
+10:00 -- 12:00 | Mathematics in Lean: basics              | TBA
 13:00 -- 15:00 | Mathematics in Lean: logic               | Jeremy Avigad
 15:00 -- 16:30 | Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ      | Rob Lewis
 16:30 -- 18:00 | Dealing with sets and operations on them | Jeremy Avigad
@@ -95,7 +95,7 @@ and differential geometry.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 11:00 | “Topology”, including filters          | Patrick Massot
+10:00 -- 11:00 | “Topology”, including filters          | TBA
 11:00 -- 12:00 | “Calculus”                             | Yury Kudryashov
 13:00 -- 15:00 | “Measure theory and integration”       | Yury Kudryashov
 15:00 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather Macbeth
