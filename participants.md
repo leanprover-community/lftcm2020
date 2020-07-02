@@ -29,6 +29,7 @@ to add your name to the list below (in alphabetical order).
 * Alex J. Best (Boston University, US)
 * Peter Bruin (Universiteit Leiden, NL)
 * Kevin Buzzard (Imperial College London, UK)
+* Mario Carneiro (Carnegie Mellon University, US)
 * Victoria Cantoral (KU Leuven, BE)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
