@@ -35,6 +35,7 @@ to add your name to the list below (in alphabetical order).
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Yury Kudryashov (University of Toronto, CA)
+* Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
