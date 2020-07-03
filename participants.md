@@ -25,6 +25,7 @@ to add your name to the list below (in alphabetical order).
 # Participants
 
 * Aniruddh Agarwal (University of Michigan, US)
+* Anne Baanen (Vrije Universiteit Amsterdam, NL)
 * Barinder S. Banwait
 * Alex J. Best (Boston University, US)
 * Peter Bruin (Universiteit Leiden, NL)
