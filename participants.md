@@ -41,6 +41,7 @@ to add your name to the list below (in alphabetical order).
 * Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
+* Sophie Morel (CNRS/ENS Lyon, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Dmitrii V. Pasechnik (University of Oxford, UK)
 * Damiano Testa (University of Warwick, UK)
