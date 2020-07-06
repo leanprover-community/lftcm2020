@@ -41,6 +41,7 @@ to add your name to the list below (in alphabetical order).
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
+* Sylvain Maillot (Université de Montpellier, FR)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
