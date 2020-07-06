@@ -47,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Dmitrii V. Pasechnik (University of Oxford, UK)
 * Silvain Rideau-Kikuchi (CNRS, Université de Paris, FR)
+* Ivan Šimunović (University of Zagreb, HR)
 * Damiano Testa (University of Warwick, UK)
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
