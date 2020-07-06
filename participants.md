@@ -37,6 +37,7 @@ to add your name to the list below (in alphabetical order).
 * Thomas Eckl (University of Liverpool, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
+* Jeroen Hanselman (Universität Ulm, DE)
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
