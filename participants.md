@@ -50,5 +50,6 @@ to add your name to the list below (in alphabetical order).
 * Ivan Šimunović (University of Zagreb, HR)
 * Damiano Testa (University of Warwick, UK)
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
+* Adam Topaz (University of Alberta, CA)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
 * David Wärn (University of Cambridge, UK)
