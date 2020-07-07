@@ -47,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
+* Andrew O'Desky (University of Michigan, US)
 * Dmitrii V. Pasechnik (University of Oxford, UK)
 * Silvain Rideau-Kikuchi (CNRS, Université de Paris, FR)
 * Ivan Šimunović (University of Zagreb, HR)
