@@ -50,6 +50,7 @@ to add your name to the list below (in alphabetical order).
 * Andrew O'Desky (University of Michigan, US)
 * Dmitrii V. Pasechnik (University of Oxford, UK)
 * Silvain Rideau-Kikuchi (CNRS, Université de Paris, FR)
+* William Simmons (Hobart and William Smith, US)
 * Ivan Šimunović (University of Zagreb, HR)
 * Damiano Testa (University of Warwick, UK)
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
