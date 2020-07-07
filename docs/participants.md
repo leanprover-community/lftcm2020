@@ -26,6 +26,7 @@ to add your name to the list below (in alphabetical order).
 
 * Aniruddh Agarwal (University of Michigan, US)
 * Anne Baanen (Vrije Universiteit Amsterdam, NL)
+* Matthew R. Ballard (University of South Carolina, US)
 * Barinder S. Banwait
 * Alex J. Best (Boston University, US)
 * Peter Bruin (Universiteit Leiden, NL)
