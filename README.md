@@ -1,18 +1,18 @@
-# lftcm2020
-Lean for the Curious Mathematician 2020
+# Lean for the Curious Mathematician 2020
 
-A workshop on maths and theorem provers
-13–17 July 2020 ?
+If you see this on GitHub, you are probably looking for the 
+[official website](https://leanprover-community.github.io/lftcm2020/)
+or its source code which is in the `docs` folder.
 
-Due to the COVID19 pandemic, this workshop will not take place in Freiburg. We are currently discussing plans for an online workshop. Details will follow soon. (In particular, there is no need to register. Any online workshop will be free, and have place for everyone.)
-
-## Description
-This workshop is intended for mathematicians who develop in Lean or wish to learn Lean. We will have introductory tutorials, presentations, and break-out sessions for specific areas of interest as directed by the attendees. There is no initial knowledge needed, everyone is welcome whether you are a new Lean learner or Lean expert.
-
-## Why Lean?
-The Lean theorem prover is a young and disruptive theorem prover developed by Leonardo de Moura at Microsoft Research. Over the past two years it has attracted the attention of mathematicians. Notable highlights include the formalisation of the independence of the continuum hypothesis, the cap-set problem, the definition of manifolds (with boundaries/corners/etc), and the definition of schemes and perfectoid spaces.
-## Organisation
-Local organiser: Johan Commelin.
-
-## Venue
-Zulip, Zoom, Twitch, etc.
+If you downloaded this using `leanproject` then you probably want to
+open this folder in VSCode and start doing the exercises.
+For instance, on Tuesday morning, you can do inside this root folder
+```
+git pull
+cp src/exercices_sources/tuesday/morning.lean src/tuesday_morning.lean
+code .
+```
+And then click on `src/tuesday_morning.lean` in the VSCode file explorer
+to start playing. The reason we don't recommend you edit our source file
+directly is you modifications would get overwritten when you'll update 
+the repository using `git pull`.
