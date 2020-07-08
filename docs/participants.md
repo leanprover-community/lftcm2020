@@ -25,6 +25,7 @@ to add your name to the list below (in alphabetical order).
 # Participants
 
 * Aniruddh Agarwal (University of Michigan, US)
+* Aaron Anderson (University of California Los Angeles, US)
 * Anne Baanen (Vrije Universiteit Amsterdam, NL)
 * Matthew R. Ballard (University of South Carolina, US)
 * Barinder S. Banwait
