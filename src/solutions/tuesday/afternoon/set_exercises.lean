@@ -318,6 +318,7 @@ section
 variables A B : ℕ → set α
 
 example : s ∪ (⋂ i, A i) = ⋂ i, (A i ∪ s) :=
+-- sorry
 begin
   ext x,
   simp only [mem_union, mem_Inter],
@@ -334,6 +335,7 @@ begin
   { assumption },
   contradiction
 end
+-- sorry
 
 end
 
