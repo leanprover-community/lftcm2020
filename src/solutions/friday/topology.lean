@@ -209,7 +209,7 @@ variables {X Y : Type*} [topological_space X] [topological_space Y]
 
 /-
 Given a topological space `X` and some `A : set X`, we have the usual zoo of predicates
-`is_open A`, `is_closed A`, `is_connected A`, `compact A` (and some more)
+`is_open A`, `is_closed A`, `is_connected A`, `is_compact A` (and some more)
 
 There are also additional type classes referring to properties of `X` itself,
 like `compact_space X` or `connected_space X`
@@ -412,7 +412,7 @@ So let's fix `ε > 0` and start looking for `δ`.
 
 We will deduce Heine-Cantor from the fact that a real value continuous function
 on a nonempty compact set reaches its infimum. There are several ways to state that,
-but here we recommend `compact.exists_forall_le`.
+but here we recommend `is_compact.exists_forall_le`.
 
 Let `φ : X × X → ℝ := λ p, dist (f p.1) (f p.2)` and let `K := { p : X × X | ε ≤ φ p }`.
 Observe `φ` is continuous by assumption on `f` and using `continuous_dist`.
@@ -433,7 +433,7 @@ begin
   have φ_cont : continuous φ := continuous_dist.comp (hf.prod_map hf),
   let K := { p : X × X | ε ≤ φ p },
   have K_closed : is_closed K := is_closed_le continuous_const φ_cont,
-  have K_cpct : compact K := K_closed.compact,
+  have K_cpct : is_compact K := K_closed.compact,
   cases eq_empty_or_nonempty K with hK hK,
   { use [1, by norm_num],
     intros x y hxy,

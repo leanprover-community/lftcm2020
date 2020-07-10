@@ -59,7 +59,7 @@ end
 
 example (p q r : ℕ) (h : r < p - q) (hpq : q ≤ p) : (r : ℝ) < p - q :=
 begin
-
+  exact_mod_cast h,
 end
 
 example (p q r : ℕ) (hr : r < p + 2 - p) : (r : ℤ) < 5 :=
