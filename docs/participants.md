@@ -34,6 +34,7 @@ to add your name to the list below (in alphabetical order).
 * Kevin Buzzard (Imperial College London, UK)
 * Victoria Cantoral (KU Leuven, BE)
 * Mario Carneiro (Carnegie Mellon University, US)
+* Antoine Chambert-Loir (Université de Paris, FR)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
 * Dhruva Divate (University of Tübingen, DE)
