@@ -36,6 +36,7 @@ to add your name to the list below (in alphabetical order).
 * Mario Carneiro (Carnegie Mellon University, US)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
+* Dhruva Divate (University of Tübingen, DE)
 * Matt Earnshaw
 * Thomas Eckl (University of Liverpool, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
