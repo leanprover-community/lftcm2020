@@ -218,8 +218,8 @@ and returning the entry at that index.
 They are useful when you want to compute an invariant such as the determinant,
 as these are typically noncomputable for linear maps.
 
-The dimensions of the matrix must be `fintype`s, and there is no restriction
-on the type of the entries.
+A type of matrices `matrix m n α` requires that the types `m` and `n` of the indices
+are `fintype`s, and there is no restriction on the type `α` of the entries.
 -/
 #print matrix
 
