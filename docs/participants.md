@@ -15,7 +15,7 @@ at the start of the workshop.
 It will function as virtual “common room”.
 
 Even though registration is not required,
-as a first exercise in using GitHub (a central tool in the lean community)
+as a first exercise in using GitHub (a central tool in the Lean Prover community),
 we invite you to make a
 [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests)
 modifying this webpage's
@@ -43,7 +43,7 @@ to add your name to the list below (in alphabetical order).
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Jeroen Hanselman (Universität Ulm, DE)
-* Martin Křepela (Czech Technichal Uniersity, CZ)
+* Martin Křepela (Czech Technical University, CZ)
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
