@@ -43,6 +43,7 @@ to add your name to the list below (in alphabetical order).
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Jeroen Hanselman (Universität Ulm, DE)
+* Jan Hennig (Leibniz Universität Hannover, DE)
 * Martin Křepela (Czech Technical University, CZ)
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
