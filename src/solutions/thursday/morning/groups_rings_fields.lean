@@ -123,3 +123,8 @@ end
 end polynomial
 
 end exercise3
+
+example : true :=
+begin
+  exact x
+end
