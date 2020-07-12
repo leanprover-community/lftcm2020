@@ -69,9 +69,8 @@ However we will undoubtedly still want to use this property so:
 
 -/
 
-def discrete (X : Type) : topological_space :=
-{ X := X,
-  opens := univ,
+def discrete (X : Type) : topological_space X :=
+{ opens := univ,
   empty_mem := trivial,
   univ_mem := trivial,
   union := begin intros B h, trivial, end,
@@ -97,11 +96,7 @@ def mk_closed_sets
   (univ_mem : univ ∈ σ)
   (inter : ∀ B ⊆ σ, ⋂₀ B ∈ σ)
   (union : ∀ (A ∈ σ) (B ∈ σ), A ∪ B ∈ σ) :
-topological_space := { X :=
--- sorry
-X
--- sorry
-,
+topological_space X := {
   opens := set.image (λ S, Sᶜ) σ,
   empty_mem := begin
     rw set.mem_image,
@@ -156,7 +151,7 @@ and that the union of any pair of constructible sets is constructible.
 (Bonus exercise: mathlib doesn't have any theory of constructible sets, make one and PR it!)
 -/
 
-inductive is_constructible (T : topological_space) : set T.X → Prop
+inductive is_constructible {X : Type} (T : topological_space X) : set X → Prop
 -- Given two open sets in T, the intersection of one and the complement of the other is locally
 -- closed, hence constructible
 | locally_closed : ∀ (X ∈ T.opens) (Y ∈ T.opens), is_constructible (X ∩ Yᶜ)
@@ -164,7 +159,7 @@ inductive is_constructible (T : topological_space) : set T.X → Prop
 | union : ∀ X Y, is_constructible (X ∩ Yᶜ)
 
 -- For example we can now use this definition to prove the empty set is constructible
-example (T : topological_space) : is_constructible T ∅ :=
+example {X : Type} (T : topological_space X) : is_constructible T ∅ :=
 begin
   -- The intersection of the whole space (open) with the empty set (closed) is locally closed, so
   -- constructible
@@ -184,11 +179,11 @@ inductive generated_open (X : Type) (g : set (set X)) : set X → Prop
 -- sorry
 
 /-- The smallest topological space containing the collection `g` of basic sets -/
-def generate_from (X : Type) (g : set (set X)) : topological_space :=
-{ is_open        := generate_open g,
-  is_open_univ   := generate_open.univ,
-  is_open_inter  := generate_open.inter,
-  is_open_sUnion := generate_open.sUnion  }
+def generate_from (X : Type) (g : set (set X)) : topological_space X :=
+{ is_open        := generated_open g,
+  is_open_univ   := generated_open.univ,
+  is_open_inter  := generated_open.inter,
+  is_open_sUnion := generated_open.sUnion  }
 
 #check discrete
 
