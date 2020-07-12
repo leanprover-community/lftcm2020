@@ -38,6 +38,7 @@ to add your name to the list below (in alphabetical order).
 * Antoine Chambert-Loir (Université de Paris, FR)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
+* Sander Dahmen (Vrije Universiteit Amsterdam, NL)
 * Dhruva Divate (University of Tübingen, DE)
 * Matt Earnshaw
 * Thomas Eckl (University of Liverpool, UK)
