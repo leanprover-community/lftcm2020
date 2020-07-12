@@ -35,7 +35,7 @@ to automate some proofs.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-07:00 -- 12:00 | Tech support (installing Lean, using git + GitHub) |
+07:00 -- 12:00 | Tech support ([installing Lean, using git + GitHub](https://www.youtube.com/playlist?list=PLlF-CfQhukNnxF1S22cNGKyfOrd380NUv)) |
 13:00 -- 13:30 | Welcome + 1st Lean proof                 | Scott Morrison
 13:30 -- 18:00 | Natural number game (demo and exercises) | Kevin Buzzard
 13:30 -- 18:00 | Meta-programming and tactic writing      | Rob Lewis
