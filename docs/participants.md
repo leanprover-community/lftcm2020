@@ -58,6 +58,7 @@ to add your name to the list below (in alphabetical order).
 * Dmitrii V. Pasechnik (University of Oxford, UK)
 * Silvain Rideau-Kikuchi (CNRS, Université de Paris, FR)
 * Tony Scholl (University of Cambridge, UK)
+* Borja Sierra (University of Seville, ESP)
 * William Simmons (Hobart and William Smith, US)
 * Ivan Šimunović (University of Zagreb, HR)
 * Andrew Sutherland (MIT, US)
