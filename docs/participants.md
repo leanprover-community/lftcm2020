@@ -67,6 +67,7 @@ to add your name to the list below (in alphabetical order).
 * Adam Topaz (University of Alberta, CA)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
 * David Wärn (University of Cambridge, UK)
+* Chris Wong
 * Miguel Raz Guzmán Macedo (Universidad Nacional Autónoma de México, Facultad de Ciencias, MX)
 * Dan Stanescu (University of Wyoming, US)
 * Daan van Gent (Universiteit Leiden, NL)
