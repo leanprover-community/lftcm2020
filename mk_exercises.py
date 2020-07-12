@@ -3,13 +3,14 @@
 import regex
 from pathlib import Path
 
+inline_sorry_regex = regex.compile(r'/- inline sorry -/.*/- inline sorry -/')
 sorry_regex = regex.compile(r'(.*)-- sorry.*')
 root = Path(__file__).parent/'src'
 
 if __name__ == '__main__':
     for path in (root/'solutions').glob('**/*.lean'):
         if path.name == 'numbers.lean':
-            continue # Rob's exercises need hand-crafted extraction
+            continue  # Rob's exercises need hand-crafted extraction
         print(path)
         out = root/'exercises_sources'/path.relative_to(root/'solutions')
         out.parent.mkdir(exist_ok=True)
@@ -17,6 +18,8 @@ if __name__ == '__main__':
             with path.open() as inp:
                 state = 'normal'
                 for line in inp:
+                    line, _ = inline_sorry_regex.subn("sorry", line)
+
                     m = sorry_regex.match(line)
                     if state == 'normal':
                         if m:
@@ -26,8 +29,6 @@ if __name__ == '__main__':
                     else:
                         if m:
                             state = 'normal'
-                            outp.write(m.group(1)+ 'sorry\n')
+                            outp.write(m.group(1) + 'sorry\n')
 
             outp.write('\n')
-
-

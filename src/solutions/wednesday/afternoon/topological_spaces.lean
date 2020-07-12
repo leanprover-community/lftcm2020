@@ -171,19 +171,28 @@ end
 
 /-- The open sets of the least topology containing a collection of basic sets. -/
 inductive generated_open (X : Type) (g : set (set X)) : set X → Prop
--- sorry
-| basic  : ∀ s ∈ g, generated_open s
+| -- sorry
+basic  : ∀ s ∈ g, generated_open s
 | univ   : generated_open univ
 | inter  : ∀s t, generated_open s → generated_open t → generated_open (s ∩ t)
 | sUnion : ∀k, (∀ s ∈  k, generated_open s) → generated_open (⋃₀ k)
+
+lemma generated_open.empty (X : Type) (g : set (set X)) : generated_open X g ∅ :=
+begin
+  have := generated_open.sUnion (∅ : set (set X)),
+  simp at this,
+  exact this,
+end
+
 -- sorry
 
 /-- The smallest topological space containing the collection `g` of basic sets -/
 def generate_from (X : Type) (g : set (set X)) : topological_space X :=
-{ is_open        := generated_open g,
-  is_open_univ   := generated_open.univ,
-  is_open_inter  := generated_open.inter,
-  is_open_sUnion := generated_open.sUnion  }
+{ opens          := /- inline sorry -/ generated_open X g/- inline sorry -/,
+  empty_mem       := /- inline sorry -/generated_open.empty X g/- inline sorry -/,
+  univ_mem       := /- inline sorry -/ generated_open.univ/- inline sorry -/,
+  inter := /- inline sorry -/ begin intros A hA B hB, exact generated_open.inter A B hA hB, end/- inline sorry -/,
+  union := /- inline sorry -/ generated_open.sUnion /- inline sorry -/ }
 
 #check discrete
 
