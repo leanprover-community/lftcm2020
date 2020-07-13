@@ -61,6 +61,7 @@ to add your name to the list below (in alphabetical order).
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Andrew O'Desky (University of Michigan, US)
 * Dmitrii V. Pasechnik (University of Oxford, UK)
+* Dmitrii Pochekutov (Siberian Federal University, RU)
 * Silvain Rideau-Kikuchi (CNRS, Université de Paris, FR)
 * Tony Scholl (University of Cambridge, UK)
 * Borja Sierra (University of Seville, ESP)
