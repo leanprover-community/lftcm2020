@@ -47,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Sébastien Gouëzel (University of Nantes, FR)
 * Jeroen Hanselman (Universität Ulm, DE)
 * Jan Hennig (Leibniz Universität Hannover, DE)
+* Vaibhav Karve (University of Illinois at Urbana-Champaign, US)
 * Martin Křepela (Czech Technical University, CZ)
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
@@ -73,7 +74,7 @@ to add your name to the list below (in alphabetical order).
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Miguel Raz Guzmán Macedo (Universidad Nacional Autónoma de México, Facultad de Ciencias, MX)
+* Pim Spelier (Universiteit Leiden, NL)
 * Dan Stanescu (University of Wyoming, US)
 * Daan van Gent (Universiteit Leiden, NL)
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
-* Pim Spelier (Universiteit Leiden, NL)
