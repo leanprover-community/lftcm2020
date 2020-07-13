@@ -77,6 +77,7 @@ to add your name to the list below (in alphabetical order).
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Miguel Raz Guzmán Macedo (Universidad Nacional Autónoma de México, Facultad de Ciencias, MX)
+* Frank Taipe (Université Paris-Saclay at Orsay, FR)
 * Pim Spelier (Universiteit Leiden, NL)
 * Dan Stanescu (University of Wyoming, US)
 * Daan van Gent (Universiteit Leiden, NL)
