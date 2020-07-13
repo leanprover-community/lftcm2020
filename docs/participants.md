@@ -60,6 +60,7 @@ to add your name to the list below (in alphabetical order).
 * Filip Marić (University of Belgrade, SR)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Sophie Morel (CNRS/ENS Lyon, FR)
+* Harshit J Motwani
 * Khoi Nguyen
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Andrew O'Desky (University of Michigan, US)
