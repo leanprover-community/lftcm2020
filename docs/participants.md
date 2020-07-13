@@ -31,6 +31,7 @@ to add your name to the list below (in alphabetical order).
 * Jennifer Balakrishnan (Boston University, US)
 * Matthew R. Ballard (University of South Carolina, US)
 * Barinder S. Banwait
+* Asilata Bapat (Australian National University, AU)
 * Alex J. Best (Boston University, US)
 * Peter Bruin (Universiteit Leiden, NL)
 * Kevin Buzzard (Imperial College London, UK)
