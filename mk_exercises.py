@@ -5,6 +5,7 @@ from pathlib import Path
 
 inline_sorry_regex = regex.compile(r'/- inline sorry -/.*/- inline sorry -/')
 sorry_regex = regex.compile(r'(.*)-- sorry.*')
+omit_regex = regex.compile(r'(.*)-- omit.*')
 root = Path(__file__).parent/'src'
 
 if __name__ == '__main__':
@@ -20,15 +21,20 @@ if __name__ == '__main__':
                 for line in inp:
                     line, _ = inline_sorry_regex.subn("sorry", line)
 
-                    m = sorry_regex.match(line)
+                    match_sorry = sorry_regex.match(line)
+                    match_omit = omit_regex.match(line)
                     if state == 'normal':
-                        if m:
+                        if match_sorry or match_omit:
                             state = 'sorry'
                         else:
                             outp.write(line)
                     else:
-                        if m:
+                        if match_sorry:
                             state = 'normal'
-                            outp.write(m.group(1) + 'sorry\n')
+                            outp.write(match_sorry.group(1) + 'sorry\n')
+                        else:
+                            if match_omit :
+                                state = 'normal'
+                                outp.write(match_omit.group(1) + '\n')
 
             outp.write('\n')
