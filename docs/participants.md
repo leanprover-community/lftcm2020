@@ -47,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Jeroen Hanselman (Universität Ulm, DE)
+* Yun Hao (DE)
 * Jan Hennig (Leibniz Universität Hannover, DE)
 * Vaibhav Karve (University of Illinois at Urbana-Champaign, US)
 * Martin Křepela (Czech Technical University, CZ)
