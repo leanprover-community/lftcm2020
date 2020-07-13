@@ -70,6 +70,7 @@ to add your name to the list below (in alphabetical order).
 * William Simmons (Hobart and William Smith, US)
 * Ivan Šimunović (University of Zagreb, HR)
 * Andrew Sutherland (MIT, US)
+* Frank Taipe (Université Paris-Saclay at Orsay, FR) 
 * Damiano Testa (University of Warwick, UK)
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
 * Adam Topaz (University of Alberta, CA)
