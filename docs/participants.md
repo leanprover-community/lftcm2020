@@ -49,6 +49,7 @@ to add your name to the list below (in alphabetical order).
 * Jan Hennig (Leibniz Universität Hannover, DE)
 * Martin Křepela (Czech Technical University, CZ)
 * Yury Kudryashov (University of Toronto, CA)
+* Julian Külshammer (Uppsala University, SE)
 * Jun Bo Lau (University of California San Diego, US)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Heather Macbeth (Fordham University, US)
@@ -69,7 +70,6 @@ to add your name to the list below (in alphabetical order).
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
 * Adam Topaz (University of Alberta, CA)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
-* Philip A. Vetter (Institute of Deep-sea Science and Engineering, CAS, Sanya Hainan, CN)
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Miguel Raz Guzmán Macedo (Universidad Nacional Autónoma de México, Facultad de Ciencias, MX)
