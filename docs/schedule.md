@@ -16,11 +16,20 @@ Most of the schedule below forms the *beginner track* of the workshop.
 Intermediate users can work on pair programming with more advanced
 users at any time, using the Zulip stream for coordination.
 
+### Zoom sessions
+
 Each session will start with a short presentation that either will have
 been pre-recorded or will be live-recorded and available here during and
 after the session.
 Then it will move to an exercises session using online chat and
 screen-sharing.
+
+Please download and import the following iCalendar (.ics) files to your calendar system:
+[Zoom schedule](https://vu-live.zoom.us/meeting/tJEpd-uopj4jGtRLTcJg_Y9FR5KHpW94me9h/ics?icsToken=98tyKuCtqjsoGtyQuRmHRowMBoiga_TxiCVEjbdvsCvmKSdsW1rQBLdpGqJISYzd)
+
+Join Zoom Meeting: [https://vu-live.zoom.us/j/95402085900](https://vu-live.zoom.us/j/95402085900)
+
+We will share the password in the Zulip stream mentioned above.
 
 ### Monday:
 

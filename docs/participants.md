@@ -26,6 +26,7 @@ to add your name to the list below (in alphabetical order).
 
 * Aniruddh Agarwal (University of Michigan, US)
 * Aaron Anderson (University of California Los Angeles, US)
+* Jeremy Avigad (Carnegie Mellon University US)
 * Anne Baanen (Vrije Universiteit Amsterdam, NL)
 * Jennifer Balakrishnan (Boston University, US)
 * Matthew R. Ballard (University of South Carolina, US)
@@ -38,6 +39,7 @@ to add your name to the list below (in alphabetical order).
 * Antoine Chambert-Loir (Université de Paris, FR)
 * Johan Commelin (Universität Freiburg, DE)
 * John Cremona (University of Warwick, UK)
+* Sander Dahmen (Vrije Universiteit Amsterdam, NL)
 * Dhruva Divate (University of Tübingen, DE)
 * Matt Earnshaw
 * Thomas Eckl (University of Liverpool, UK)
@@ -45,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Sébastien Gouëzel (University of Nantes, FR)
 * Jeroen Hanselman (Universität Ulm, DE)
 * Jan Hennig (Leibniz Universität Hannover, DE)
+* Vaibhav Karve (University of Illinois at Urbana-Champaign, US)
 * Martin Křepela (Czech Technical University, CZ)
 * Yury Kudryashov (University of Toronto, CA)
 * Jun Bo Lau (University of California San Diego, US)
@@ -67,10 +70,11 @@ to add your name to the list below (in alphabetical order).
 * Damien Thomine (Université Paris-Saclay at Orsay, FR)
 * Adam Topaz (University of Alberta, CA)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
+* Philip A. Vetter (Institute of Deep-sea Science and Engineering, CAS, Sanya Hainan, CN)
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Miguel Raz Guzmán Macedo (Universidad Nacional Autónoma de México, Facultad de Ciencias, MX)
+* Pim Spelier (Universiteit Leiden, NL)
 * Dan Stanescu (University of Wyoming, US)
 * Daan van Gent (Universiteit Leiden, NL)
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
-* Vaibhav Karve (University of Illinois at Urbana-Champaign, US)
