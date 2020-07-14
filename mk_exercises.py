@@ -12,6 +12,8 @@ if __name__ == '__main__':
     for path in (root/'solutions').glob('**/*.lean'):
         if path.name == 'numbers.lean':
             continue  # Rob's exercises need hand-crafted extraction
+        if path.name == 'metaprogramming.lean':
+            continue  # Rob's exercises need hand-crafted extraction
         print(path)
         out = root/'exercises_sources'/path.relative_to(root/'solutions')
         out.parent.mkdir(exist_ok=True)
