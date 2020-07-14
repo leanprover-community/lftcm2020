@@ -26,6 +26,7 @@ to add your name to the list below (in alphabetical order).
 
 * Aniruddh Agarwal (University of Michigan, US)
 * Aaron Anderson (University of California Los Angeles, US)
+* James Arthur (University of Exeter, UK)
 * Jeremy Avigad (Carnegie Mellon University US)
 * Anne Baanen (Vrije Universiteit Amsterdam, NL)
 * Jennifer Balakrishnan (Boston University, US)
