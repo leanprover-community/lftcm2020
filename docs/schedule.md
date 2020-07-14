@@ -60,7 +60,7 @@ doing the exercises.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Mathematics in Lean: [basics](img/basics.pdf)              | Patrick Massot
+10:00 -- 12:00 | Mathematics in Lean: [basics](https://www.imo.universite-paris-saclay.fr/~pmassot/basics.pdf)              | Patrick Massot
 13:00 -- 15:00 | Mathematics in Lean: logic               | Jeremy Avigad
 15:00 -- 16:30 | Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ      | Rob Lewis
 16:30 -- 18:00 | Dealing with sets and operations on them | Jeremy Avigad
