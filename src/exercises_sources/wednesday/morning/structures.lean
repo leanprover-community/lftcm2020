@@ -75,6 +75,7 @@ structure bounds (f : ℕ → ℕ) :=
 -/
 
 
+
 /-! ### Projections of a structure -/
 
 /-! The field names are declared in the namespace of the structure.
@@ -508,6 +509,7 @@ sorry
 namespace pointed_type
 
 -- @[simps point]
+
 def coprod (A B : pointed_type) : pointed_type :=
 sorry
 end pointed_type
