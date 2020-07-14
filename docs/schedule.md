@@ -16,11 +16,20 @@ Most of the schedule below forms the *beginner track* of the workshop.
 Intermediate users can work on pair programming with more advanced
 users at any time, using the Zulip stream for coordination.
 
+### Zoom sessions
+
 Each session will start with a short presentation that either will have
 been pre-recorded or will be live-recorded and available here during and
 after the session.
 Then it will move to an exercises session using online chat and
 screen-sharing.
+
+Please download and import the following iCalendar (.ics) files to your calendar system:
+[Zoom schedule](https://vu-live.zoom.us/meeting/tJEpd-uopj4jGtRLTcJg_Y9FR5KHpW94me9h/ics?icsToken=98tyKuCtqjsoGtyQuRmHRowMBoiga_TxiCVEjbdvsCvmKSdsW1rQBLdpGqJISYzd)
+
+Join Zoom Meeting: [https://vu-live.zoom.us/j/95402085900](https://vu-live.zoom.us/j/95402085900)
+
+We will share the password in the Zulip stream mentioned above.
 
 ### Monday:
 
@@ -35,10 +44,10 @@ to automate some proofs.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-07:00 -- 12:00 | Tech support (installing Lean, using git + GitHub) |
+07:00 -- 12:00 | Tech support ([installing Lean, using git + GitHub](https://www.youtube.com/playlist?list=PLlF-CfQhukNnxF1S22cNGKyfOrd380NUv)) |
 13:00 -- 13:30 | Welcome + 1st Lean proof                 | Scott Morrison
 13:30 -- 18:00 | Natural number game (demo and exercises) | Kevin Buzzard
-13:30 -- 18:00 | Meta-programming and tactic writing      | Rob Lewis
+13:30 -- 18:00 | [Meta-programming and tactic writing](https://www.youtube.com/playlist?list=PLlF-CfQhukNnq2kDCw2P_vI5AfXN7egP2)      | Rob Lewis
 
 
 ### Tuesday: 
@@ -51,7 +60,7 @@ doing the exercises.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Mathematics in Lean: basics              | Patrick Massot
+10:00 -- 12:00 | Mathematics in Lean: [basics](https://www.imo.universite-paris-saclay.fr/~pmassot/basics.pdf)              | Patrick Massot
 13:00 -- 15:00 | Mathematics in Lean: logic               | Jeremy Avigad
 15:00 -- 16:30 | Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ      | Rob Lewis
 16:30 -- 18:00 | Dealing with sets and operations on them | Jeremy Avigad
