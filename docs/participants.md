@@ -61,6 +61,7 @@ to add your name to the list below (in alphabetical order).
 * Sylvain Maillot (Université de Montpellier, FR)
 * Filip Marić (University of Belgrade, SR)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
+* Bhavik Mehta (University of Cambridge, UK)
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Harshit J Motwani
 * Khoi Nguyen
