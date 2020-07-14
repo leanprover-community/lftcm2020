@@ -180,7 +180,7 @@ example (f : ℕ → ℕ) : bounds f → bounds' f :=
   `Generate skeleton for the structure under construction`.
   This will automatically give an outline of the structure for you. -/
 example (f : ℕ → ℕ) : bounds' f → bounds f :=
-λ n, /- inline sorry -/ { bound := n, le_bound := hn } /- inline sorry -/
+λ n, /- inline sorry -/ { bound := n.1, le_bound := n.2 } /- inline sorry -/
 
 
 /-! ### Classes
@@ -305,6 +305,16 @@ structure bijection (α β : Type*) :=
 instance : has_coe_to_fun (bijection α β) :=
 ⟨_, λ f, f.to_fun⟩
 
+/-! To show that two bijections are equal, it is sufficient that the underlying functions are
+  equal on all inputs. We mark it as `@[ext]` so that we can later use the tactic `ext` to show that
+  two bijections are equal. -/
+@[ext] def bijection.ext {f g : bijection α β} (hfg : ∀ x, f x = g x) : f = g :=
+by { cases f, cases g, congr, ext, exact hfg x }
+
+/-! This lemma allows `simp` to reduce the application of a bijection to an argument. -/
+@[simp] lemma coe_mk {f : α → β} {h1f : injective f} {h2f : surjective f} {x : α} :
+  { bijection . to_fun := f, injective := h1f, surjective := h2f } x = f x := rfl
+
 /- There is a lemma in the library that almost states this.
   You can use the tactic `suggest` to get suggested lemmas from Lean
   (the one you want has `bijective` in the name). -/
@@ -321,16 +331,6 @@ def bijection_of_equiv (f : α ≃ β) : bijection α β :=
   injective := f.injective,
   surjective := f.surjective }
 -- sorry
-
-/-! To show that two bijections are equal, it is sufficient that the underlying functions are
-  equal on all inputs. We mark it as `@[ext]` so that we can later use the tactic `ext` to show that
-  two bijections are equal. -/
-@[ext] def bijection.ext {f g : bijection α β} (hfg : ∀ x, f x = g x) : f = g :=
-by { cases f, cases g, congr, ext, exact hfg x }
-
-/-! This lemma allows `simp` to reduce the application of a bijection to an argument. -/
-@[simp] lemma coe_mk {f : α → β} {h1f : injective f} {h2f : surjective f} {x : α} :
-  { bijection . to_fun := f, injective := h1f, surjective := h2f } x = f x := rfl
 
 /-! Show that bijections are the same (i.e. equivalent) to equivalences. -/
 def bijection_equiv_equiv : bijection α β ≃ (α ≃ β) :=
