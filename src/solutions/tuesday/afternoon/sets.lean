@@ -121,8 +121,7 @@ end
 example : (s ∩ t) ∪ (s ∩ u) ⊆ s ∩ (t ∪ u):=
 -- sorry
 begin
-  intro x,
-  rintros (⟨xs, xt⟩ | ⟨xs, xu⟩),
+  rintros x (⟨xs, xt⟩ | ⟨xs, xu⟩),
   { use xs, left, exact xt },
   use xs, right, exact xu
 end
@@ -134,8 +133,7 @@ begin
   rintros x ⟨xs, xntu⟩,
   use xs,
   { intro xt, exact xntu (or.inl xt) },
-  intro xu,
-  apply xntu (or.inr xu)
+  intro xu, exact xntu (or.inr xu)
 end
 -- sorry
 
