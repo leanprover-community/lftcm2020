@@ -1,76 +1,340 @@
 import data.rat.basic
-import algebra.group.prod
 import tactic.basic
+import data.nat.parity
+import algebra.big_operators
+
+open nat
+
+noncomputable theory -- definitions are allowed to not compute in this file
+open_locale classical big_operators -- use classical logic in this file
 /-!
 
-Lecture 1:
-* Use one structure as a running example, probably `equiv` or `embedding`.
-* Declaring a structure
-  * name, arguments, type, fields
-* Using a structure
-  * Using projections (without and with the `open` command)
-  * projection notation
-  * `.1`, `.2`
-
-Lecture 2:
 * The `extends` keyword
-* Declaring objects of a structure
-  * Using the structure notation `{ field1 := _ }` and the `..` notation (and hole commands)
-  * Using the anonymous constructor
-  * maybe: using the constructor `foo.mk`
+* the `..` notation (and hole commands)
 
-Lecture 3: Classes
-  * Difference between structures and classes
-  * How to use classes
-  * When to use classes
+* Difference between structures and classes
+* How to use classes
+* When to use classes
 
-Lecture 4: "advanced" topics
-  * Proving equalities between objects of a structure
-    * ext
-  * Subtypes and prod (& existential & sigma types)
-  * maybe: declaring coercions
-  * ...
+## Structure exercises
+
+In this session we will discuss structures together,
+and then you can solve the exercises yourself.
+
+Before we start, run the following in a terminal:
+```
+  cd /path/to/lftcm2020/
+  git pull
+  leanproject get-mathlib-cache
+```
+If `git pull` didn't work because you edited one of the files in the repository,
+first copy the files to a backup version and then run `git checkout -- .`
+(this will remove all changes to files you edited, so be careful!)
+
+
+### Declaring a structure
+
+Structures are a way to bundle information together.
+
+For example, the first example below makes a new structure
+  `even_natural_number`, which consists of pairs, where the first
+  component is a natural number, and the second component is a
+  proof that the natural number is even. These are called the *fields* of the structure.
 -/
 
-noncomputable theory
+structure even_natural_number : Type :=
+  (n : ℕ)
+  (even_n : even n)
+
+/-! We can also group propositions together, for example this is a proposition
+  stating that `n` is an even cube greater than 100. -/
+structure is_even_cube_above_100 (n : ℕ) : Prop :=
+  (even : even n)
+  (is_cube : ∃ k, n = k^3)
+  (gt_100 : n > 100)
+
+/-! Here we give the upper bounds for a function `f`. We can omit the type of the structure. -/
+structure bounds (f : ℕ → ℕ) :=
+  (bound : ℕ)
+  (le_bound : ∀ (n : ℕ), f n ≤ bound)
+
+/-! You can use #print to print the type and all fields of a structure. -/
+#print even_natural_number
+#print is_even_cube_above_100
+#print bounds
+
+/-!
+  ### Exercise 1
+  * Define a structure of eventually constant sequences `ℕ → ℕ`. The first field will be
+    `seq : ℕ → ℕ`, and the second field will be the statement that `seq` is eventually constant.
+  * Define a structure of a type with 2 points that are unequal.
+    (hint: omit the type of the structure, Lean might complain if you give it explicitly)
+
+  Lean will not tell you if you got the right definition, but it will complain if you make a syntax
+  error. If you are unsure, ask a mentor to check whether your solution is correct.
+-/
+
+-- omit
+/- There are different ways to do these, here is one way. -/
+structure eventually_constant_sequence : Type :=
+(seq : ℕ → ℕ)
+(eventually_constant : ∃ k v, ∀ n ≥ k, seq n = v)
+
+structure bipointed_type :=
+(A : Type)
+(x y : A)
+(x_ne_y : x ≠ y)
+-- omit
+
+/-! ### Projections of a structure -/
+
+/-! The field names are declared in the namespace of the structure.
+  This means that their names have the form `<structure_name>.<field_name>`. -/
+example (n : ℕ) (hn : is_even_cube_above_100 n) : n > 100 :=
+is_even_cube_above_100.gt_100 hn
+
+/-! You can also `open` the namespace, to use the abbreviated form.
+  We put this `open` command inside a section, so that the namespace
+  is closed at the end of the `section`. -/
+section
+open is_even_cube_above_100
+example (n : ℕ) (hn : is_even_cube_above_100 n) : n > 100 :=
+gt_100 hn
+end
+
+/-! Another useful technique is to use *projection notation*. Instead of writing
+`is_even_cube_above_100.even hn` we can write `hn.even`.
+
+  Lean will look at the type of `hn` and see that it is `is_even_cube_above_100 n`.
+  Then it looks for the lemma with the name `is_even_cube_above_100.even` and apply it to `hn`. -/
+example (n : ℕ) (hn : is_even_cube_above_100 n) : even n :=
+hn.even
+
+example (n : ℕ) (hn : is_even_cube_above_100 n) : even n ∧ ∃ k, n = k^3 :=
+⟨ hn.even, hn.is_cube ⟩
+
+/-! You can also use `.1`, `.2`, `.3`, ... for the fields of a structure. -/
+example (n : ℕ) (hn : is_even_cube_above_100 n) : even n ∧ n > 100 ∧ (∃ k, n = k^3) :=
+⟨ hn.1, hn.3, hn.2 ⟩
+
+/-! We could have alternatively stated `is_even_cube_above_100`
+  as a conjunction of three statements, as below.
+  That gives the same proposition, but doesn't give a name to the three components. -/
+def is_even_cube_above_100' (n : ℕ) : Prop :=
+even n ∧ (∃ k, n = k^3) ∧ n > 100
+
+/-! If we have a structure that mixes data (elements of types, like `ℕ`, `ℝ`, and so on) and
+  properties of the data, we can alternatively declare them using *subtypes*.
+  This consists of pairs of a natural number and a proof that the natural number is even. -/
+def even_natural_number' : Type :=
+{ n : ℕ // even n }
+
+/-! The notation for subtypes is almost the same as the notation for set comprehension.
+ Note that `//` is used for subtypes, and `|` is used for sets. -/
+def set_of_even_natural_numbers : set ℕ :=
+{ n : ℕ | even n }
+
+/-! We can construct objects of a structure using the *anonymous constructor* `⟨...⟩`.
+  This can construct an object of any structure, including conjunctions,
+  existential statements and subtypes. -/
+example : even_natural_number → even_natural_number' :=
+λ n, ⟨n.1, n.2⟩
+
+example (n : ℕ) : is_even_cube_above_100 n → is_even_cube_above_100' n :=
+λ hn, ⟨hn.even, hn.is_cube, hn.gt_100⟩
+
+/-! An alternative way is to use the *structure notation*. The syntax for this is
+  ```
+    { structure_name . field1_name := value, field2_name := value, ... }
+  ```
+  You can prove the fields in any order you want.
+-/
+example : even_natural_number' → even_natural_number :=
+λ n,
+{ even_natural_number .
+  n      := n.1,
+  even_n := n.2 }
+
+example (n : ℕ) : is_even_cube_above_100' n → is_even_cube_above_100 n :=
+λ ⟨h1n, h2n, h3n⟩,
+{ even    := h1n,
+  is_cube := h2n,
+  gt_100  := h3n }
+
+/-!
+  ### Exercise 2
+  * Define `bounds` (given above) again, but now using a the subtype notation `{ _ : _ // _ }`.
+  * Define functions back and forth from the structure `bounds` given above and `bounds` given here.
+    Try different variations using the anonymous constructor and the projection notation.
+    If you replace
+-/
+#print bounds
+
+def bounds' (f : ℕ → ℕ) : Type :=
+/- inline sorry -/ { n : ℕ // ∀ (m : ℕ), f m ≤ n } /- inline sorry -/
+
+example (f : ℕ → ℕ) : bounds f → bounds' f :=
+/- inline sorry -/ λ ⟨n, hn⟩, ⟨n, hn⟩ /- inline sorry -/
+
+/- In the example below, replace the `sorry` by an underscore `_`.
+  A small yellow lightbulb will appear. Click it, and then select
+  `Generate skeleton for the structure under construction`.
+  This will automatically give an outline of the structure for you. -/
+example (f : ℕ → ℕ) : bounds' f → bounds f :=
+λ ⟨n, hn⟩, /- inline sorry -/ { bound := n, le_bound := hn } /- inline sorry -/
+
+
+/-! ### Classes
+
+Classes are special kind of types or propositions that Lean will automatically find inhabitants for.
+
+You can declare a class by giving it the `@[class]` attribute.
+
+As an example, in this section, we will implement square root on natural numbers, that can only be
+applied to natural numbers that are squares. -/
+@[class] def is_square (n : ℕ) : Prop := ∃k : ℕ, k^2 = n
+
+namespace is_square
+
+/-! Hypotheses with a class as type should be written in square brackets `[...]`.
+This tells Lean that they are implicit, and Lean will try to fill them in automatically.
+
+We define the square root as the (unique) number `k` such that `k^2 = n`. Such `k` exists by the
+`is_square n` hypothesis. -/
+def sqrt (n : ℕ) [hn : is_square n] : ℕ := classical.some hn
+
+prefix `√`:(max+1) := sqrt -- notation for `sqrt`
+
+/-! The following is the defining property of `√n`. Note that when we write `√n`,
+Lean will automatically insert the implicit argument `hn` it found it the context.
+This is called *type-class inference*.
+We mark this lemma with the `@[simp]` attribute to tell `simp` to simplify using this lemma. -/
+@[simp] lemma square_sqrt (n : ℕ) [hn : is_square n] : (√n) ^ 2 = n :=
+classical.some_spec hn
+
+/-! ### Exercise:
+  Fill in all `sorry`s in the remainder of this section.
+-/
+
+/-! Prove this lemma. Again we mark it `@[simp]` so that `simp` can simplify
+  equalities involving `√`. Also, hypotheses in square brackets do not need a name.
+
+  Hint: use `pow_left_inj` -/
+@[simp] lemma sqrt_eq_iff (n k : ℕ) [is_square n] : √n = k ↔ n = k^2 :=
+begin
+  -- sorry
+  split; intro h,
+  { simp [← h] },
+  { exact pow_left_inj (nat.zero_le _) (nat.zero_le k) two_pos (by simp [h]) }
+  -- sorry
+end
+
+/-! To help type-class inference, we have to tell it that some numbers are always squares.
+  Here we show that `n^2` is always a square. We mark it as `instance`, which is like
+  `lemma` or `def`, except that it is automatically used by type-class inference. -/
+instance square_square (n : ℕ) : is_square (n^2) :=
+⟨n, rfl⟩
+
+lemma sqrt_square (n : ℕ) : √(n ^ 2) = n :=
+by simp
+
+/-! Instances can depend on other instances: here we show that if `n` and `m` are squares, then
+`n * m` is one, too. -/
+instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
+⟨√n * √m, by simp [nat.mul_pow]⟩
+
+/-! Hint: use `nat.mul_pow` -/
+#check nat.mul_pow
+lemma sqrt_mul (n m : ℕ) [is_square n] [is_square m] : √(n * m) = √n * √m :=
+begin
+  -- sorry
+  simp [nat.mul_pow]
+  -- sorry
+end
+
+example (n m : ℕ) [is_square n] : √(n * m ^ 2) = √n * m :=
+begin
+  -- sorry
+  simp [sqrt_mul, sqrt_square],
+  -- sorry
+end
+
+
+/-! Hint: use `nat.le_mul_self` and `nat.pow_two` -/
+#check nat.le_mul_self
+#check nat.pow_two
+lemma sqrt_le (n : ℕ) [is_square n] : √n ≤ n :=
+begin
+  -- sorry
+  conv_rhs { rw [← square_sqrt n, nat.pow_two] }, apply nat.le_mul_self
+  -- sorry
+end
+
+end is_square
+
+/- At this point, feel free do the remaining exercises in any order. -/
+
+
+/-! ### Exercise: Bijections and equivalences -/
 
 section bijections
 
 open function
 
-variables {A B : Type*}
+variables {α β : Type*}
 
-/- potential examples / exercises / solutions to exercises -/
+/-
+An important structure is the type of equivalences, which gives an equivalence (bijection)
+between two types:
+```
+structure equiv (α β : Type*) :=
+(to_fun    : α → β)
+(inv_fun   : β → α)
+(left_inv  : left_inverse inv_fun to_fun)
+(right_inv : right_inverse inv_fun to_fun)
+```
+In this section we show that this is the same as the bijections from `α` to `β`.
+-/
+#print equiv
 
-structure bijection (A B : Type*) :=
-  (to_fun : A → B)
+structure bijection (α β : Type*) :=
+  (to_fun : α → β)
   (injective : injective to_fun)
   (surjective : surjective to_fun)
 
-/- after lecture 2, though it's mostly an exercise in searching the library
-  (or proving something nontrivial) -/
-instance : has_coe_to_fun (bijection A B) :=
+/- We declare a *coercion*. This allows us to treat `f` as a function if `f : bijection α β`. -/
+instance : has_coe_to_fun (bijection α β) :=
 ⟨_, λ f, f.to_fun⟩
 
-/- There is a lemma in the library that almost states this. Try using `suggest`. -/
-def equiv_of_bijection (f : bijection A B) : A ≃ B :=
-/- inline sorry -/ equiv.of_bijective f ⟨f.injective, f.surjective⟩ /- inline sorry -/
+/- There is a lemma in the library that almost states this.
+  You can use the tactic `suggest` to get suggested lemmas from Lean
+  (the one you want has `bijective` in the name). -/
+def equiv_of_bijection (f : bijection α β) : α ≃ β :=
+begin
+  -- sorry
+  exact equiv.of_bijective f ⟨f.injective, f.surjective⟩
+  -- sorry
+end
 
-def bijection_of_equiv (f : A ≃ B) : bijection A B :=
+def bijection_of_equiv (f : α ≃ β) : bijection α β :=
 -- sorry
 { to_fun := f,
   injective := f.injective,
   surjective := f.surjective }
 -- sorry
 
-/- after lecture 4 -/
-@[ext] def bijection.ext {f g : bijection A B} (hfg : ∀ x, f x = g x) : f = g :=
-/- inline sorry -/ by { cases f, cases g, congr, ext, exact hfg x } /- inline sorry -/
+/-! To show that two bijections are equal, it is sufficient that the underlying functions are
+  equal on all inputs. We mark it as `@[ext]` so that we can later use the tactic `ext` to show that
+  two bijections are equal. -/
+@[ext] def bijection.ext {f g : bijection α β} (hfg : ∀ x, f x = g x) : f = g :=
+by { cases f, cases g, congr, ext, exact hfg x }
 
-@[simp] lemma coe_mk {f : A → B} {h1f : injective f} {h2f : surjective f} {x : A} :
+/-! This lemma allows `simp` to reduce the application of a bijection to an argument. -/
+@[simp] lemma coe_mk {f : α → β} {h1f : injective f} {h2f : surjective f} {x : α} :
   { bijection . to_fun := f, injective := h1f, surjective := h2f } x = f x := rfl
 
-def bijection_equiv_equiv : bijection A B ≃ (A ≃ B) :=
+/-! Show that bijections are the same (i.e. equivalent) to equivalences. -/
+def bijection_equiv_equiv : bijection α β ≃ (α ≃ β) :=
 -- sorry
 { to_fun := equiv_of_bijection,
   inv_fun := bijection_of_equiv,
@@ -79,6 +343,10 @@ def bijection_equiv_equiv : bijection A B ≃ (A ≃ B) :=
 -- sorry
 
 end bijections
+
+
+
+/-! ### Exercise: Bundled groups -/
 
 /- Below is a possible definition of a group in Lean. It's not the definition we use use in mathlib,
   which will explained in detail in the next session. -/
@@ -156,9 +424,9 @@ def rat_Group : Group :=
 /-
   However, it is inconvenient to use this group instance directly.
   One reason is that to use these group operations we now have to write
-`(x y : rat_Group)` instead of `(x y : ℚ)`.
+  `(x y : rat_Group)` instead of `(x y : ℚ)`.
   That's why in Lean we do something else,
-explained in the next lecture.
+  explained in the next lecture.
 -/
 
 /- show that the cartesian product of two groups is a group. The underlying type will be `G × H`. -/
@@ -177,45 +445,9 @@ end Group
 
 
 
-/-- We can use classes to implement a "safe" square root on natural numbers. -/
-
-@[class] def is_square (n : ℕ) : Prop := ∃k : ℕ, k^2 = n
-
-namespace is_square
-
-def sqrt (n : ℕ) [hn : is_square n] := classical.some hn
-
-prefix `√`:(max+1) := sqrt
-@[simp] lemma sqrt_square (n : ℕ) [hn : is_square n] : (√n) ^ 2 = n :=
-classical.some_spec hn
-
-@[simp] lemma sqrt_eq_iff (n k : ℕ) [hn : is_square n] : √n = k ↔ n = k^2 :=
--- sorry
-⟨λ h, by simp [← h], λ hk, pow_left_inj (nat.zero_le _) (nat.zero_le k) two_pos (by simp [hk])⟩
--- sorry
-
-instance square_square (n : ℕ) : is_square (n^2) :=
-/- inline sorry -/ ⟨n, rfl⟩ /- inline sorry -/
-
-instance square_mul_self (n : ℕ) : is_square (n*n) :=
-/- inline sorry -/ ⟨n, by simp [nat.pow_two]⟩ /- inline sorry -/
-
-instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
-/- inline sorry -/ ⟨√n * √m, by simp [nat.mul_pow]⟩ /- inline sorry -/
-
-lemma sqrt_mul (n m : ℕ) [is_square n] [is_square m] : √(n * m) = √n * √m :=
-/- inline sorry -/ by simp [nat.mul_pow] /- inline sorry -/
-
-/- hint: use `nat.le_mul_self` -/
-lemma sqrt_le (n : ℕ) [is_square n] : √n ≤ n :=
-/- inline sorry -/ by { conv_rhs { rw [← sqrt_square n, nat.pow_two] }, apply nat.le_mul_self } /- inline sorry -/
-
-end is_square
 
 
-
-
-
+/-! ### Exercise: Pointed types -/
 
 structure pointed_type :=
 (type : Type*)
@@ -227,7 +459,9 @@ variables {A B : pointed_type}
 /- The following line declares that if `A : pointed_type`, then we can also view `A` as a type. -/
 instance : has_coe_to_sort pointed_type := ⟨_, pointed_type.type⟩
 
-/- Show that the product of two pointed types is a pointed type. The underyling type will be `A × B`. -/
+/- Show that the product of two pointed types is a pointed type.
+  The underyling type will be `A × B`. The `@[simps point]` is a hint to `simp` that it can unfold
+  the point of this product. -/
 @[simps point]
 def prod (A B : pointed_type) : pointed_type :=
 -- sorry
@@ -261,6 +495,8 @@ begin
   -- sorry
 end
 
+/-! Below we show that pointed types form a category. -/
+
 def comp (g : B →. C) (f : A →. B) : A →. C :=
 -- sorry
 { to_fun := g ∘ f,
@@ -273,6 +509,8 @@ def id : A →. A :=
   to_fun_point := by simp }
 -- sorry
 
+/-! You can use projection notation for any declaration declared in the same namespace as the
+  structure. For example, `g.comp f` means `pointed_map.comp g f` -/
 lemma comp_assoc : h.comp (g.comp f) = (h.comp g).comp f :=
 -- sorry
 by { ext x, refl }
@@ -287,6 +525,9 @@ lemma comp_id : id.comp f = f :=
 -- sorry
 by { ext x, refl }
 -- sorry
+
+/-! Below we show that `A.prod B` (that is, `pointed_type.prod A B`) is a product in the category of
+  pointed types. -/
 
 def fst : A.prod B →. A :=
 -- sorry
@@ -329,7 +570,7 @@ end
 
 end pointed_map
 
-/- As an advanced exercise, you can show that the category of pointed type has coproducts.
+/-! As an advanced exercise, you can show that the category of pointed type has coproducts.
   For this we need quotients, the basic interface is given with the declarations
   `quot r`: the quotient of the equivalence relation generated by relation `r` on `A`
   `quot.mk r : A → quot r`,
@@ -344,7 +585,7 @@ end pointed_map
 
 open sum
 
-/- We want to define the coproduct of pointed types `A` and `B` as the coproduct `A ⊕ B` of the
+/-! We want to define the coproduct of pointed types `A` and `B` as the coproduct `A ⊕ B` of the
   underlying type, identifying the two basepoints.
 
   First define a relation that *only* relates `inl A.point ~ inr B.point`.
