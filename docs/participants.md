@@ -54,6 +54,7 @@ to add your name to the list below (in alphabetical order).
 * Yury Kudryashov (University of Toronto, CA)
 * Julian Külshammer (Uppsala University, SE)
 * Jun Bo Lau (University of California San Diego, US)
+* Marius Leonhardt (Universität Heidelberg, DE)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Heather Macbeth (Fordham University, US)
 * Sylvain Maillot (Université de Montpellier, FR)
