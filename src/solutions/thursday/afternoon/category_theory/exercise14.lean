@@ -15,6 +15,7 @@ structure Mon_in :=
 (ι : 𝟙_ C ⟶ X)
 (μ : X ⊗ X ⟶ X)
 -- There are three missing axioms here!
+(ι_μ : )
 
 namespace Mon_in
 
@@ -28,7 +29,7 @@ end Mon_in
 
 /-!
 Bonus projects:
-
+1
 1. Construct the category of module objects for a fixed monoid object.
 2. Check that `Mon_in Type ≌ Mon`.
 3. Check that `Mon_in AddCommGroup ≌ Ring`.

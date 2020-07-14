@@ -9,7 +9,7 @@ uppercase=upright,greeklowercase=upright]{mathdesign}
 
 \usepackage{microtype}
 
-\usepackage[textwidth=17cm, textheight=26cm]{geometry}
+\usepackage[textwidth=17cm, textheight=27cm]{geometry}
 \usepackage{booktabs, xspace}
 % \usepackage{amsmath,amsfonts,amssymb}
 
@@ -43,7 +43,7 @@ or a lemma applied to any of these.
 \def\arraystretch{1.5}
 \begin{tabular}{@{}lll@{}}
   \toprule
-  Logical symbol & Proof & Application \\
+  Logical symbol & Appears in goal & Appears in hypothesis \\
   \midrule
  $\forall$ (for all) & \lean{intro} \nv & \lean{apply} \expr or \lean{specialize} \nom \expr  \\
  $\exists$ (there exists) & \lean{use} \expr & \lean{cases} \expr \lean{with} \nv \nv \\
@@ -78,7 +78,7 @@ must be performed rather on a certain hypothesis named \hyp.
   \toprule
   Tactic & Effect \\
   \midrule
-  \lean{exact} \expr & asserts that the goal is exactly \expr \\
+  \lean{exact} \expr & asserts that the goal can be satisfied by \expr \\
   \lean{have} \nv : \fait & introduces a name \nv asserting that \fait is provable \\
   \lean{unfold} \nom (\lean{at} \hyp) & unfold the definition of \nom in the goal
   (or in the hypothesis \hyp) \\
@@ -92,6 +92,7 @@ must be performed rather on a certain hypothesis named \hyp.
   one may use \lean{unfold} or \lean{change} to ensure this. \\
   \lean{linarith} & prove the goal by a linear combination of hypotheses \\
   \lean{ring} & prove the goal by combining the axioms of a commutative (semi)ring \\
+  \lean{library\_search} & search for a single existing lemma which closes the goal, also using local hypotheses. \\
   \lean{choose} \nv \nv \lean{using} \expr &
   given \expr : $\forall x, \exists y, P(x, y)$,
   use the axiom of choice to produce a function $x \mapsto y(x)$ satisfying

@@ -28,5 +28,4 @@ def CommRing_forget_representable : Σ (R : CommRing), (forget CommRing) ≅ coy
 -- In fact, notice we didn't write a `sorry` for `naturality'` here:
 -- automation could do it automatically.
 
--- At this point you can actually also delete the `hom_inv_id'` line:
--- again automation can take care of it.
+-- What about the remaining `sorry`s?
