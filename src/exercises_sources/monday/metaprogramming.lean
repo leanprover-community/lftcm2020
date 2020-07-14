@@ -35,7 +35,42 @@ Note: this exists as `tactic.interactive.contradiction`.
 
 -/
 
-meta def tactic.interactive.contr : tactic unit := sorry
+
+/-
+This solution is a "slick version."
+
+We write a function `find_absurd_proof` that takes an expr e and a list of exprs.
+
+For each expr h in the list,
+it tries to apply e to h. If `e : ¬ P` and `h : P`, this will succeed
+and result in a proof of `false`. Otherwise it will fail.
+
+`find_absurd_proof` finds the first `h` such that it succeeds, and uses the proof of `false`
+to close the goal.
+
+If no such `h` exists, `find_absurd_proof` will fail.
+-/
+
+meta def find_absurd_proof (e : expr) (ctx : list expr) : tactic unit :=
+do prf ← ctx.mfirst (λ h, to_expr ``(%%e %%h)),
+   exact prf
+
+/-
+
+`contr` maps over the local context `ctx`.
+For every `e` in `ctx`, it calls `find_absurd_proof e ctx`.
+
+Notice the double loop through `ctx`:
+for each `e` in `ctx`, we search through all of `ctx` again!
+
+`contr` calls the `exfalso` tactic before it begins,
+to make sure the target is `false`.
+-/
+
+meta def tactic.interactive.contr : tactic unit :=
+do exfalso,
+   ctx ← local_context,
+   ctx.mfirst (λ e, find_absurd_proof e ctx)
 
 example (P Q R : Prop) (hp : P) (hq : Q) (hr : ¬ R) (hnq : ¬ Q) : false :=
 by contr
@@ -79,13 +114,50 @@ Hints:
 -/
 
 
-meta def add_nonneg_proof (n : name) : tactic unit := sorry
+meta def add_nonneg_proof (n : name) : tactic unit :=
+
+   -- first we find the declaration named `n` in the environment.
+do d ← get_decl n,
+
+   -- the type of d is `Π x y z ..., body`,
+   -- where body contains a bunch of free variables.
+   -- we instantiate the binders to get a body we can manipulate.
+   (args, body) ← mk_local_pis d.type,
+
+   -- args is a list of expressions, but we want a list of `option expr`s to give to `mk_mapp`.
+   let args_with_some := args.map some,
+
+   -- this line applies the expression named `n` to the variables we've created.
+   -- d_body is the natural number that we want to prove is nonnegative.
+   d_body ← mk_mapp n args_with_some,
+
+   -- so we prove that `d_body` is nonnegative by applying `nat.zero_le`.
+   nonneg_prf_body ← mk_app `nat.zero_le [d_body],
+
+   -- now we abstract away the local constants we created.
+   nonneg_prf ← lambdas args nonneg_prf_body,
+
+   -- we create a name for our new proof.
+   -- if `n` is `nat.add, we will call our new proof `nat.add.nonneg
+   let new_decl_name := n.append `nonneg,
+
+   -- we get the type of the proof we've constructed,
+   decl_tp ← infer_type nonneg_prf,
+
+   -- make a term of type `declaration`,
+   let new_decl := mk_theorem new_decl_name d.univ_params decl_tp nonneg_prf,
+
+   -- and add that declaration to the environment.
+   add_decl new_decl
+
+
+
 
 run_cmd add_nonneg_proof `nat.add
 run_cmd add_nonneg_proof `list.length
 
-#check nat.add_nonneg
-#check list.length_nonneg
+#check nat.add.nonneg
+#check list.length.nonneg
 
 
 /-!
@@ -138,3 +210,4 @@ See if you can solve any or all of these failing test cases.
 If you succeed, a pull request to mathlib is strongly encouraged!
 
 -/
+
