@@ -534,7 +534,7 @@ begin
     exact x'Ai },
   exact fxeq
 end
---sorry
+-- sorry
 
 example : f ⁻¹' (⋃ i, B i) = ⋃ i, f ⁻¹' (B i) :=
 -- sorry
