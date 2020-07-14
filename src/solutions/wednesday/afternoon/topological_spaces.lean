@@ -1,5 +1,6 @@
 import tactic
 import data.set.finite
+import data.real.nnreal -- for metrics
 
 /-
 # (Re)-Building topological spaces in Lean
@@ -13,6 +14,12 @@ of what's in library.
 But today we will ignore all that, and build our own version of topological spaces from scratch!
 (On Friday morning Patrick Massot will lead a session exploring the existing mathlib library)
 
+First a little setup, we will be making definitions involving the real numbers, the theory of which
+is not computable.
+-/
+noncomputable theory
+
+/-
 ## What is a topological space:
 
 There are many definitions: one from Wikipedia:
@@ -27,17 +34,15 @@ We can formalize this as follows.
 
 -/
 
-section topological_space
-
 open set
 
-structure topological_space_wiki :=
+class topological_space_wiki :=
   (X : Type)  -- the underlying Type that the topology will be on
   (τ : set (set X)) -- the set of open subsets of X
   (empty_mem : ∅ ∈ τ) -- empty set is open
   (univ_mem : univ ∈ τ) -- whole space is open
-  (union : ∀ B ⊆ τ, ⋃₀ B ∈ τ) -- arbitrary unions of opens are open
-  (inter : ∀ (B ⊆ τ) (h : finite B), ⋂₀ B ∈ τ) -- finite intersections of opens are open
+  (union : ∀ B ⊆ τ, ⋃₀ B ∈ τ) -- arbitrary unions of is_open are open
+  (inter : ∀ (B ⊆ τ) (h : finite B), ⋂₀ B ∈ τ) -- finite intersections of is_open are open
 
 /-
 But before we go on we should be sure we want to use this as our definition.
@@ -47,13 +52,14 @@ still best to get it right the first time!)
 -/
 
 @[ext]
-structure topological_space (X : Type) :=
-  (opens : set (set X))
-  (empty_mem : ∅ ∈ opens)
-  (univ_mem : univ ∈ opens)
-  (union : ∀ B ⊆ opens, ⋃₀ B ∈ opens)
-  (inter : ∀ (A ∈ opens) (B ∈ opens), A ∩ B ∈ opens)
+class topological_space (X : Type) :=
+  (is_open : set X → Prop) -- why set X → Prop not set (set X), former plays nicer with typeclasses later
+  (empty_mem : is_open ∅ )
+  (univ_mem : is_open univ)
+  (union : ∀ (B : set (set X)) (h : ∀ b ∈ B, is_open b), is_open (⋃₀ B))
+  (inter : ∀ (A B : set X) (hA : is_open A) (hB : is_open B), is_open (A ∩ B))
 
+namespace topological_space
 
 /-
 
@@ -70,7 +76,7 @@ However we will undoubtedly still want to use this property so:
 -/
 
 def discrete (X : Type) : topological_space X :=
-{ opens := univ,
+{ is_open := univ,
   empty_mem := trivial,
   univ_mem := trivial,
   union := begin intros B h, trivial, end,
@@ -97,16 +103,14 @@ def mk_closed_sets
   (inter : ∀ B ⊆ σ, ⋂₀ B ∈ σ)
   (union : ∀ (A ∈ σ) (B ∈ σ), A ∪ B ∈ σ) :
 topological_space X := {
-  opens := set.image (λ S, Sᶜ) σ,
+  is_open := set.image (λ S, Sᶜ) σ,
   empty_mem := begin
-    rw set.mem_image,
     use univ,
     split,
     assumption,
     exact compl_univ,
   end,
   univ_mem := begin
-    rw set.mem_image,
     use ∅,
     split,
     assumption,
@@ -114,7 +118,6 @@ topological_space X := {
   end,
   union := begin
     intros B hB,
-    rw mem_image,
     use (⋃₀ B)ᶜ,
     split,
     rw compl_sUnion,
@@ -126,15 +129,14 @@ topological_space X := {
   end,
   inter := _ }
 
-
 /-
 ## Exercise 2
 
 Another way me might want to create topological spaces in practice is to take the coarsest
-possible topological space containing a given set of opens.
-To define this we might say we want to define what the opens are given the set of generators,
-So we want to define a set of opens by declaring that each generator will be open, and each
-intersection of two opens will be open, and each union of a set of opens will be open, and finally
+possible topological space containing a given set of is_open.
+To define this we might say we want to define what the is_open are given the set of generators,
+So we want to define a set of is_open by declaring that each generator will be open, and each
+intersection of two is_open will be open, and each union of a set of is_open will be open, and finally
 the empty and whole space (`univ`) must be open. The cleanest way to do this is as an inductive
 definition.
 
@@ -154,16 +156,16 @@ and that the union of any pair of constructible sets is constructible.
 inductive is_constructible {X : Type} (T : topological_space X) : set X → Prop
 -- Given two open sets in T, the intersection of one and the complement of the other is locally
 -- closed, hence constructible
-| locally_closed : ∀ (X ∈ T.opens) (Y ∈ T.opens), is_constructible (X ∩ Yᶜ)
+| locally_closed : ∀ (A B : set X), is_open A → is_open B → is_constructible (A ∩ Bᶜ)
 -- Given two constructible sets their union is constructible
-| union : ∀ X Y, is_constructible (X ∩ Yᶜ)
+| union : ∀ A B, is_constructible A → is_constructible B → is_constructible (A ∩ Bᶜ)
 
 -- For example we can now use this definition to prove the empty set is constructible
 example {X : Type} (T : topological_space X) : is_constructible T ∅ :=
 begin
   -- The intersection of the whole space (open) with the empty set (closed) is locally closed, so
   -- constructible
-  have := is_constructible.locally_closed univ T.univ_mem univ T.univ_mem,
+  have := is_constructible.locally_closed univ univ univ_mem univ_mem,
   -- but that's just the empty set
   simp at this,
   exact this,
@@ -171,8 +173,8 @@ end
 
 /-- The open sets of the least topology containing a collection of basic sets. -/
 inductive generated_open (X : Type) (g : set (set X)) : set X → Prop
-| -- sorry
-basic  : ∀ s ∈ g, generated_open s
+-- sorry
+| basic  : ∀ s ∈ g, generated_open s
 | univ   : generated_open univ
 | inter  : ∀s t, generated_open s → generated_open t → generated_open (s ∩ t)
 | sUnion : ∀k, (∀ s ∈  k, generated_open s) → generated_open (⋃₀ k)
@@ -183,54 +185,178 @@ begin
   simp at this,
   exact this,
 end
-
 -- sorry
 
 /-- The smallest topological space containing the collection `g` of basic sets -/
 def generate_from (X : Type) (g : set (set X)) : topological_space X :=
-{ opens          := /- inline sorry -/ generated_open X g/- inline sorry -/,
-  empty_mem       := /- inline sorry -/generated_open.empty X g/- inline sorry -/,
-  univ_mem       := /- inline sorry -/ generated_open.univ/- inline sorry -/,
-  inter := /- inline sorry -/ begin intros A hA B hB, exact generated_open.inter A B hA hB, end/- inline sorry -/,
-  union := /- inline sorry -/ generated_open.sUnion /- inline sorry -/ }
-
-#check discrete
-
-lemma a  (α : Type*) (a b : α) : set ({a, b} : set α) = ({(∅ : set α), {a}, {b}, {a,b}}  : set (set α)) :=
-begin
-    dsimp,
-end
-
-theorem subset_insert_iff {α : Type*} {a : α} (t: set α) ( s : set (set.insert a t)) : s ⊆ t ∨ ∃ s' ⊆ t, s = (s' ∪ {a}) :=
-begin
-  split,
-end
-
-def indiscrete (X : Type) : topological_space :=
-{ X := X,
-  opens := {∅, univ},
-  empty := mem_insert ∅ {univ},
-  univ := begin
-    rw mem_insert_iff,
-    right,
-    exact mem_singleton univ,
-  end,
-  union := begin
-    intros B h,
-    rw finset.subset_insert_iff at h,
-    sorry
-  end,
-  inter := sorry }
-
-#print topological_space.ext
-
-lemma indiscrete_eq_discrete : indiscrete unit = discrete unit :=
-begin
-  rw indiscrete,
-  rw discrete,
-  congr,
-
-end
-#print indiscrete_eq_discrete
+{ is_open   := /- inline sorry -/generated_open X g/- inline sorry -/,
+  empty_mem := /- inline sorry -/generated_open.empty X g/- inline sorry -/,
+  univ_mem  := /- inline sorry -/generated_open.univ/- inline sorry -/,
+  inter     := /- inline sorry -/generated_open.inter/- inline sorry -/,
+  union     := /- inline sorry -/generated_open.sUnion/- inline sorry -/ }
 
 end topological_space
+
+open topological_space
+/- Now it is quite easy to give a topology on the product of a pair of topological spaces. -/
+instance prod.topological_space (X Y : Type) [topological_space X] [topological_space Y] :
+  topological_space (X × Y) :=
+topological_space.generate_from (X × Y) {U | ∃ (Ux : set X) (Uy : set Y) (hx : is_open Ux) (hy : is_open Uy), U = set.prod Ux Uy}
+
+lemma is_open_prod_iff (X Y : Type) [topological_space X] [topological_space Y] {s : set (X × Y)} :
+is_open s ↔ (∀a b, (a, b) ∈ s → ∃u v, is_open u ∧ is_open v ∧ a ∈ u ∧ b ∈ v ∧ set.prod u v ⊆ s) := sorry
+
+/-
+# Metric spaces
+-/
+
+open_locale nnreal big_operators
+
+class metric_space_basic (X : Type) :=
+  (metric : X → X → ℝ≥0)
+  (eq_zero_iff : ∀ x y, metric x y = 0 ↔ x = y)
+  (symm : ∀ x y, metric x y = metric y x)
+  (triangle : ∀ x y z, metric x z ≤ metric x y + metric y z)
+
+/-
+From a metric space we get an induced topological space structure like so:
+-/
+
+namespace metric_space_basic
+open topological_space
+
+instance {X : Type} [metric_space_basic X] : topological_space X :=
+generate_from X { B | ∃ (x : X) r, B = {y | metric x y < r} }
+
+/- So far so good, now lets define the product of two metric spaces -/
+instance {X Y : Type} [metric_space_basic X] [metric_space_basic Y] : metric_space_basic (X × Y) :=
+{ metric := λ u v, max (metric u.fst v.fst) (metric u.snd v.snd),
+  eq_zero_iff := begin intros u v, admit, end,
+  symm := begin intros u v, simp [symm], end,
+  triangle := by admit }
+
+--set_option pp.all true
+example (X : Type) [metric_space_basic X] : is_open {xy : X × X | metric xy.fst xy.snd < 100 } :=
+begin
+  rw is_open_prod_iff X X,
+end
+
+example (X : Type) [topological_space X] : is_open {xy : X × X | xy.fst ≠ xy.snd } :=
+begin
+  rw is_open_prod_iff X X,
+end
+
+/-
+What happened here?
+We have unfortunately created two topologies on `X × Y`, one via `prod.topology` that we defined
+earlier as the product of the two topologies coming from the respective metric space structures.
+And one coming from the metric on the product.
+
+These are equal, i.e. the same topology (otherwise mathematically the product would not be a good
+definition). However they are not definitionally equal, there is as nontrivial proof to show they
+are the same. The typeclass system (which finds the relevant topological space instance when we
+use lemmas involving topological spaces) isn't able to check that topological space structures
+which are equal for some nontrivial reason are equal on the fly so it gets stuck.
+-/
+
+end metric_space_basic
+
+/- We can use extends to say that a metric space is an extra structure on top of being a topological
+space. But we have to add the axiom that the metric and the topology are compatible to stop us
+from accidentally ending up with a metric space inducing a different topology to the underlying
+topological space. -/
+class metric_space (X : Type) extends topological_space X, metric_space_basic X :=
+  -- (metric : X → X → ℝ≥0)
+  -- (eq_zero_iff : ∀ x y, metric x y = 0 ↔ x = y)
+  -- (symm : ∀ x y, metric x y = metric y x)
+  -- (triangle : ∀ x y z, metric x z ≤ metric x y + metric y z)
+  (compatible : ∀ U, is_open U ↔ generated_open X { B | ∃ (x : X) r, B = {y | metric x y < r}} U)
+
+
+namespace metric_space
+open topological_space
+
+/- This might seem a bit inconvenient to have to define a topological space each time we want a
+metric space.
+
+We would still like a way of making a `metric_space` just given a metric and some properties it
+satisfies, i.e. a `metric_space_basic`, so we should setup a metric space constructor from a
+`metric_space_basic` by setting the topology to be the induced one. -/
+
+def uniform_space.of_basic {X : Type} (m : metric_space_basic X) : metric_space X :=
+{ to_metric_space_basic := m,
+  to_topological_space := @metric_space_basic.topological_space X m,
+  compatible := begin
+      intro U,
+      refl,
+    end }
+
+/- So far so good, now lets define the product of two metric spaces -/
+instance {X Y : Type} [metric_space X] [metric_space Y] : metric_space (X × Y) :=
+{ metric := λ u v, max (metric u.fst v.fst) (metric u.snd v.snd),
+  eq_zero_iff := begin intros u v, admit, end,
+  symm := begin intros u v, simp [symm], end,
+  triangle := by admit,
+  compatible := begin intros U,
+  rw is_open_prod_iff X Y,
+  split; intro,
+   end }
+
+/- Now this works, there is only one topological space on the product. -/
+example (X : Type) [metric_space X] : is_open {xy : X × X | metric xy.fst xy.snd < 100 } :=
+begin
+  rw is_open_prod_iff X X,
+end
+
+example (X : Type) [topological_space X] : is_open {xy : X × X | xy.fst ≠ xy.snd } :=
+begin
+  rw is_open_prod_iff X X,
+end
+
+end metric_space
+
+--lemma nonneg
+-- sorry
+section scratch
+  /- here be junk -/
+  #check discrete
+
+  lemma a  (α : Type*) (a b : α) : set ({a, b} : set α) = ({(∅ : set α), {a}, {b}, {a,b}}  : set (set α)) :=
+  begin
+      dsimp,
+  end
+
+  theorem subset_insert_iff {α : Type*} {a : α} (t: set α) ( s : set (set.insert a t)) : s ⊆ t ∨ ∃ s' ⊆ t, s = (s' ∪ {a}) :=
+  begin
+    split,
+  end
+
+  def indiscrete (X : Type) : topological_space :=
+  { X := X,
+    is_open := {∅, univ},
+    empty := mem_insert ∅ {univ},
+    univ := begin
+      rw mem_insert_iff,
+      right,
+      exact mem_singleton univ,
+    end,
+    union := begin
+      intros B h,
+      rw finset.subset_insert_iff at h,
+      sorry
+    end,
+    inter := sorry }
+
+  #print topological_space.ext
+
+  lemma indiscrete_eq_discrete : indiscrete unit = discrete unit :=
+  begin
+    rw indiscrete,
+    rw discrete,
+    congr,
+
+  end
+  #print indiscrete_eq_discrete
+
+end scratch
+-- sorry
