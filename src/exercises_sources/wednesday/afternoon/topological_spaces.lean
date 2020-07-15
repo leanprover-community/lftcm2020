@@ -6,7 +6,7 @@ import data.real.basic -- for metrics
 # (Re)-Building topological spaces in Lean
 
 Mathlib has a large library of results on topological spaces, including various
-construcions, separation axioms, Tychonoff's theorem, sheaves, Stone-Čech
+constructions, separation axioms, Tychonoff's theorem, sheaves, Stone-Čech
 compactification, Heine-Cantor, to name but a few.
 See https://leanprover-community.github.io/theories/topology.html which for a
 (subset) of what's in library.
@@ -16,13 +16,20 @@ spaces from scratch!
 (On Friday morning Patrick Massot will lead a session exploring the existing
 mathlib library in more detail)
 
+To get this file run either `leanproject get lftcm2020`, if you didn't already or cd to
+that folder and run `git pull; leanproject get-mathlib-cache`, this is
+`src/exercise_sources/wednesday/afternoon/topological_spaces.lean`.
+
+The exercises are spread throughout, you needn't do them in order! They are marked as
+short, medium and long, so I suggest you try some short ones first.
+
 First a little setup, we will be making definitions involving the real numbers,
 the theory of which is not computable, and we'll use sets.
 -/
 noncomputable theory
 open set
 
-/-
+/-!
 ## What is a topological space:
 
 There are many definitions: one from Wikipedia:
@@ -36,12 +43,12 @@ We can formalize this as follows: -/
 
 class topological_space_wiki :=
   (X : Type)  -- the underlying Type that the topology will be on
-  (τ : set (set X)) -- the set of open subsets of X
-  (empty_mem : ∅ ∈ τ) -- empty set is open
-  (univ_mem : univ ∈ τ) -- whole space is open
-  (union : ∀ B ⊆ τ, ⋃₀ B ∈ τ) -- arbitrary unions of members of τ are open
-  (inter : ∀ (B ⊆ τ) (h : finite B), ⋂₀ B ∈ τ) -- finite intersections of
-                                               -- members of τ are open
+  (τ : set (set X))  -- the set of open subsets of X
+  (empty_mem : ∅ ∈ τ)  -- empty set is open
+  (univ_mem : univ ∈ τ)  -- whole space is open
+  (union : ∀ B ⊆ τ, ⋃₀ B ∈ τ)  -- arbitrary unions (sUnions) of members of τ are open
+  (inter : ∀ (B ⊆ τ) (h : finite B), ⋂₀ B ∈ τ)  -- finite intersections of
+                                                -- members of τ are open
 
 /-
 Before we go on we should be sure we want to use this as our definition.
@@ -52,7 +59,7 @@ Before we go on we should be sure we want to use this as our definition.
 class topological_space (X : Type) :=
   (is_open : set X → Prop) -- why set X → Prop not set (set X)? former plays
                            -- nicer with typeclasses later
-  (empty_mem : is_open ∅ )
+  (empty_mem : is_open ∅)
   (univ_mem : is_open univ)
   (union : ∀ (B : set (set X)) (h : ∀ b ∈ B, is_open b), is_open (⋃₀ B))
   (inter : ∀ (A B : set X) (hA : is_open A) (hB : is_open B), is_open (A ∩ B))
@@ -64,7 +71,7 @@ One of the axioms of a topological space we have here is unnecessary, it follows
 from the others. If we remove it we'll have less work to do each time we want to
 create a new topological space so:
 
-1. Identify and remove the uneeded axiom, make sure to remove it throughout the file.
+1. Identify and remove the unneeded axiom, make sure to remove it throughout the file.
 2. Add the axiom back as a lemma with the same name and prove it based on the
    others, so that the _interface_ is the same. -/
 
@@ -83,7 +90,7 @@ axioms, this is equivalent and sometimes more convenient.
 
 We _could_ create two distinct Types defined by different data and provide an
 equivalence between theses types, e.g. `topological_space_via_open_sets` and
-`topological_space_via_closed_sets`, but this would quickly get unweildy.
+`topological_space_via_closed_sets`, but this would quickly get unwieldy.
 What's better is to make an alternative _constructor_ for our original
 topological space. This is a function takes a set of subsets satisfying the
 axioms to be the closed sets of a topological space and creates the
@@ -93,8 +100,8 @@ topological space defined by the corresponding set of open sets.
 Complete the following constructor of a topological space from a set of subsets
 of a given type `X` satisfying the axioms for the closed sets of a topology.
 Hint: there are many useful lemmas about complements in mathlib, with names
-involving compl, like compl_empty, compl_univ, compl_compl, compl_sUnion,
-mem_compl_image, compl_inter, compl_compl', you can #check them to see what they say -/
+involving `compl`, like `compl_empty`, `compl_univ`, `compl_compl`, `compl_sUnion`,
+`mem_compl_image`, `compl_inter`, `compl_compl'`, `you can #check them to see what they say. -/
 
 def mk_closed_sets
   (X : Type)
@@ -137,8 +144,8 @@ constructible set of a topological space, defined by saying that an intersection
 of an open and a closed set is constructible and that the union of any pair of
 constructible sets is constructible.
 
-(Bonus exercise: mathlib doesn't have any theory of constructible sets, make one
-and PR it! [arbitrarily long!]) -/
+(Bonus exercise: mathlib doesn't have any theory of constructible sets, make one and PR
+it! [arbitrarily long!], or just prove that open and closed sets are constructible for now) -/
 
 inductive is_constructible {X : Type} (T : topological_space X) : set X → Prop
 /- Given two open sets in `T`, the intersection of one with the complement of
@@ -205,10 +212,10 @@ namespace metric_space_basic
 open topological_space
 
 /- ## Exercise 4 [short]:
-We have defined a metric space with a metric landing in ℝ, and made no mention of nonnegativity,
-(this is in line with the philosophy of using the easiest axioms for our definitions as possible,
-to make it easier to define individual metrics). Show that we really did define the usual notion of
-metric space. -/
+We have defined a metric space with a metric landing in ℝ, and made no mention of
+nonnegativity, (this is in line with the philosophy of using the easiest axioms for our
+definitions as possible, to make it easier to define individual metrics). Show that we
+really did define the usual notion of metric space. -/
 lemma dist_nonneg {X : Type} [metric_space_basic X] (x y : X) : 0 ≤ dist x y :=
 sorry
 
@@ -239,20 +246,21 @@ metric_space_basic (X × Y) :=
   sorry
   }
 
-/- ☡ Let's try to prove a simple lemma involving the product topology:   ☡
+/- ☡ Let's try to prove a simple lemma involving the product topology: ☡
    Once you have filled in Exercise 5, this won't work!! -/
---set_option pp.all true
+
 example (X : Type) [metric_space_basic X] : is_open {xy : X × X | dist xy.fst xy.snd < 100 } :=
 begin
   rw is_open_prod_iff X X,
   -- this fails, why? Because we have two subtly different topologies on the product
   -- they are equal but the proof that they are equal is nontrivial and the
-  -- typeclass mechanism can't see that they are. We need to change our set-up.
+  -- typeclass mechanism can't see that they automatically to apply. We need to change
+  -- our set-up.
   sorry,
 end
 
 /- Note that lemma works fine when there is only one topology involved. -/
-example (X : Type) [topological_space X] : is_open {xy : X × X | xy.fst ≠ xy.snd } :=
+lemma diag_closed (X : Type) [topological_space X] : is_open {xy : X × X | xy.fst ≠ xy.snd } :=
 begin
   rw is_open_prod_iff X X,
   intros x y h,
@@ -262,16 +270,16 @@ end
 /- ## Exercise 6 [short]:
 The previous lemma isn't true! It requires a separation axiom. Define a `class`
 that posits that the topology on a type `X` satisfies this axiom. Mathlib uses
-`T_i` notation for these axioms. -/
+`T_i` naming scheme for these axioms. -/
 class t2_space (X : Type) [topological_space X] :=
 (t2 : sorry)
 
 /- (Bonus exercises [medium], the world is your oyster: prove the correct
-version of the above lemma, prove that the discrete topology is t2, any metric
-topology is t2, ). -/
+version of the above lemma `diag_closed`, prove that the discrete topology is t2,
+or that any metric topology is t2, ). -/
 
 
-/- What happened in the broken example?
+/- Let's fix the broken example from earlier, by redefining the topology on a metric space.
 We have unfortunately created two topologies on `X × Y`, one via `prod.topology`
 that we defined earlier as the product of the two topologies coming from the
 respective metric space structures. And one coming from the metric on the product.
@@ -284,9 +292,10 @@ spaces) isn't able to check that topological space structures which are equal
 for some nontrivial reason are equal on the fly so it gets stuck.
 
 We can use `extends` to say that a metric space is an extra structure on top of
-being a topological space. But we have to add the axiom that the metric and the
-topology are compatible to stop us from accidentally ending up with a metric space
-inducing a different topology to the underlying topological space. -/
+being a topological space so we are making a choice of topology for each metric space.
+This may not be *definitionally* equal to the induced topology, but we should add the
+axiom that the metric and the topology are equal to stop us from creating a metric
+inducing a different topology to the topological structure we chose. -/
 class metric_space (X : Type) extends topological_space X, metric_space_basic X :=
   (compatible : ∀ U, is_open U ↔ generated_open X { B | ∃ (x : X) r, B = {y | dist x y < r}} U)
 
@@ -294,12 +303,12 @@ namespace metric_space
 
 open topological_space
 
-/- This might seem a bit inconvenient to have to define a topological space each time we want a
-metric space.
+/- This might seem a bit inconvenient to have to define a topological space each time
+we want a metric space.
 
-We would still like a way of making a `metric_space` just given a metric and some properties it
-satisfies, i.e. a `metric_space_basic`, so we should setup a metric space constructor from a
-`metric_space_basic` by setting the topology to be the induced one. -/
+We would still like a way of making a `metric_space` just given a metric and some
+properties it satisfies, i.e. a `metric_space_basic`, so we should setup a metric space
+constructor from a `metric_space_basic` by setting the topology to be the induced one. -/
 
 def of_basic {X : Type} (m : metric_space_basic X) : metric_space X :=
 { compatible := begin intros, refl, end,
