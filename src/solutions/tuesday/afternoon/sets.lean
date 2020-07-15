@@ -553,7 +553,7 @@ But we will close with on last exercise. Remember that `surjective f`
 says `∀ y, ∃ x, f x = y`.
 
 See if you can understand the proof of Cantor's famous theorem that there is no
-surjective function from its set to itw poweset, and
+surjective function from its set to its powerset, and
 fill in the two lines that are missing.
 -/
 

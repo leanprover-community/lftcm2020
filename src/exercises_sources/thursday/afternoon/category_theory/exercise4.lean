@@ -1,41 +1,48 @@
-import category_theory.monoidal.category
-
-/-!
-Let's construct the category of monoid objects in a monoidal category.
--/
-
-universes v u
+import algebra.category.CommRing
+import category_theory.yoneda
 
 open category_theory
+open opposite
+open polynomial
 
-variables (C : Type u) [category.{v} C] [monoidal_category C]
-
-structure Mon_in :=
-(X : C)
-(ι : 𝟙_ C ⟶ X)
-(μ : X ⊗ X ⟶ X)
--- There are three missing axioms here!
-
-namespace Mon_in
-
-variables {C}
-
-def hom (A B : Mon_in C) : Type v := sorry
-
-instance : category (Mon_in C) := sorry
-
-end Mon_in
+noncomputable theory
 
 /-!
-Bonus projects:
+We show that the forgetful functor `CommRing ⥤ Type` is (co)representable.
 
-1. Construct the category of module objects for a fixed monoid object.
-2. Check that `Mon_in Type ≌ Mon`.
-3. Check that `Mon_in AddCommGroup ≌ Ring`.
-4. Check that `Mon_in (Module R) ≌ Algebra R`.
-5. Show that if `C` is braided (you'll have to define that first!)
-   then `Mon_in C` is naturally monoidal.
-6. Can you transport this monoidal structure to `Ring` or `Algebra R`?
-   How does it compare to the "native" one?
+There are a sequence of hints available in
+`hints/thursday/afternoon/category_theory/hintX.lean`, for `X = 1,2,3,4`.
+-/
+
+-- Because we'll be working with `polynomial ℤ`, which is in `Type 0`,
+-- we just restrict to that universe for this exercise.
+notation `CommRing` := CommRing.{0}
+
+/-!
+One bonus hint before we start, showing you how to obtain the
+ring homomorphism from `ℤ` into any commutative ring.
+-/
+example (R : CommRing) : ℤ →+* R :=
+by library_search
+
+/-!
+Also useful may be the functions
+-/
+#print polynomial.eval₂
+#print polynomial.eval₂_ring_hom
+
+/-!
+The actual exercise!
+-/
+def CommRing_forget_representable : Σ (R : CommRing), (forget CommRing) ≅ coyoneda.obj (op R) :=
+sorry
+
+
+/-
+If you get an error message
+```
+synthesized type class instance is not definitionally equal to expression inferred by typing rules
+```
+while solving this exercise, see hint4.lean.
 -/
 

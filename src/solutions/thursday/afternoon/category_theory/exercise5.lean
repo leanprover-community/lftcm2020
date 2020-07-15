@@ -31,7 +31,14 @@ variables [has_binary_biproducts C] [has_binary_biproducts D]
 
 def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (X Y : C) :
   F.obj (X ⊞ Y) ≅ F.obj X ⊞ F.obj Y :=
-sorry
+-- sorry
+{ hom := biprod.lift (F.map biprod.fst) (F.map biprod.snd),
+  inv := biprod.desc (F.map biprod.inl) (F.map biprod.inr),
+  hom_inv_id' := begin simp, simp_rw [←F.map_comp, ←P.map_add'], simp, end,
+  inv_hom_id' := begin ext; simp; simp_rw [←F.map_comp]; simp [P.map_zero'], end, }
+-- This proof is not yet "mathlib-ready", because it uses "nonterminal" `simp`s.
+-- Can you fix it?
+-- sorry
 
 -- Challenge problem:
 -- In fact one could prove a better result,
@@ -40,4 +47,3 @@ sorry
 
 
 end category_theory
-
