@@ -17,7 +17,11 @@ structure Mon_in :=
 (μ : X ⊗ X ⟶ X)
 -- There are three missing axioms here!
 -- Use `λ_ X`, `ρ_ X` and `α_ X Y Z` for unitors and associators.
-sorry
+-- sorry
+(μ_ι : (λ_ X).inv ≫ (ι ⊗ 𝟙 X) ≫ μ = 𝟙 X)
+(ι_μ : (ρ_ X).inv ≫ (𝟙 X ⊗ ι) ≫ μ = 𝟙 X)
+(μ_assoc : (α_ X X X).hom ≫ (𝟙 X ⊗ μ) ≫ μ = (μ ⊗ 𝟙 X) ≫ μ)
+-- sorry
 
 namespace Mon_in
 
@@ -25,12 +29,32 @@ variables {C}
 
 @[ext]
 structure hom (M N : Mon_in C) :=
-sorry
+-- sorry
+(hom : M.X ⟶ N.X)
+(ι_hom' : M.ι ≫ hom = N.ι . obviously)
+(μ_hom' : M.μ ≫ hom = (hom ⊗ hom) ≫ N.μ . obviously)
+-- sorry
 
+-- omit
+restate_axiom hom.ι_hom'
+restate_axiom hom.μ_hom'
+attribute [simp, reassoc] hom.ι_hom hom.μ_hom
 
+@[simps]
+def id (M : Mon_in C) : hom M M :=
+{ hom := 𝟙 M.X, }
+
+@[simps]
+def comp {M N O : Mon_in C} (f : hom M N) (g : hom N O) : hom M O :=
+{ hom := f.hom ≫ g.hom, }
+-- omit
 
 instance : category.{v} (Mon_in C) :=
-sorry
+-- sorry
+{ hom := λ M N, hom M N,
+  id := id,
+  comp := λ M N O f g, comp f g, }
+-- sorry
 
 end Mon_in
 
@@ -50,4 +74,3 @@ Bonus projects (all but the first will be non-trivial with today's mathlib):
 * Can you transport this monoidal structure to `Ring` or `Algebra R`?
   How does it compare to the "native" one?
 -/
-
