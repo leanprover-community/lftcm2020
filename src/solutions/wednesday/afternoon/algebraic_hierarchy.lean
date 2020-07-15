@@ -527,3 +527,103 @@ end
 -- abelian groups, rings, commutative rings, modules, fields, vector spaces etc.
 
 end lftcm
+
+/-
+
+## Advertisement
+
+Finished the natural number game? Have Lean installed? Want more games/exercises?
+Take a look at the following projects, many of which are ongoing but
+the first three of which are pretty much ready:
+
+*) The complex number game (complete, needs to be played within VS Code)
+
+https://github.com/ImperialCollegeLondon/complex-number-game
+
+To install, type
+`leanproject get ImperialCollegeLondon/complex-number-game`
+and then just open the levels in `src/complex`.
+
+*) Undergraduate level mathematics Lean puzzles (plenty of stuff here,
+and more appearing over the summer):
+
+https://github.com/ImperialCollegeLondon/Example-Lean-Projects
+
+`leanproject get ImperialCollegeLondon/Example-Lean-Projects`
+
+*) The max mini-game (a simple browser game like the natural number game)
+
+http://wwwf.imperial.ac.uk/~buzzard/xena/max_minigame/
+
+(this is part of what will become the real number game, a game to teach
+series, sequences and limits etc like the natural number game):
+
+`leanproject get ImperialCollegeLondon/real-number-game`
+
+*) Some commutative algebra experiments (ongoing work to prove the Nullstellensatz,
+going slowly because I'm busy):
+
+https://github.com/ImperialCollegeLondon/M4P33/blob/1a179372db71ad6802d11eacbc1f02f327d55f8f/src/for_mathlib/commutative_algebra/Zariski_lemma.lean#L80-L81
+
+`leanproject get ImperialCollegeLondon/M4P33`
+
+*) The group theory game (work in progress, expect more progress over the summer,
+as a couple of undergraduates are working on it)
+
+https://github.com/ImperialCollegeLondon/group-theory-game
+
+`leanproject get ImperialCollegeLondon/group-theory-game`
+
+*) Galois theory experiments
+
+https://github.com/ImperialCollegeLondon/P11-Galois-Theory
+
+`leanproject get ImperialCollegeLondon/P11-Galois-Theory`
+
+*) Beginnings of the theory of condensed sets (currently on hold because
+we need a good interface for abelian categories in mathlib)
+
+https://github.com/ImperialCollegeLondon/condensed-sets
+
+`leanproject get ImperialCollegeLondon/condensed-sets`
+
+## The Xena Project
+
+Why do these projects exist? I (Kevin Buzzard) am interested in teaching
+undergraduates how to use Lean. I have been running a club at Imperial College London
+called the Xena Project for the last three years, I am proud that many Imperial
+mathematics undegraduates have contributed to Lean's maths library, and three of them
+(Chris Hughes, Kenny Lau, Amelia Livingston) have each contributed over 5,000 lines of
+code. It is non-trivial to get your work into such a polished state that it
+is acceptable to the mathlib maintainers. It is also very good practice.
+
+I am running Lean summer projects this summer, on a Discord server. If you
+know of any undergraduates who you think might be interested in Lean, please
+direct them to the Xena Project Discord!
+
+https://discord.gg/BgyVYgJ
+
+Undergraduates use Discord for lots of things, and seem to be more likely
+to use a Discord server than the Zulip chat. The Discord server is chaotic and
+full of off-topic material -- quite unlike the Lean Zulip server, which is
+professional and focussed. If you have a serious question about Lean,
+ask it on the Zulip chat! But if you know an undergraduate who is interested
+in Lean, they might be interested in the Discord server. We have meetings
+every Thursday evening (UK time), with live Lean coding and streaming, speedruns,
+there is music, people posting pictures of cats, Haikus, and so on. To a large
+extent it is run by undergraduates and PhD students. Over the summer (July
+and August 2020) there are also live Twitch talks at https://www.twitch.tv/kbuzzard ,
+on Tuesdays 10am and Thursdays 4pm UK time (UTC+1), aimed at mathematics
+undergraduates. It is an informal place for undergraduates to hang out and
+meet other undergraduates who are interested in Lean.
+
+I believe that it is crucial to make undergraduates aware of computer proof
+verification systems, because one day (possibly a long time in the future,
+but one day) these things will cause a paradigm shift in the way mathematics
+is done, and the sooner young mathematicians learn about them, the sooner it will happen.
+
+Prove a theorem. Write a function. @XenaProject
+
+https://twitter.com/XenaProject
+
+-/
