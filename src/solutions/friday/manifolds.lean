@@ -1,5 +1,4 @@
-import geometry.manifold.times_cont_mdiff
-import geometry.manifold.real_instances
+import for_mathlib.manifolds
 
 noncomputable theory
 
@@ -371,12 +370,9 @@ begin
     topological_fiber_bundle_core.index_at,
     basic_smooth_bundle_core.to_topological_fiber_bundle_core],
   split_ifs,
-  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, prod.mk.inj_iff, mem_Ioo]
-      with mfld_simps,
-    -- next lines should be more automatic, missing lemmas in mathlib
-    have A : fderiv ℝ (λ (y : ℝ), y) (-x) = continuous_linear_map.id ℝ ℝ := fderiv_id,
-    rw [fderiv_neg differentiable_at_id', A],
-    simp only [id.def, continuous_linear_map.coe_id', continuous_linear_map.neg_apply] },
+  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, prod.mk.inj_iff, mem_Ioo,
+      fderiv_neg differentiable_at_id', fderiv_id', id.def, continuous_linear_map.coe_id',
+      continuous_linear_map.neg_apply] with mfld_simps },
   { simp only [chart_at, h, fderiv_within_univ, mem_Ioo, if_false, @local_homeomorph.refl_symm ℝ,
       fderiv_id, continuous_linear_map.coe_id'] with mfld_simps }
   -- sorry
@@ -432,19 +428,20 @@ manifold yet. Let's cheat and introduce it nevertheless.
 -/
 
 @[derive topological_space]
-definition sphere (n : ℕ) : Type := {x : euclidean_space (fin (n+1)) // ∥x∥ = (1 : ℝ)}
+definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n+1))) 1
+
+instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
 /- Don't try to fill the following instances, the first two should follow from general theory, and
 the third one is too much work for an exercise session. -/
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
-instance (n : ℕ) : connected_space (sphere (n+1)) := sorry
+instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 
 /- The next two instances are easier to prove, you can prove them or leave them sorried
 as you like. For the second one, you may need to use facts of the library such as -/
 #check compact_iff_compact_space
 #check metric.compact_iff_closed_bounded
-#check is_closed_eq
 
 instance (n : ℕ) : t2_space (sphere n) :=
 begin
@@ -461,11 +458,9 @@ begin
   apply compact_iff_compact_space.1,
   rw metric.compact_iff_closed_bounded,
   split,
-  { exact is_closed_eq continuous_norm continuous_const },
+  { exact metric.is_closed_sphere },
   { rw metric.bounded_iff_subset_ball (0 : euclidean_space (fin (n+1))),
-    refine ⟨1, λ x hx, _⟩,
-    have : ∥x∥ = 1 := hx,
-    simp [this] }
+    exact ⟨1, metric.sphere_subset_closed_ball⟩ }
   -- sorry
 end
 
@@ -492,11 +487,6 @@ Don't forget to require the global smoothness of the map! You may need to know t
 `[0,1]`, called `Icc (0 : ℝ) 1` in Lean, already has a manifold (with boundary!) structure,
 where the corresponding model with corners is called `𝓡∂ 1`.
 -/
-
--- the following instances might be useful, fill them if you like or leave them sorried
-instance : has_zero (Icc (0 : ℝ) 1) := ⟨⟨(0 : ℝ), ⟨le_refl _, zero_le_one⟩⟩⟩
-instance : has_one (Icc (0 : ℝ) 1) := ⟨⟨(1 : ℝ), ⟨zero_le_one, le_refl _⟩⟩⟩
-instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
 /-- The sphere eversion theorem. You should fill the first sorry, the second one is out of reach
 (now). -/
@@ -529,9 +519,64 @@ theorem exotic_ℝ4 :
 sorry
 
 /-!
+### Smooth functions on `[0, 1]`
+
+In this paragraph, you will prove several (math-trivial but Lean-nontrivial) statements on the smooth
+structure of `[0,1]`. These facts should be Lean-trivial, but they are not (yet) since there is essentially
+nothing in this direction for now in the library.
+
+The goal is as much to be able to write the statements as to prove them. Most of the necessary vocabulary
+has been introduced above, so don't hesitate to browse the file if you are stuck. Additionally, you will
+need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
+spaces and `times_cont_mdiff_on` for functions between manifolds.
+
+Lemma 1 : the inclusion of `[0, 1]` in `ℝ` is smooth.
+
+Lemma 2 : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
+from `ℝ` to `ℝ` on a set `s`. Then it is manifold-smooth on `s`.
+
+Definition 3 : construct a function from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
+
+Theorem 4 : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
+
+(Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
+into trouble. Instead, use functoriality of the derivative and Lemma 1 and Definition 3)
+-/
+
+-- omit
+lemma lemma_one : times_cont_mdiff (𝓡∂ 1) I ∞ (subtype.val : Icc (0 : ℝ) 1 → ℝ) :=
+begin
+  rw times_cont_mdiff_iff,
+  refine ⟨continuous_subtype_val, _⟩,
+  simp only with mfld_simps,
+  assume x y,
+  by_cases h : (x : ℝ) < 1,
+  { simp only [chart_at, h, Icc_left_chart, function.comp, model_with_corners_euclidean_half_space,
+      add_zero, dif_pos, if_true, max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype,
+      subtype.coe_mk, subtype.val_eq_coe] with mfld_simps,
+    refine (pi_Lp.times_cont_diff_coord 0).times_cont_diff_on.congr (λ x hx, _),
+    simp only [mem_inter_eq, mem_set_of_eq] at hx,
+    simp only [hx, le_of_lt hx.right.left, min_eq_left, max_eq_left] },
+  { simp only [chart_at, h, Icc_right_chart, function.comp, model_with_corners_euclidean_half_space, dif_pos,
+      max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype, if_false, subtype.coe_mk,
+      subtype.val_eq_coe] with mfld_simps,
+    have : times_cont_diff ℝ ⊤ (λ (x : euclidean_space (fin 1)), 1 - x 0) :=
+      times_cont_diff_const.sub (pi_Lp.times_cont_diff_coord 0),
+    apply this.times_cont_diff_on.congr (λ x hx, _),
+    simp only [mem_inter_eq, mem_set_of_eq] at hx,
+    have : 0 ≤ 1 - x 0, by linarith,
+    simp only [hx, this, max_eq_left] }
+end
+
+def direct_function : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
+λ p, (p.1, mfderiv (𝓡∂ 1) I (subtype.val : Icc (0 : ℝ) 1 → ℝ) p.1 p.2)
+
+-- omit
+
+/-!
 ### Further things to do
 
-1) can you prove `diffeomorph_of_zero_dim_connected`?
+1) can you prove `diffeomorph_of_zero_dim_connected` or `connected_sphere`?
 
 2) Try to express and then prove the local inverse theorem in real manifolds: if a map between
 real manifolds (without boundary, modelled on a complete vector space) is smooth, then it is

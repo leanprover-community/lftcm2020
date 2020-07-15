@@ -1,5 +1,4 @@
-import geometry.manifold.times_cont_mdiff
-import geometry.manifold.real_instances
+import for_mathlib.manifolds
 
 noncomputable theory
 
@@ -345,19 +344,20 @@ manifold yet. Let's cheat and introduce it nevertheless.
 -/
 
 @[derive topological_space]
-definition sphere (n : ℕ) : Type := {x : euclidean_space (fin (n+1)) // ∥x∥ = (1 : ℝ)}
+definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n+1))) 1
+
+instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
 /- Don't try to fill the following instances, the first two should follow from general theory, and
 the third one is too much work for an exercise session. -/
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
-instance (n : ℕ) : connected_space (sphere (n+1)) := sorry
+instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 
 /- The next two instances are easier to prove, you can prove them or leave them sorried
 as you like. For the second one, you may need to use facts of the library such as -/
 #check compact_iff_compact_space
 #check metric.compact_iff_closed_bounded
-#check is_closed_eq
 
 instance (n : ℕ) : t2_space (sphere n) :=
 begin
@@ -391,11 +391,6 @@ Don't forget to require the global smoothness of the map! You may need to know t
 where the corresponding model with corners is called `𝓡∂ 1`.
 -/
 
--- the following instances might be useful, fill them if you like or leave them sorried
-instance : has_zero (Icc (0 : ℝ) 1) := ⟨⟨(0 : ℝ), ⟨le_refl _, zero_le_one⟩⟩⟩
-instance : has_one (Icc (0 : ℝ) 1) := ⟨⟨(1 : ℝ), ⟨zero_le_one, le_refl _⟩⟩⟩
-instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
-
 /-- The sphere eversion theorem. You should fill the first sorry, the second one is out of reach
 (now). -/
 theorem sphere_eversion :
@@ -414,9 +409,36 @@ theorem exotic_ℝ4 :
 sorry
 
 /-!
+### Smooth functions on `[0, 1]`
+
+In this paragraph, you will prove several (math-trivial but Lean-nontrivial) statements on the smooth
+structure of `[0,1]`. These facts should be Lean-trivial, but they are not (yet) since there is essentially
+nothing in this direction for now in the library.
+
+The goal is as much to be able to write the statements as to prove them. Most of the necessary vocabulary
+has been introduced above, so don't hesitate to browse the file if you are stuck. Additionally, you will
+need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
+spaces and `times_cont_mdiff_on` for functions between manifolds.
+
+Lemma 1 : the inclusion of `[0, 1]` in `ℝ` is smooth.
+
+Lemma 2 : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
+from `ℝ` to `ℝ` on a set `s`. Then it is manifold-smooth on `s`.
+
+Definition 3 : construct a function from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
+
+Theorem 4 : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
+
+(Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
+into trouble. Instead, use functoriality of the derivative and Lemma 1 and Definition 3)
+-/
+
+
+
+/-!
 ### Further things to do
 
-1) can you prove `diffeomorph_of_zero_dim_connected`?
+1) can you prove `diffeomorph_of_zero_dim_connected` or `connected_sphere`?
 
 2) Try to express and then prove the local inverse theorem in real manifolds: if a map between
 real manifolds (without boundary, modelled on a complete vector space) is smooth, then it is
