@@ -384,9 +384,6 @@ extends has_scalar R M :=
 (mul_smul : ∀ (r s : R) (x : M), (r * s) • x = r • s • x)
 (one_smul : ∀ x : M, (1 : R) • x = x)
 
--- the type of ideals of a ring
-def ideal (R : Type) [comm_ring R] := module R R
-
 -- for fields we let ⁻¹ be defined on the entire field, and demand 0⁻¹ = 0
 -- and that a⁻¹ * a = 1 for non-zero a. This is merely for convenience;
 -- one can easily check that it's mathematically equivalent to the usual
@@ -508,19 +505,17 @@ end
 
 lemma ring.mul_neg (a b : R) : a * -b = -(a * b) :=
 begin
-  symmetry,
-  apply add_comm_group.neg_eq_of_add_eq_zero,
-  rw ←ring.mul_add,
-  rw add_comm_group.add_right_neg,
-  rw ring.mul_zero
+  sorry
 end
 
-lemma ring.mul_sub (R : Type) [comm_ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
+lemma ring.sub_mul (R : Type) [ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
 begin
-  rw add_comm_group.sub_eq_add_neg,
-  rw ring.mul_add,
-  rw ring.mul_neg,
-  refl,
+  sorry
+end
+
+lemma comm_ring.mul_sub (R : Type) [comm_ring R] (r a b : R) : (a - b) * r = a * r - b * r :=
+begin
+  sorry
 end
 
 -- etc etc, for thousands of lines of mathlib, which develop the interface
@@ -627,4 +622,3 @@ Prove a theorem. Write a function. @XenaProject
 https://twitter.com/XenaProject
 
 -/
-
