@@ -4,24 +4,17 @@ import algebra.homology.chain_complex
 import data.int.basic
 
 /-!
-Let's give a quirky definition of a cochain complex in a category `C` with zero morphisms,
-as a functor `F` from `(ℤ, ≤)` to `C`, so that `∀ i, F.map (by tidy : i ≤ i+2) = 0`.
+Here's a partial solution.
+It provides most of the data, but doesn't check required properties.
 
-Let's think of this as a full subcategory of all functors `(ℤ, ≤) ⥤ C`,
-and realise that natural transformations are exactly chain maps.
-
-Finally let's construct an equivalence of categories with the usual definition of chain cocomplex!
+It starts becoming rough going at about this point,
+when you start proving properties of `long_map`.
 -/
 
 open category_theory
 open category_theory.limits
 
--- Anytime we have a `[preorder α]`, we automatically get a `[category.{v} α]` instance,
--- in which the morphisms `X ⟶ Y` are defined to be `ulift (plift X ≤ Y)`.
--- (We need those annoying `ulift` and `plift` because `X ≤ Y` is a `Prop`,
--- and the morphisms spaces of a category need to be in `Type v` for some `v`.)
-
-namespace exercise3
+namespace exercise
 
 variables (C : Type) [category.{0} C] [has_zero_morphisms C]
 
@@ -59,7 +52,11 @@ def inverse : cochain_complex C ⥤ complex C :=
   map_id' := sorry,
   map_comp' := sorry, }
 
-def exercise3 : complex C ≌ cochain_complex C :=
-sorry
+def exercise : complex C ≌ cochain_complex C :=
+{ functor := functor C,
+  inverse := inverse C,
+  unit_iso := sorry, -- There's still more data to provide here.
+  counit_iso := sorry, -- and here.
+  functor_unit_iso_comp' := sorry, }
 
-end exercise3
+end exercise

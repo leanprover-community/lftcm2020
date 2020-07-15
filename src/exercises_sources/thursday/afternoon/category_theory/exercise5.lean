@@ -1,65 +1,43 @@
+import category_theory.preadditive
 import category_theory.limits.shapes.biproducts
 
 /-!
-Let's show that every preadditive category embeds into a preadditive category with biproducts,
-and identify a good universal property.
+We prove that biproducts (direct sums) are preserved by any preadditive functor.
+
+This result is not in mathlib, so full marks for the exercise are only achievable if you
+contribute to a pull request! :-)
 -/
 
-universes v u
-
-variables (C : Type u)
-
-structure family :=
-(ι : Type v)
-[fintype : fintype ι]
-[decidable_eq : decidable_eq ι]
-(val : ι → C)
-
-variables {C}
-
-def dmatrix {X Y : family C} (Z : X.ι → Y.ι → Type*) := Π (i : X.ι) (j : Y.ι), Z i j
+universes v₁ v₂ u₁ u₂
 
 open category_theory
-
-variables [category.{v} C] [preadditive C]
-
-namespace family
-
-def hom (X Y : family C) := dmatrix (λ i j, X.val i ⟶ Y.val j)
-
-instance : category.{v (max u (v+1))} (family.{v} C) :=
-{ hom := hom,
-  id := sorry,
-  comp := sorry,
-  id_comp' := sorry,
-  comp_id' := sorry,
-  assoc' := sorry, }
-
-variables (C)
-
-def embedding : C ⥤ family.{v} C :=
-sorry
-
-lemma embedding.faithful : faithful (embedding C) :=
-sorry
-
-instance : preadditive (family.{v} C) :=
-sorry
-
 open category_theory.limits
 
-instance : has_finite_biproducts (family.{v} C) :=
+namespace category_theory
+
+variables {C : Type u₁} [category.{v₁} C] [preadditive C]
+variables {D : Type u₂} [category.{v₂} D] [preadditive D]
+
+/-!
+In fact, no one has gotten around to defining preadditive functors,
+so I'll help you out by doing that first.
+-/
+
+structure functor.preadditive (F : C ⥤ D) : Prop :=
+(map_zero' : ∀ X Y, F.map (0 : X ⟶ Y) = 0)
+(map_add' : ∀ {X Y} (f g : X ⟶ Y), F.map (f + g) = F.map f + F.map g)
+
+variables [has_binary_biproducts C] [has_binary_biproducts D]
+
+def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (X Y : C) :
+  F.obj (X ⊞ Y) ≅ F.obj X ⊞ F.obj Y :=
 sorry
 
-variables {C}
+-- Challenge problem:
+-- In fact one could prove a better result,
+-- not requiring chosen biproducts in D,
+-- just asserting that `F.obj (X ⊞ Y)` is a biproduct of `F.obj X` and `F.obj Y`.
 
-def factor {D : Type u} [category.{v} D] [preadditive D] [has_finite_biproducts D]
-  (F : C ⥤ D) : family.{v} C ⥤ D :=
-sorry
 
-def factor_factorisation {D : Type u} [category.{v} D] [preadditive D] [has_finite_biproducts D]
-  (F : C ⥤ D) : F ≅ embedding C ⋙ factor F :=
-sorry
-
-end family
+end category_theory
 

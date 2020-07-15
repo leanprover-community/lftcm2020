@@ -4,9 +4,15 @@ import category_theory.functor_category
 import algebra.category.CommRing
 import algebra.category.Group.images
 import algebra.homology.homology
+import topology.category.Top
+import topology.instances.real
 import category_theory.limits.shapes.finite_limits
 import data.int.parity
 import data.zmod.basic
+import category_theory.abelian.basic
+import algebra.category.Module.monoidal
+import topology.category.UniformSpace
+import for_mathlib.algebra.category.Group.kernels
 
 open category_theory
 
@@ -70,6 +76,46 @@ begin
 end
 
 /-!
+To build a functor `F : C ⥤ D` we need to specify four fields
+* `obj : C → D`
+* `map : ∀ {X Y : C} (f : X ⟶ Y), obj X ⟶ obj Y`
+* `map_id'` and `map_comp'`, expressing the functor laws.
+
+However Lean will automatically attempt to fill in the `map_id'` and `map_comp'` fields itself,
+because these fields are marked with `auto_param`. This lets us specifiy a tactic to use to
+try to synthesize the field.
+
+(In fact, the whole category theory library started off as an experiment to see how far we could
+push this automation.)
+-/
+
+example {X : C} : C ⥤ Type* :=
+{ obj := λ Y, X ⟶ Y,
+  map := λ Y Y' f g, g ≫ f, }
+
+/-!
+Lean automatically checked functoriality here!
+This was pretty easy: we just need to use `category.comp_id` and `category.assoc`.
+The more powerful we make the `simp` lemmas, the more boring goals can be discharged automatically.
+
+Most of the `auto_param`s appearing in mathlib so far are in the `category_theory` library,
+where they are nearly all filled using the tactic `tidy`, which repeatedly attempts to use
+one of a list of "conservative" tactics.
+
+You can see what `tidy` is doing using `tidy?`:
+-/
+
+example {X : C} : C ⥤ Type* :=
+{ obj := λ Y, X ⟶ Y,
+  map := λ Y Y' f g, g ≫ f,
+  map_id' := by tidy?,
+  map_comp' := by tidy? }
+
+/-!
+Sebastien's talk on differential geometry tomorrow will give another example of `auto_param` being used.
+-/
+
+/-!
 ## Natural transformations
 
 The collection of functors from `C` to `D` has been given the structure of a category:
@@ -80,6 +126,12 @@ If `α : F ⟶ G`, then `α.app X` is the component at `X`, i.e. a morphism `F.o
 example {F G : C ⥤ D} {α : F ⟶ G} {X Y : C} (f : X ⟶ Y) :
   F.map f ≫ α.app Y = α.app X ≫ G.map f :=
 α.naturality f   -- or just `by simp`
+
+/-!
+Again, to construct a natural transformation `F ⟶ G` we need to provide two fields
+* `app : Π X : C, F.obj X ⟶ G.obj X` and
+* `naturality'`, which often is provided by automation.
+-/
 
 
 /-!
@@ -139,6 +191,17 @@ so we can still talk about elements by writing `x : R`,
 and morphisms automatically behave properly as functions (e.g. in `f (x * y)`).
 -/
 
+/-!
+## Adjunctions and equivalences
+
+I won't go into this much in this demo, but of course we have adjunctions and equivalences.
+(In fact, our equivalences are definitionally set up to always be adjunctions, too, with
+helper functions that adjust any equivalence into this form.)
+-/
+
+#print adjunction
+#print category_theory.equivalence
+
 
 /-!
 ## Limits and colimits
@@ -174,6 +237,39 @@ For most of the concrete categories, these instances are all available when appr
 ### Examples of using (co)limits in `Top`
 -/
 
+noncomputable theory
+open category_theory.limits
+
+def R : Top := Top.of ℝ
+def I : Top := Top.of (set.Icc 0 1 : set ℝ)
+def pt : Top := Top.of unit
+
+-- Let's construct the mapping cylinder.
+def to_pt (X : Top) : X ⟶ pt :=
+{ val := λ _, unit.star, property := continuous_const }
+def I₀ : pt ⟶ I :=
+{ val := λ _, ⟨(0 : ℝ), by norm_num [set.left_mem_Icc]⟩,
+  property := continuous_const }
+def I₁ : pt ⟶ I :=
+{ val := λ _, ⟨(1 : ℝ), by norm_num [set.right_mem_Icc]⟩,
+  property := continuous_const }
+
+def cylinder (X : Top) : Top := prod X I
+-- To define a map to the cylinder, we give a map to each factor.
+-- `prod.lift` is a helper method, providing a wrapper around `limit.lift` for binary products.
+def cylinder₀ (X : Top) : X ⟶ cylinder X := prod.lift (𝟙 X) (to_pt X ≫ I₀)
+def cylinder₁ (X : Top) : X ⟶ cylinder X := prod.lift (𝟙 X) (to_pt X ≫ I₁)
+
+/--
+The mapping cylinder is the pushout of the diagram
+```
+    X
+   ↙ ↘
+  Y   (X x I)
+```
+(`pushout` is implemented just as a wrapper around `colimit`)
+-/
+def mapping_cylinder {X Y : Top} (f : X ⟶ Y) : Top := pushout f (cylinder₁ X)
 
 /-!
 ## Applications
@@ -209,17 +305,24 @@ local attribute [instance] has_equalizers_of_has_finite_limits
 local attribute [instance] has_coequalizers_of_has_finite_colimits
 
 noncomputable theory -- `has_images Ab` is noncomputable
-instance : has_image_maps Ab := sorry
-
 
 open cochain_complex homological_complex
 
-def Z := AddCommGroup.of ℤ
+abbreviation Z := AddCommGroup.of ℤ
 
 def mul_by (k : ℤ) : Z ⟶ Z :=
 { to_fun := λ x, (k * x : ℤ),
   map_zero' := by simp,
   map_add' := by simp [mul_add], }
+
+@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := rfl
+
+lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
+begin
+  tidy,
+  { simp only [add_monoid_hom.mem_ker] at a, finish, },
+  { subst a, simp [add_monoid_hom.mem_ker], },
+end
 
 /--
 We define the complex `... --0--> ℤ --2--> ℤ --0--> ℤ --4--> ℤ --0--> ...`
@@ -241,26 +344,25 @@ begin
   dunfold cohomology_group, -- `cohomomology_group` is an abbreviation, so we need to use `dunfold` rather than `dsimp`
   dsimp [homology_group, homological_complex.image_to_kernel_map],
   change cokernel (image_to_kernel_map 0 (mul_by 2) _) ≅ 0,
-  calc _ ≅ cokernel (0 : image (0 : Z ⟶ Z) ⟶ kernel (mul_by 2)) : _
-     ... ≅ kernel (mul_by 2) : _
-     ... ≅ 0 : _,
-  all_goals { sorry, },
+  calc cokernel (image_to_kernel_map 0 (mul_by 2) (has_zero_morphisms.zero_comp _ _))
+         ≅ cokernel (0 : image (0 : Z ⟶ Z) ⟶ kernel (mul_by 2)) : cokernel_iso_of_eq (by simp)
+     ... ≅ kernel (mul_by 2) : cokernel_zero_iso_target
+     ... ≅ AddCommGroup.of (mul_by 2).ker : AddCommGroup.kernel_iso_ker (mul_by 2)
+     ... ≅ AddCommGroup.of (⊥ : add_subgroup Z) : AddCommGroup.of_add_subgroup_eq (mul_by_ker (by norm_num))
+     ... ≅ 0 : AddCommGroup.of_add_subgroup_bot,
 end
 
 def P_3 : P.cohomology_group 3 ≅ AddCommGroup.of (zmod 2) :=
 begin
-  dunfold cohomology_group,
-  dsimp [homology_group, homological_complex.image_to_kernel_map],
   change cokernel (image_to_kernel_map (mul_by 2) 0 _) ≅ AddCommGroup.of (zmod 2),
-  calc _ ≅ cokernel (image.ι (mul_by 2) ≫ inv (kernel.ι (0 : Z ⟶ Z))) : _
+  calc cokernel (image_to_kernel_map (mul_by 2) 0 _)
+         ≅ cokernel (image.ι (mul_by 2) ≫ inv (kernel.ι (0 : Z ⟶ Z))) :
+            cokernel_iso_of_eq (image_to_kernel_map_zero_right _)
      ... ≅ cokernel (image.ι (mul_by 2)) : _
      ... ≅ cokernel (mul_by 2) : _
      ... ≅ AddCommGroup.of (zmod 2) : _,
   all_goals { sorry, },
 end
-
-
-
 
 /-!
 ## Odds and ends
@@ -268,9 +370,14 @@ end
 There's a bunch in mathlib's `category_theory/` folder that hasn't been mentioned at all here,
 including:
 
-* Adjunctions
 * Monads
 * Abelian categories
 * Monoidal categories
-
+* ...
 -/
+
+#check category_theory.abelian
+
+example (R : CommRing) : monoidal_category (Module R) := by apply_instance
+
+example : reflective (forget₂ CpltSepUniformSpace UniformSpace) := by apply_instance

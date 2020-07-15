@@ -21,7 +21,14 @@ If you have a natural isomorphism `α : F ≅ G`, you can access
 -/
 
 def iso_of_hom_iso (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅ Y :=
-sorry
+-- sorry
+{ hom := (h.app (op X)).hom (𝟙 X),
+  inv := (h.symm.app (op Y)).hom (𝟙 Y), }
+-- sorry
 
-
-
+-- omit
+/-!
+Notice that we didn't need to provide proofs for the fields `hom_inv_id'` and `inv_hom_id'`.
+These were filled in by automation.
+-/
+-- omit

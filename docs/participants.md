@@ -52,6 +52,7 @@ to add your name to the list below (in alphabetical order).
 * Jan Hennig (Leibniz Universität Hannover, DE)
 * Vaibhav Karve (University of Illinois at Urbana-Champaign, US)
 * Martin Křepela (Czech Technical University, CZ)
+* Angelos Koutsianas (University of British Columbia, CA)
 * Yury Kudryashov (University of Toronto, CA)
 * Julian Külshammer (Uppsala University, SE)
 * Jun Bo Lau (University of California San Diego, US)
