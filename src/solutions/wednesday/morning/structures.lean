@@ -1,22 +1,14 @@
 import data.rat.basic
-import tactic.basic
 import data.nat.parity
-import algebra.big_operators
+import tactic.basic
 
 open nat
 
 noncomputable theory -- definitions are allowed to not compute in this file
-open_locale classical big_operators -- use classical logic in this file
+open_locale classical -- use classical logic in this file
+
 /-!
-
-* The `extends` keyword
-* the `..` notation (and hole commands)
-
-* Difference between structures and classes
-* How to use classes
-* When to use classes
-
-## Structure exercises
+## Structures and Classes
 
 In this session we will discuss structures together,
 and then you can solve the exercises yourself.
@@ -32,7 +24,7 @@ first copy the files to a backup version and then run `git checkout -- .`
 (this will remove all changes to files you edited, so be careful!)
 
 
-### Declaring a structure
+### Declaring a Structure
 
 Structures are a way to bundle information together.
 
@@ -41,13 +33,14 @@ For example, the first example below makes a new structure
   component is a natural number, and the second component is a
   proof that the natural number is even. These are called the *fields* of the structure.
 -/
-
 structure even_natural_number : Type :=
   (n : ℕ)
   (even_n : even n)
 
 /-! We can also group propositions together, for example this is a proposition
-  stating that `n` is an even cube greater than 100. -/
+  stating that `n` is an even cube greater than 100.
+  Note that this is a property of a natural number, while the previous structure
+  was a natural number with a property "bundled" together. -/
 structure is_even_cube_above_100 (n : ℕ) : Prop :=
   (even : even n)
   (is_cube : ∃ k, n = k^3)
@@ -58,7 +51,7 @@ structure bounds (f : ℕ → ℕ) :=
   (bound : ℕ)
   (le_bound : ∀ (n : ℕ), f n ≤ bound)
 
-/-! You can use #print to print the type and all fields of a structure. -/
+/-! You can use `#print` to print the type and all fields of a structure. -/
 #print even_natural_number
 #print is_even_cube_above_100
 #print bounds
@@ -155,6 +148,7 @@ example : even_natural_number' → even_natural_number :=
   n      := n.1,
   even_n := n.2 }
 
+/-! The structure name is optional if the structure in question is clear from context. -/
 example (n : ℕ) : is_even_cube_above_100' n → is_even_cube_above_100 n :=
 λ ⟨h1n, h2n, h3n⟩,
 { even    := h1n,
@@ -182,6 +176,8 @@ example (f : ℕ → ℕ) : bounds f → bounds' f :=
 example (f : ℕ → ℕ) : bounds' f → bounds f :=
 λ n, /- inline sorry -/ { bound := n.1, le_bound := n.2 } /- inline sorry -/
 
+
+/-! Before you continue, watch the second pre-recorded video. -/
 
 /-! ### Classes
 
@@ -238,7 +234,10 @@ lemma sqrt_square (n : ℕ) : √(n ^ 2) = n :=
 by simp
 
 /-! Instances can depend on other instances: here we show that if `n` and `m` are squares, then
-`n * m` is one, too. -/
+`n * m` is one, too.
+
+When writing `√n`, Lean will use a simple search algorithm to find a proof that `n` is a square, by
+repeatedly applying previously declared instances, and arguments in the local context. -/
 instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
 ⟨√n * √m, by simp [nat.mul_pow]⟩
 
@@ -251,6 +250,8 @@ begin
   -- sorry
 end
 
+/-! Note that Lean automatically inserts the proof that `n * m ^ 2` is a square,
+  using the previously declared instances. -/
 example (n m : ℕ) [is_square n] : √(n * m ^ 2) = √n * m :=
 begin
   -- sorry
@@ -347,8 +348,9 @@ end bijections
 
 /-! ### Exercise: Bundled groups -/
 
-/- Below is a possible definition of a group in Lean. It's not the definition we use use in mathlib,
-  which will explained in detail in the next session. -/
+/-! Below is a possible definition of a group in Lean.
+  It's not the definition we use use in mathlib. The actual definition uses classes,
+  and will be explained in detail in the next session. -/
 
 structure Group :=
   (G : Type*)
@@ -361,6 +363,13 @@ structure Group :=
   (inv : G → G)
   (postfix ⁻¹ := inv) -- temporary notation `⁻¹` for `inv`, just inside this structure declaration
   (op_left_inv' : ∀ (x : G), x⁻¹ * x = 1)
+
+/-! You can use the `extend` command to define a structure that adds fields
+  to one or more existing structures. -/
+structure CommGroup extends Group :=
+  (infix * := op)
+  (op_comm : ∀ (x y : G), x * y = y * x)
+
 
 namespace Group
 
@@ -420,11 +429,16 @@ def rat_Group : Group :=
   op_left_inv' := neg_add_self }
 -- sorry
 
-/-
+/-- You can extend an object of a structure by using the structure notation and using
+  `..<existing object>`. -/
+def rat_CommGroup : CommGroup :=
+{ G := ℚ, op_comm := add_comm, ..rat_Group }
+
+/-!
   However, it is inconvenient to use this group instance directly.
   One reason is that to use these group operations we now have to write
   `(x y : rat_Group)` instead of `(x y : ℚ)`.
-  That's why in Lean we do something else,
+  That's why in Lean we use classes for algebraic structures,
   explained in the next lecture.
 -/
 
@@ -442,8 +456,6 @@ def prod_Group (G H : Group) : Group :=
 -- sorry
 
 end Group
-
-
 
 
 
