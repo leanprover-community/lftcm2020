@@ -477,6 +477,9 @@ end
 
 variables {R : Type} [ring R]
 
+-- note that this is pretty horrible because
+-- we have to tell Lean to use our own versions of `add_comm_group`s
+-- and `ring`s.
 lemma ring.mul_zero (r : R) : r * 0 = 0 :=
 begin
   apply add_comm_group.add_left_cancel (r * 0),
