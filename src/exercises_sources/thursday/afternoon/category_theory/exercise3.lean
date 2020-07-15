@@ -1,5 +1,4 @@
--- This imports some simp lemmas that I realised belong in mathlib while writing this exercise.
-import for_mathlib.category_theory
+import for_mathlib.category_theory -- This imports some simp lemmas that I realised belong in mathlib while writing this exercise.
 
 universes v₁ v₂ u₁ u₂
 
@@ -20,3 +19,4 @@ lemma equiv_preserves_mono {X Y : C} (f : X ⟶ Y) [mono f] (e : C ≌ D) :
 -- Hint: if `w : f = g`, to obtain `F.map f = F.map G`,
 --   you can use `have w' := congr_arg (λ k, F.map k) w`.
 sorry
+
