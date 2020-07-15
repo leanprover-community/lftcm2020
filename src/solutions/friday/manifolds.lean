@@ -46,15 +46,13 @@ def my_first_local_homeo : local_homeomorph ℝ ℝ :=
   left_inv' :=
   begin
     -- sorry
-    assume x hx,
-    simp [hx],
+    simp,
     -- sorry
   end,
   right_inv' :=
   begin
     -- sorry
-    assume x hx,
-    simp [hx],
+    simp,
     -- sorry
   end,
   open_source := /- inline sorry -/is_open_Ioo/- inline sorry -/,
@@ -80,7 +78,9 @@ begin
 -- sorry
 end
 
-/- Now, define a second local homeomorphism which is almost like the previous one, -/
+/- Now, define a second local homeomorphism which is almost like the previous one.  You may find the
+following lemma useful for `continuous_to_fun`: -/
+#check continuous_on.congr
 
 def my_second_local_homeo : local_homeomorph ℝ ℝ :=
 { to_fun := λ x, if x = 3 then 0 else - x,
@@ -170,11 +170,11 @@ instance : charted_space ℝ myℝ :=
   end }
 
 /- Now come more interesting bits. We have endowed `myℝ` with a charted space structure, with charts
-taking values in `ℝ`. We want to say that this is smooth structure, i.e., the change of charts
-are smooth. In Lean, this is written with `has_structure_groupoid`. A groupoid is a set of local
-homeomorphisms of the model space (for example, local homeos that are smooth on their domain).
-A charted space admits the groupoid as a structure groupoid if all the changes of coordinates
-belong to the groupoid.
+taking values in `ℝ`. We want to say that this is a smooth structure, i.e., the changes of
+coordinates are smooth. In Lean, this is written with `has_structure_groupoid`. A groupoid is a set
+of local homeomorphisms of the model space (for example, local homeos that are smooth on their
+domain). A charted space admits the groupoid as a structure groupoid if all the changes of
+coordinates belong to the groupoid.
 
 There is a difficulty that the definitions are set up to be able to also speak of smooth manifolds
 with boundary or with corners, so the name of the smooth groupoid on `ℝ` has the slightly strange
@@ -199,8 +199,11 @@ begin
   -- and then follow the advice
   simp [atlas] at he he',
   dsimp,
-  -- to continue, don't hesitate to use the fact that the restriction of a smooth function to a
+  -- to continue, some hints:
+  -- (1) don't hesitate to use the fact that the restriction of a smooth function to a
   -- subset is still smooth there (`times_cont_diff.times_cont_diff_on`)
+  -- (2) hopefully, there is a theorem saying that the negation function is smooth.
+  -- you can either try to guess its name, or hope that `suggest` will help you there.
   -- sorry
   rcases he with rfl|rfl; rcases he' with rfl|rfl,
   { exact times_cont_diff_id.times_cont_diff_on },
@@ -268,6 +271,11 @@ be a smooth manifold. -/
 -- the type `tangent_bundle I myℝ` makes sense
 #check tangent_bundle I myℝ
 
+/- In `mathlib`, vector bundles have preferred trivializations at each point, just as manifolds have
+preferred charts.  So a point in a vector bundle can be specified just by an ordered pair. (Of
+course, this specification will not vary smoothly outside a fixed chart!) -/
+example : tangent_bundle I myℝ := ((4 : ℝ), 5)
+
 /- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
 and this instance is not really needed. -/
 instance tangent_bundle_myℝ : smooth_manifold_with_corners (I.prod I) (tangent_bundle I myℝ) :=
@@ -275,26 +283,36 @@ instance tangent_bundle_myℝ : smooth_manifold_with_corners (I.prod I) (tangent
 by apply_instance
 -- sorry
 
+/-
+NB: the model space for the tangent bundle to a product manifold or a tangent space is not
+`ℝ × ℝ`, but a copy called `model_prod ℝ ℝ`. Otherwise, `ℝ × ℝ` would have two charted space
+structures with model `ℝ × ℝ`, the identity one and the product one, which are not definitionally
+equal. And this would be bad.
+-/
+#check tangent_bundle.charted_space I myℝ
+
+/- A smooth map between manifolds induces a map between their tangent bundles. In `mathlib` this is
+called the `tangent_map` (you might instead know it as the "differential" or "pushforward" of the
+map).  Let us check that the `tangent_map` of `my_map` is smooth. -/
 lemma times_cont_mdiff_tangent_map_my_map :
   times_cont_mdiff (I.prod I) (I.prod I) ∞ (tangent_map I I my_map) :=
 begin
-  -- hopefully, there is a theorem saying that the tangent map to a smooth map is smooth.
+  -- hopefully, there is a theorem providing the general result, i.e. the tangent map to a smooth
+  -- map is smooth.
   -- you can either try to guess its name, or hope that `suggest` will help you there.
   -- sorry
   exact times_cont_mdiff_my_map.times_cont_mdiff_tangent_map le_top,
   -- sorry
 end
 
-/- Can you show that this tangent bundle is homeomorphic to `ℝ × ℝ`? You could try to build the
+/- (Harder question) Can you show that this tangent bundle is homeomorphic to `ℝ × ℝ`? You could try to build the
 homeomorphism by hand, using `tangent_map I I my_map` in one direction and a similar map in the
 other direction, but it is probably more efficient to use one of the charts of the tangent
-bundle. (Harder question)
+bundle.
 
-NB: the model space for the tangent bundle to a product manifold or a tangent space is not
-`ℝ × ℝ`, but a copy called `model_prod ℝ ℝ`. Otherwise, `ℝ × ℝ` would have two charted space
-structures with model `ℝ × ℝ`, the identity one and the product one, which are not definitionally
-equal. And this would be bad. But the topologies on `model_prod ℝ ℝ` and `ℝ × ℝ` are the same,
-so it is good enough to construct a homeomorphism with `model_prod ℝ ℝ`.
+Remember, the model space for `tangent_bundle I myℝ` is `model_prod ℝ ℝ`, not `ℝ × ℝ`. But the
+topologies on `model_prod ℝ ℝ` and `ℝ × ℝ` are the same, so it is by definition good enough to
+construct a homeomorphism with `model_prod ℝ ℝ`.
  -/
 
 def my_homeo : tangent_bundle I myℝ ≃ₜ (ℝ × ℝ) :=
