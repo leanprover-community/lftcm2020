@@ -1,4 +1,4 @@
-import category_theory.equivalence
+import category_theory.isomorphism
 
 open category_theory
 
@@ -9,7 +9,7 @@ variables {C : Type u} [category.{v} C]
 namespace category_theory.iso
 
 /-!
-All these lemmas can be solved by `simp [cancel_mono]` (or `simp [cancel_epi]`),
+All these cancellation lemmas can be solved by `simp [cancel_mono]` (or `simp [cancel_epi]`),
 but with the current design `cancel_mono` is not a good `simp` lemma,
 because it generates a typeclass search.
 
@@ -37,12 +37,22 @@ by simp only [cancel_mono]
   f ≫ g.inv = f' ≫ g.inv ↔ f = f' :=
 by simp only [cancel_mono]
 
-@[simp] lemma cancel_iso_hom_right_assoc {W X X' Y Z : C} (f : W ⟶ X) (g : X ⟶ Y) (f' : W ⟶ X') (g' : X' ⟶ Y)
+/-
+Unfortunately cancelling an isomorphism from the right of a chain of compositions is awkward.
+We would need separate lemmas for each chain length (worse: for each pair of chain lengths).
+
+We provide two more lemmas, for case of three morphisms, because this actually comes up in practice,
+but then stop.
+-/
+
+@[simp] lemma cancel_iso_hom_right_assoc {W X X' Y Z : C}
+  (f : W ⟶ X) (g : X ⟶ Y) (f' : W ⟶ X') (g' : X' ⟶ Y)
   (h : Y ≅ Z) :
   f ≫ g ≫ h.hom = f' ≫ g' ≫ h.hom ↔ f ≫ g = f' ≫ g' :=
 by simp only [←category.assoc, cancel_mono]
 
-@[simp] lemma cancel_iso_inv_right_assoc {W X X' Y Z : C} (f : W ⟶ X) (g : X ⟶ Y) (f' : W ⟶ X') (g' : X' ⟶ Y)
+@[simp] lemma cancel_iso_inv_right_assoc {W X X' Y Z : C}
+  (f : W ⟶ X) (g : X ⟶ Y) (f' : W ⟶ X') (g' : X' ⟶ Y)
   (h : Z ≅ Y) :
   f ≫ g ≫ h.inv = f' ≫ g' ≫ h.inv ↔ f ≫ g = f' ≫ g' :=
 by simp only [←category.assoc, cancel_mono]

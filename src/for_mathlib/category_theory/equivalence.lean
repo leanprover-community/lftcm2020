@@ -24,6 +24,11 @@ begin
   { rintro ⟨rfl⟩, refl, }
 end
 
+-- We need special forms of `cancel_nat_iso_hom_right_assoc` and `cancel_nat_iso_inv_right_assoc`
+-- for units and counits, because the simplifier can't see that `(𝟭 C).obj X` is the same as `X`.
+-- We also provide the lemmas for length four compositions, since they're occasionally useful.
+-- (e.g. in proving that equivalences take monos to monos)
+
 @[simp] lemma cancel_unit_right_assoc {W X X' Y : C}
   (f : W ⟶ X) (g : X ⟶ Y) (f' : W ⟶ X') (g' : X' ⟶ Y)  :
   f ≫ g ≫ e.unit.app Y = f' ≫ g' ≫ e.unit.app Y ↔ f ≫ g = f' ≫ g' :=
