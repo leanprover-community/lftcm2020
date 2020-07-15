@@ -1,43 +1,53 @@
+import category_theory.monoidal.category
 import algebra.category.CommRing.basic
-import data.polynomial
 
 /-!
-Let show that taking polynomials over a ring is functor `Ring ⥤ Ring`.
+Let's define the category of monoid objects in a monoidal category.
 -/
 
-noncomputable theory -- the default implementation of polynomials is noncomputable
-
-/-!
-mathlib is undergoing a transition at the moment from using "unbundled" homomorphisms
-(e.g. we talk about a bare function `f : R → S`, along with a typeclass `[is_semiring_hom f]`)
-to using "bundled" homomorphisms
-(e.g. a structure `f : R →+* S`, which has a coercion to a bare function).
-
-The category `Ring` uses bundled homomorphisms (and in future all of mathlib will).
-However at present the polynomial library hasn't been updated.
-
-You may find the `ring_hom.of` useful -- this upgrades an unbundled homomorphism
-to a bundled homomorphism.
--/
-
-/-!
-Hints:
-* use `polynomial.map`
-* use `polynomial.coeff_map` (what happens if you mark this as a `simp` lemma?)
--/
-
-def Ring.polynomial : Ring ⥤ Ring :=
-sorry
-
-
-
-def CommRing.polynomial : CommRing ⥤ CommRing :=
-sorry
+universes v u
 
 open category_theory
 
-def commutes :
-  (forget₂ CommRing Ring) ⋙ Ring.polynomial ≅ CommRing.polynomial ⋙ (forget₂ CommRing Ring) :=
--- Hint: You can do this in two lines, ≤ 33 columns!
+variables (C : Type u) [category.{v} C] [monoidal_category C]
+
+structure Mon_in :=
+(X : C)
+(ι : 𝟙_ C ⟶ X)
+(μ : X ⊗ X ⟶ X)
+-- There are three missing axioms here!
+-- Use `λ_ X`, `ρ_ X` and `α_ X Y Z` for unitors and associators.
 sorry
+
+namespace Mon_in
+
+variables {C}
+
+@[ext]
+structure hom (M N : Mon_in C) :=
+sorry
+
+
+
+instance : category.{v} (Mon_in C) :=
+sorry
+
+end Mon_in
+
+/-!
+Bonus projects (all but the first will be non-trivial with today's mathlib):
+* Construct the category of module objects for a fixed monoid object.
+* Check that `Mon_in Type ≌ Mon`.
+* Check that `Mon_in Mon ≌ CommMon`, via the Eckmann-Hilton argument.
+  (You'll have to hook up the cartesian monoidal structure on `Mon` first.)
+* Check that `Mon_in AddCommGroup ≌ Ring`.
+  (You'll have to hook up the monoidal structure on `AddCommGroup`.
+  Currently we have the monoidal structure on `Module R`; perhaps one could specialize to `R = ℤ`
+  and transport the monoidal structure across an equivalence? This sounds like some work!)
+* Check that `Mon_in (Module R) ≌ Algebra R`.
+* Show that if `C` is braided (you'll have to define that first!)
+   then `Mon_in C` is naturally monoidal.
+* Can you transport this monoidal structure to `Ring` or `Algebra R`?
+  How does it compare to the "native" one?
+-/
 
