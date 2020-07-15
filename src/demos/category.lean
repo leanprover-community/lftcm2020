@@ -1,18 +1,4 @@
-import category_theory.category
-import category_theory.functor
-import category_theory.functor_category
-import algebra.category.CommRing
-import algebra.category.Group.images
-import algebra.homology.homology
-import topology.category.Top
-import topology.instances.real
-import category_theory.limits.shapes.finite_limits
-import data.int.parity
-import data.zmod.basic
-import category_theory.abelian.basic
-import algebra.category.Module.monoidal
-import topology.category.UniformSpace
-import for_mathlib.algebra.category.Group.kernels
+import demos.category_theory_imports
 
 open category_theory
 
@@ -358,8 +344,8 @@ begin
   calc cokernel (image_to_kernel_map (mul_by 2) 0 _)
          ≅ cokernel (image.ι (mul_by 2) ≫ inv (kernel.ι (0 : Z ⟶ Z))) :
             cokernel_iso_of_eq (image_to_kernel_map_zero_right _)
-     ... ≅ cokernel (image.ι (mul_by 2)) : _
-     ... ≅ cokernel (mul_by 2) : _
+     ... ≅ cokernel (image.ι (mul_by 2)) : cokernel_comp_is_iso _ _
+     ... ≅ cokernel (mul_by 2) : cokernel_image_ι _
      ... ≅ AddCommGroup.of (zmod 2) : _,
   all_goals { sorry, },
 end
