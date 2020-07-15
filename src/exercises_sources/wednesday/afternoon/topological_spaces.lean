@@ -174,7 +174,7 @@ Define the indiscrete topology on any type using this.
 (To do it without this it is surprisingly fiddly to prove that the set `{∅, univ}`
 actually forms a topology) -/
 def indiscrete (X : Type) : topological_space X :=
-  /- sorry -/ generate_from X ∅ /- sorry -/
+  sorry
 
 end topological_space
 
@@ -234,12 +234,13 @@ metric_space_basic (X × Y) :=
   dist_eq_zero_iff :=
   sorry
   ,
-  dist_symm := /- sorry -/ begin intros u v, simp [metric_space_basic.dist_symm], end /- sorry -/,
+  dist_symm := sorry,
   triangle :=
   sorry
   }
 
-/- ☡ Let's try to prove a simple lemma involving the product topology:   ☡ -/
+/- ☡ Let's try to prove a simple lemma involving the product topology:   ☡
+   Once you have filled in Exercise 5, this won't work!! -/
 --set_option pp.all true
 example (X : Type) [metric_space_basic X] : is_open {xy : X × X | dist xy.fst xy.snd < 100 } :=
 begin
@@ -263,8 +264,8 @@ The previous lemma isn't true! It requires a separation axiom. Define a `class`
 that posits that the topology on a type `X` satisfies this axiom. Mathlib uses
 `T_i` notation for these axioms. -/
 class t2_space (X : Type) [topological_space X] :=
-sorry
--- T_2 axiom goes here as a field
+(t2 : sorry)
+
 /- (Bonus exercises [medium], the world is your oyster: prove the correct
 version of the above lemma, prove that the discrete topology is t2, any metric
 topology is t2, ). -/
