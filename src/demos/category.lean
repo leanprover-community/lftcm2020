@@ -1,18 +1,4 @@
-import category_theory.category
-import category_theory.functor
-import category_theory.functor_category
-import algebra.category.CommRing
-import algebra.category.Group.images
-import algebra.homology.homology
-import topology.category.Top
-import topology.instances.real
-import category_theory.limits.shapes.finite_limits
-import data.int.parity
-import data.zmod.basic
-import category_theory.abelian.basic
-import algebra.category.Module.monoidal
-import topology.category.UniformSpace
-import for_mathlib.algebra.category.Group.kernels
+import demos.category_theory_imports
 
 open category_theory
 
@@ -311,11 +297,9 @@ open cochain_complex homological_complex
 abbreviation Z := AddCommGroup.of ℤ
 
 def mul_by (k : ℤ) : Z ⟶ Z :=
-{ to_fun := λ x, (k * x : ℤ),
-  map_zero' := by simp,
-  map_add' := by simp [mul_add], }
+add_monoid_hom.of (gsmul k)
 
-@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := rfl
+@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := by simp [mul_by]
 
 lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
 begin
@@ -350,7 +334,12 @@ begin
      ... ≅ AddCommGroup.of (mul_by 2).ker : AddCommGroup.kernel_iso_ker (mul_by 2)
      ... ≅ AddCommGroup.of (⊥ : add_subgroup Z) : AddCommGroup.of_add_subgroup_eq (mul_by_ker (by norm_num))
      ... ≅ 0 : AddCommGroup.of_add_subgroup_bot,
-end
+end.
+
+-- Somehow this isn't in mathlib?
+lemma quotient_gsmul (k : ℕ) :
+  quotient_add_group.quotient (set.range (gsmul k : ℤ → ℤ)) ≃+ zmod k :=
+sorry
 
 def P_3 : P.cohomology_group 3 ≅ AddCommGroup.of (zmod 2) :=
 begin
@@ -358,10 +347,10 @@ begin
   calc cokernel (image_to_kernel_map (mul_by 2) 0 _)
          ≅ cokernel (image.ι (mul_by 2) ≫ inv (kernel.ι (0 : Z ⟶ Z))) :
             cokernel_iso_of_eq (image_to_kernel_map_zero_right _)
-     ... ≅ cokernel (image.ι (mul_by 2)) : _
-     ... ≅ cokernel (mul_by 2) : _
-     ... ≅ AddCommGroup.of (zmod 2) : _,
-  all_goals { sorry, },
+     ... ≅ cokernel (image.ι (mul_by 2)) : cokernel_comp_is_iso _ _
+     ... ≅ cokernel (mul_by 2) : cokernel_image_ι _
+     ... ≅ AddCommGroup.of (quotient_add_group.quotient (set.range (mul_by 2))) : AddCommGroup.cokernel_iso_quotient _
+     ... ≅ AddCommGroup.of (zmod 2) : add_equiv_iso_AddCommGroup_iso.hom (quotient_gsmul 2),
 end
 
 /-!

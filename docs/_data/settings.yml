@@ -10,6 +10,7 @@ menu:
 - {name: 'Home', path: '', url: ''}
 - {name: 'Schedule', path: '', url: 'schedule.html'}
 - {name: 'Participants', path: '', url: 'participants.html'}
+- {name: 'Exercises', path: '', url: 'exercises.html'}
 - {name: 'Contact', path: '', url: 'contact.html'}
 
 # Available social icons are powered by Font Awesome, so you can use any icon that they offer
