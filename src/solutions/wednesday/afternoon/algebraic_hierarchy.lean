@@ -3,8 +3,10 @@ This is a sorry-free file covering the material on Wednesday afternoon
 at LFTCM2020. It's how to build some algebraic structures in Lean
 -/
 
+import data.rat.basic -- we'll need the rationals at the end of this file
+
 /-
-As a mathematician I essentially always start my Lean files with the following two lines:
+As a mathematician I essentially always start my Lean files with the following line:
 -/
 import tactic
 
@@ -12,21 +14,28 @@ import tactic
 (see https://leanprover-community.github.io/mathlib_docs/tactics.html)
 -/
 
-open_locale classical
+/-
 
-/- That makes Lean not complain if you use the law of the excluded middle
-or the axiom of choice!
+## The point of this file
 
 The idea of this file is to show how to build in Lean what the computer scientists call
-"an algebraic heirarchy", and what mathematicians call "groups, rings, fields, modules etc"
+"an algebraic heirarchy", and what mathematicians call "groups, rings, fields, modules etc".
+
+Firstly, we will define groups, and develop a basic interface for groups.
+
+Then we will define rings, fields, modules, vector spaces, and just demonstrate
+that they are usable, rather than making a complete interface for all of them.
 
 Let's start with the theory of groups. Unfortunately Lean has groups already,
 so we will have to do everything in a namespace
 -/
 
+
 namespace lftcm
 
-/- ... which means that now when we define `group`, it will actually be called `lftcm.group`.
+/-
+
+... which means that now when we define `group`, it will actually be called `lftcm.group`.
 
 ## Notation typeclasses
 
@@ -47,8 +56,10 @@ then it's a group if it satisfies the group axioms.
 
 -/
 
-/-- `group G` is the type of group structures on a type `G`. -/
+-- `group G` is the type of group structures on a type `G`.
+-- first we ask for the structure
 class group (G : Type) extends has_mul G, has_one G, has_inv G :=
+-- and then we ask for the axioms
 (mul_assoc : ∀ (a b c : G), a * b * c = a * (b * c))
 (one_mul : ∀ (a : G), 1 * a = a)
 (mul_left_inv : ∀ (a : G), a⁻¹ * a = 1)
@@ -57,10 +68,12 @@ class group (G : Type) extends has_mul G, has_one G, has_inv G :=
 
 Advantages of this approach: axioms look lovely.
 
-Disadvantage: what if I want the group law to be `+`??
+Disadvantage: what if I want the group law to be `+`?? I have embedded `has_mul`
+in the definition.
 
-Lean's solution: develop a `to_additive` attribute which translates all theorems about
-`group`s (with group law `*`) to `add_group`s (with group law `+`).
+Lean's solution: develop a `to_additive` metaprogram which translates all theorems about
+`group`s (with group law `*`) to theorems about `add_group`s (with group law `+`). We will
+not go into details here.
 
 -/
 
@@ -72,7 +85,7 @@ variables {G : Type} [group G]
 
 /-
 Lemmas about groups are proved in this namespace. We already have some!
-Indeed we just defined
+All the group axioms are theorems in this namespace. Indeed we have just defined
 
 `group.mul_assoc : ∀ (a b c : G), a * b * c = a * (b * c)`
 `group.one_mul : ∀ (a : G), 1 * a = a`
@@ -101,7 +114,7 @@ lemma mul_left_cancel (a b c : G) (Habac : a * b = a * c) : b = c :=
     ... = 1 * c         : by rw mul_left_inv
     ... = c             : by rw one_mul
 
--- faster method
+-- more mathlib-ish proof:
 lemma mul_left_cancel' (a b c : G) (Habac : a * b = a * c) : b = c :=
 begin
   rw [←one_mul b, ←mul_left_inv a, mul_assoc, Habac, ←mul_assoc, mul_left_inv, one_mul],
@@ -136,8 +149,8 @@ We have the theorems (axioms) `one_mul g : 1 * g = g` and
 `mul_left_inv g : g⁻¹ * g = 1`. Both of these theorems are of
 the form `A = B`, with `A` more complicated than `B`. This means
 that they are *perfect* theorems for the simplifier. Let's teach
-those theorems to the simplifier, by adding a `@[simp]` tag to them.
-
+those theorems to the simplifier, by adding the `@[simp]` attribute to them.
+An "attribute" is just a tag which we attach to a theorem (or definition).
 -/
 
 attribute [simp] one_mul mul_left_inv
@@ -145,7 +158,7 @@ attribute [simp] one_mul mul_left_inv
 /-
 
 Now let's prove `mul_one` using the simplifier. This also a perfect
-`simp` lemma, so let's also add the `simp` attribute to it.
+`simp` lemma, so let's also add the `simp` tag to it.
 
 -/
 
@@ -199,7 +212,7 @@ end
 
 -- Here is a riskier looking `[simp]` lemma.
 
-attribute [simp] mul_assoc
+attribute [simp] mul_assoc -- recall this says (a * b) * c = a * (b * c)
 
 -- The simplifier will now push all brackets to the right, which means
 -- that it's worth proving the following two lemmas and tagging
@@ -243,8 +256,274 @@ example (a b c d : G) :
   ((a * b)⁻¹ * a * 1⁻¹⁻¹⁻¹ * b⁻¹ * b * b * 1 * 1⁻¹)⁻¹ = (c⁻¹⁻¹ * d * d⁻¹ * 1⁻¹⁻¹ * c⁻¹⁻¹⁻¹)⁻¹⁻¹ :=
 by simp
 
+-- Abstract example of the power of classes: we can define products of groups with instances
+
+instance (G : Type) [group G] (H : Type) [group H] : group (G × H) :=
+{ mul := λ k l, (k.1*l.1, k.2*l.2),
+  one := (1,1),
+  inv := λ k, (k.1⁻¹, k.2⁻¹),
+  mul_assoc := begin
+    intros a b c,
+    cases a, cases b, cases c,
+    ext;
+    simp,
+  end,
+  one_mul := begin
+    intro a,
+    cases a,
+    ext;
+    simp,
+  end,
+  mul_left_inv := begin
+    intro a,
+    cases a,
+    ext;
+    simp
+  end }
+
+-- the type class inference system now knows that products of groups are groups
+example (G H K : Type) [group G] [group H] [group K] : group (G × H × K) :=
+by apply_instance
+
 end group
 
+-- let's make a group of order two.
 
+-- First the elements {+1, -1}
+inductive mu2
+| p1 : mu2
+| m1 : mu2
+
+namespace mu2
+
+-- Now let's do some CS stuff:
+
+-- 1) prove it has decidable equality
+attribute [derive decidable_eq] mu2
+
+-- 2) prove it is finite
+instance : fintype mu2 := ⟨⟨[mu2.p1, mu2.m1], by simp⟩, λ x, by cases x; simp⟩
+
+-- now back to the maths.
+
+-- Define multiplication by doing all cases
+def mul : mu2 → mu2 → mu2
+| p1 p1 := p1
+| p1 m1 := m1
+| m1 p1 := m1
+| m1 m1 := p1
+
+instance : has_mul mu2 := ⟨mul⟩
+
+-- identity
+def one : mu2 := p1
+
+-- notation
+instance : has_one mu2 := ⟨one⟩
+
+-- inverse
+def inv : mu2 → mu2 := id
+
+-- notation
+instance : has_inv mu2 := ⟨inv⟩
+
+-- currently we have notation but no axioms
+
+example : p1 * m1 * m1 = p1⁻¹ * p1 := rfl -- all true by definition
+
+-- now let's make it a group
+instance : group mu2 :=
+begin
+  -- first define the structure
+  refine_struct { mul := mul, one := one, inv := inv },
+  -- now we have three goals (the axioms)
+  all_goals {exact dec_trivial}
+end
+
+end mu2
+
+
+-- Now let's build rings and modules and stuff (via monoids and add_comm_groups)
+
+-- a monoid is a group without inverses
+class monoid (M : Type) extends has_mul M, has_one M :=
+(mul_assoc : ∀ (a b c : M), a * b * c = a * (b * c))
+(one_mul : ∀ (a : M), 1 * a = a)
+(mul_one : ∀ (a : M), a * 1 = a)
+
+-- additive commutative groups from first principles
+class add_comm_group (A : Type) extends has_add A, has_zero A, has_neg A :=
+(add_assoc : ∀ (a b c : A), a + b + c = a + (b + c))
+(zero_add : ∀ (a : A), 0 + a = a)
+(add_left_neg : ∀ (a : A), -a + a = 0)
+(add_comm : ∀ a b : A, a + b = b + a)
+
+-- Notation for subtraction is handy to have; define a - b to be a + (-b)
+instance (A : Type) [add_comm_group A] : has_sub A := ⟨λ a b, a + -b⟩
+
+-- rings are additive abelian groups and multiplicative monoids,
+-- with distributivity
+class ring (R : Type) extends monoid R, add_comm_group R :=
+(mul_add : ∀ (a b c : R), a * (b + c) = a * b + a * c)
+(add_mul : ∀ (a b c : R), (a + b) * c = a * c + b * c)
+
+-- for commutative rings, add commutativity of multiplication
+class comm_ring (R : Type) extends ring R :=
+(mul_comm : ∀ a b : R, a * b = b * a)
+
+/-- Typeclass for types with a scalar multiplication operation, denoted `•` (`\bu`) -/
+class has_scalar (R : Type) (M : Type) := (smul : R → M → M)
+
+infixr ` • `:73 := has_scalar.smul
+
+-- modules for a ring
+class module (R : Type) [ring R] (M : Type) [add_comm_group M]
+extends has_scalar R M :=
+(smul_add : ∀(r : R) (x y : M), r • (x + y) = r • x + r • y)
+(add_smul : ∀(r s : R) (x : M), (r + s) • x = r • x + s • x)
+(mul_smul : ∀ (r s : R) (x : M), (r * s) • x = r • s • x)
+(one_smul : ∀ x : M, (1 : R) • x = x)
+
+-- the type of ideals of a ring
+def ideal (R : Type) [comm_ring R] := module R R
+
+-- for fields we let ⁻¹ be defined on the entire field, and demand 0⁻¹ = 0
+-- and that a⁻¹ * a = 1 for non-zero a. This is merely for convenience;
+-- one can easily check that it's mathematically equivalent to the usual
+-- definition of a field.
+class field (K : Type) extends comm_ring K, has_inv K :=
+(zero_ne_one : (0 : K) ≠ 1)
+(mul_inv_cancel : ∀ {a : K}, a ≠ 0 → a * a⁻¹ = 1)
+(inv_zero : (0 : K)⁻¹ = 0)
+
+-- the type of vector spaces
+def vector_space (K : Type) [field K] (V : Type) [add_comm_group V] := module K V
+
+/-
+Exercise for the reader: define manifolds, schemes, perfectoid spaces in Lean.
+All have been done! As you can see, it is clearly *feasible*, although it does
+sometimes take time to get it right. It is all very much work in progress.
+
+The extraordinary thing is that although these computer theorem
+provers have been around for about 50 years, there has never been a serious
+effort to make the standard definitions used all over modern mathematics in
+one of them, and this is why these systems are rarely used in mathematics departments.
+Changing this is one of the goals of the Leanprover community.
+-/
+
+/-
+
+Let's check that we can make the rational numbers into a field. Of course
+they are already a field in Lean, but remember that when we say `field`
+below, we mean our just-defined structure `lftcm.field`.
+
+-/
+
+-- the rationals are a field (easy because all the work is done in the import)
+instance : field ℚ :=
+{ mul := (*),
+  one := 1,
+  mul_assoc := rat.mul_assoc,
+  one_mul := rat.one_mul,
+  mul_one := rat.mul_one,
+  add := (+),
+  zero := 0,
+  neg := has_neg.neg, -- no () trickery for unary operators
+  add_assoc := rat.add_assoc,
+  zero_add := rat.zero_add,
+  add_left_neg := rat.add_left_neg,
+  add_comm := rat.add_comm,
+  mul_add := rat.mul_add,
+  add_mul := rat.add_mul,
+  mul_comm := rat.mul_comm,
+  inv := has_inv.inv, -- see neg
+  zero_ne_one := rat.zero_ne_one,
+  mul_inv_cancel := rat.mul_inv_cancel,
+  inv_zero := inv_zero -- I don't know why rat.inv_zero was never explicitly defined
+  }
+
+/-
+Below is evidence that we can prove basic theorems about these structures.
+Note however that it is a *complete pain* because we are *re-implementing*
+everything; `add_comm` defaults to Lean's version for Lean's `add_comm_group`s, so we
+have to explicitly write `add_comm_group.add_comm` to use our own version.
+The mathlib versions of these proofs are less ugly.
+-/
+
+variables {A : Type} [add_comm_group A]
+
+lemma add_comm_group.add_left_cancel (a b c : A) (Habac : a + b = a + c) : b = c :=
+begin
+  rw ←add_comm_group.zero_add b,
+  rw ←add_comm_group.add_left_neg a,
+  rw add_comm_group.add_assoc,
+  rw Habac,
+  rw ←add_comm_group.add_assoc,
+  rw add_comm_group.add_left_neg,
+  rw add_comm_group.zero_add,
+end
+
+lemma add_comm_group.add_right_neg (a : A) : a + -a = 0 :=
+begin
+  rw add_comm_group.add_comm,
+  rw add_comm_group.add_left_neg,
+end
+
+lemma add_comm_group.sub_eq_add_neg (a b : A) :
+  a - b = a + -b :=
+begin
+  -- this is just our definition of subtraction
+  refl
+end
+
+lemma add_comm_group.sub_self (a : A) : a - a = 0 :=
+begin
+  rw add_comm_group.sub_eq_add_neg,
+  rw add_comm_group.add_comm,
+  rw add_comm_group.add_left_neg,
+end
+
+lemma add_comm_group.neg_eq_of_add_eq_zero (a b : A) (h : a + b = 0) : -a = b :=
+begin
+  apply add_comm_group.add_left_cancel a,
+  rw h,
+  rw add_comm_group.add_right_neg,
+end
+
+lemma add_comm_group.add_zero (a : A) : a + 0 = a :=
+begin
+  rw add_comm_group.add_comm,
+  rw add_comm_group.zero_add,
+end
+
+variables {R : Type} [ring R]
+
+lemma ring.mul_zero (r : R) : r * 0 = 0 :=
+begin
+  apply add_comm_group.add_left_cancel (r * 0),
+  rw ←ring.mul_add,
+  rw add_comm_group.add_zero,
+  rw add_comm_group.add_zero,
+end
+
+lemma ring.mul_neg (a b : R) : a * -b = -(a * b) :=
+begin
+  symmetry,
+  apply add_comm_group.neg_eq_of_add_eq_zero,
+  rw ←ring.mul_add,
+  rw add_comm_group.add_right_neg,
+  rw ring.mul_zero
+end
+
+lemma ring.mul_sub (R : Type) [comm_ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
+begin
+  rw add_comm_group.sub_eq_add_neg,
+  rw ring.mul_add,
+  rw ring.mul_neg,
+  refl,
+end
+
+-- etc etc, for thousands of lines of mathlib, which develop the interface
+-- abelian groups, rings, commutative rings, modules, fields, vector spaces etc.
 
 end lftcm
