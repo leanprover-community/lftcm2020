@@ -523,6 +523,15 @@ begin
   refl,
 end
 
+lemma comm_ring.sub_mul (R : Type) [comm_ring R] (r a b : R) : (a - b) * r = a * r - b * r :=
+begin
+  rw comm_ring.mul_comm (a - b),
+  rw comm_ring.mul_comm a,
+  rw comm_ring.mul_comm b,
+  apply ring.mul_sub
+end
+
+
 -- etc etc, for thousands of lines of mathlib, which develop the interface
 -- abelian groups, rings, commutative rings, modules, fields, vector spaces etc.
 
