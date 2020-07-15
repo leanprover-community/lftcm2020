@@ -370,6 +370,20 @@ structure CommGroup extends Group :=
   (infix * := op)
   (op_comm : ∀ (x y : G), x * y = y * x)
 
+/- Here is an example: the rationals form a group under addition. -/
+def rat_Group : Group :=
+{ G := ℚ,
+  op := (+), -- you can put parentheses around an infix operation to talk about the operation itself.
+  op_assoc' := add_assoc,
+  id := 0,
+  id_op' := zero_add,
+  inv := λ x, -x,
+  op_left_inv' := neg_add_self }
+
+/-- You can extend an object of a structure by using the structure notation and using
+  `..<existing object>`. -/
+def rat_CommGroup : CommGroup :=
+{ G := ℚ, op_comm := add_comm, ..rat_Group }
 
 namespace Group
 
@@ -415,24 +429,6 @@ begin
   rw [← op_left_inv x, ← op_assoc, op_right_inv, id_op]
   -- sorry
 end
-
-/- show that the rationals under addition form a group. The underlying type will be `ℚ`.
-  Use `library_search` for the proofs. -/
-def rat_Group : Group :=
--- sorry
-{ G := ℚ,
-  op := (+),
-  op_assoc' := add_assoc,
-  id := 0,
-  id_op' := zero_add,
-  inv := λ x, -x,
-  op_left_inv' := neg_add_self }
--- sorry
-
-/-- You can extend an object of a structure by using the structure notation and using
-  `..<existing object>`. -/
-def rat_CommGroup : CommGroup :=
-{ G := ℚ, op_comm := add_comm, ..rat_Group }
 
 /-!
   However, it is inconvenient to use this group instance directly.
