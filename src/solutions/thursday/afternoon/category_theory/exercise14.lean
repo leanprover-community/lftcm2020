@@ -29,10 +29,13 @@ variables {C}
 
 @[ext]
 structure hom (M N : Mon_in C) :=
+-- sorry
 (hom : M.X ⟶ N.X)
 (ι_hom' : M.ι ≫ hom = N.ι . obviously)
 (μ_hom' : M.μ ≫ hom = (hom ⊗ hom) ≫ N.μ . obviously)
+-- sorry
 
+-- omit
 restate_axiom hom.ι_hom'
 restate_axiom hom.μ_hom'
 attribute [simp, reassoc] hom.ι_hom hom.μ_hom
@@ -44,11 +47,14 @@ def id (M : Mon_in C) : hom M M :=
 @[simps]
 def comp {M N O : Mon_in C} (f : hom M N) (g : hom N O) : hom M O :=
 { hom := f.hom ≫ g.hom, }
+-- omit
 
 instance : category.{v} (Mon_in C) :=
+-- sorry
 { hom := λ M N, hom M N,
   id := id,
   comp := λ M N O f g, comp f g, }
+-- sorry
 
 end Mon_in
 

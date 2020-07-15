@@ -3,6 +3,9 @@ import category_theory.limits.shapes.biproducts
 /-!
 Let's show that every preadditive category embeds into a preadditive category with biproducts,
 and identify a good universal property.
+
+This is a more advanced exercise, for which I've indicated a suggested structure,
+but not written a full solution. I hope this structure will work out!
 -/
 
 universes v u
