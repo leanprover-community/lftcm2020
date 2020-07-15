@@ -1,8 +1,9 @@
 import geometry.manifold.times_cont_mdiff
+import geometry.manifold.real_instances
 
 noncomputable theory
 
-open_locale manifold classical
+open_locale manifold classical big_operators
 open set
 
 
@@ -131,7 +132,7 @@ begin
 end
 
 
-/-! ### Charted space
+/-! ### An example of a charted space structure on `ℝ`
 
 A charted space is a topological space together with a set of local homeomorphisms to a model space,
 whose sources cover the whole space. For instance, `ℝ` is already endowed with a charted space
@@ -305,10 +306,10 @@ begin
   -- sorry
 end
 
-/- (Harder question) Can you show that this tangent bundle is homeomorphic to `ℝ × ℝ`? You could try to build the
-homeomorphism by hand, using `tangent_map I I my_map` in one direction and a similar map in the
-other direction, but it is probably more efficient to use one of the charts of the tangent
-bundle.
+/- (Harder question) Can you show that this tangent bundle is homeomorphic to `ℝ × ℝ`? You could
+try to build the homeomorphism by hand, using `tangent_map I I my_map` in one direction and a
+similar map in the other direction, but it is probably more efficient to use one of the charts of
+the tangent bundle.
 
 Remember, the model space for `tangent_bundle I myℝ` is `model_prod ℝ ℝ`, not `ℝ × ℝ`. But the
 topologies on `model_prod ℝ ℝ` and `ℝ × ℝ` are the same, so it is by definition good enough to
@@ -326,3 +327,115 @@ begin
   exact F.to_homeomorph_of_source_eq_univ_target_eq_univ S T,
   -- sorry
 end
+
+/-!
+### The language of manifolds
+
+In this paragraph, we will try to write down interesting statements of theorems, without proving them. The
+goal here is that Lean should not complain on the statement, but the proof should be sorried.
+-/
+
+/- Here is a first example, to show you how diffeomorphisms are currently named
+(we will probably introduce an abbreviation, but this hasn't been done yet): -/
+
+/-- Two zero-dimensional connected manifolds are diffeomorphic. -/
+theorem diffeomorph_of_zero_dim_connected
+  (M M' : Type*) [topological_space M] [topological_space M']
+  [charted_space (euclidean_space (fin 0)) M] [charted_space (euclidean_space (fin 0)) M']
+  [connected_space M] [connected_space M'] :
+  nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 0)) M M') :=
+sorry
+
+/- Do you think that this statement is correct? (note that we have not assumed that our manifolds
+are smooth, nor that they are separated, but this is maybe automatic in zero dimension).
+
+Now, write down a version of this theorem in dimension 1, replacing the first sorry with meaningful content
+(and adding what is needed before the colon): -/
+
+/-- Two one-dimensional smooth compact connected manifolds are diffeomorphic. -/
+theorem diffeomorph_of_one_dim_compact_connected
+  -- omit
+  (M M' : Type*) [topological_space M] [topological_space M']
+  [charted_space (euclidean_space (fin 1)) M] [charted_space (euclidean_space (fin 1)) M']
+  [connected_space M] [connected_space M'] [compact_space M] [compact_space M']
+  [t2_space M] [t2_space M']
+  -- omit
+  :
+  -- sorry
+  nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M M')
+  -- sorry
+:=  sorry
+
+/- You will definitely need to require smoothness and separation in this case, as it is wrong otherwise.
+Note that Lean won't complain if you don't put these assumptions, as the theorem would still make
+sense, but it would just turn out to be wrong.
+
+The previous statement is not really satisfactory: we would instead like to express that any such
+manifold is diffeomorphic to the circle. The trouble is that we don't have the circle as a smooth
+manifold yet. Let's cheat and introduce it nevertheless.
+-/
+
+@[derive topological_space]
+definition sphere (n : ℕ) : Type := {x : euclidean_space (fin (n+1)) // ∥x∥ = (1 : ℝ)}
+
+instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
+instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
+instance (n : ℕ) : connected_space (sphere (n+1)) := sorry
+
+/- The next two instances are easier to prove, you can prove them or leave them sorried
+as you like. For the second one, you may need to use facts of the library such as -/
+#check compact_iff_compact_space
+#check metric.compact_iff_closed_bounded
+
+instance (n : ℕ) : t2_space (sphere n) :=
+begin
+  -- sorry
+  dunfold sphere,
+  apply_instance
+  -- sorry
+end
+
+instance (n : ℕ) : compact_space (sphere n) :=
+begin
+  -- sorry
+  dunfold sphere,
+  apply compact_iff_compact_space.1,
+  rw metric.compact_iff_closed_bounded,
+  split,
+  { exact is_closed_eq continuous_norm continuous_const },
+  { rw metric.bounded_iff_subset_ball (0 : euclidean_space (fin (n+1))),
+    refine ⟨1, λ x hx, _⟩,
+    have : ∥x∥ = 1 := hx,
+    simp [this] }
+  -- sorry
+end
+
+/- Now, you can prove that any one-dimensional compact connected manifold is diffeomorphic to
+the circle -/
+theorem diffeomorph_circle_of_one_dim_compact_connected
+  (M : Type*) [topological_space M] [charted_space (euclidean_space (fin 1)) M]
+  [connected_space M] [compact_space M] [t2_space M] :
+  nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
+-- sorry
+diffeomorph_of_one_dim_compact_connected M (sphere 1)
+-- sorry
+
+
+
+
+/-!
+### Further things to do
+
+1) can you prove `diffeomorph_of_zero_dim_connected`?
+
+2) Try to express and then prove the local inverse theorem in real manifolds: if a map between
+real manifolds (without boundary, modelled on a complete vector space) is smooth, then it is
+a local homeomorphism around each point. We already have versions of this statement in mathlib
+for functions between vector spaces, but this is very much a work in progress.
+
+3) What about trying to prove `diffeomorph_of_one_dim_compact_connected`? (I am not sure mathlib
+is ready for this, as the proofs I am thinking of are currently a little bit too high-powered.
+If you manage to do it, you should absolutely PR it!)
+
+
+-/

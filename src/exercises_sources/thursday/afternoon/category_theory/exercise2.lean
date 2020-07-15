@@ -8,7 +8,7 @@ Let's show that taking polynomials over a ring is functor `Ring ⥤ Ring`.
 noncomputable theory -- the default implementation of polynomials is noncomputable
 
 -- Just ignore this for now: it's a hack that prevents an annoying problem,
--- and cleaner fix is on its way to mathlib.
+-- and a cleaner fix is on its way to mathlib.
 local attribute [irreducible] polynomial.eval₂
 
 /-!
