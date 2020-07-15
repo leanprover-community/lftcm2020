@@ -384,9 +384,6 @@ extends has_scalar R M :=
 (mul_smul : ∀ (r s : R) (x : M), (r * s) • x = r • s • x)
 (one_smul : ∀ x : M, (1 : R) • x = x)
 
--- the type of ideals of a ring
-def ideal (R : Type) [comm_ring R] := module R R
-
 -- for fields we let ⁻¹ be defined on the entire field, and demand 0⁻¹ = 0
 -- and that a⁻¹ * a = 1 for non-zero a. This is merely for convenience;
 -- one can easily check that it's mathematically equivalent to the usual
