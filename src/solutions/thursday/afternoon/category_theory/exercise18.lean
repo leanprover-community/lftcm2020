@@ -51,18 +51,12 @@ theorem epi_of_pushout {X Y : C} (f : X ⟶ Y)
   begin
     let a := pushout_cocone.mk _ _ hf,
     have hg : is_colim.desc a = g, {
-      have := is_colim.fac a walking_span.left,
-      simp at this,
-      dsimp at this,
-      simp at this,
-      exact this,
+      convert is_colim.fac a walking_span.left,
+      simp, dsimp, simp,
     },
     have hh : is_colim.desc a = h, {
-      have := is_colim.fac a walking_span.right,
-      simp at this,
-      dsimp at this,
-      simp at this,
-      exact this,
+      convert is_colim.fac a walking_span.right,
+      simp, dsimp, simp,
     },
     rw [←hg, ←hh],
   end }
