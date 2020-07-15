@@ -12,11 +12,13 @@ if __name__ == '__main__':
     for path in (root/'solutions').glob('**/*.lean'):
         if path.name == 'numbers.lean':
             continue  # Rob's exercises need hand-crafted extraction
+        if path.name == 'metaprogramming.lean':
+            continue  # Rob's exercises need hand-crafted extraction
         print(path)
         out = root/'exercises_sources'/path.relative_to(root/'solutions')
         out.parent.mkdir(exist_ok=True)
-        with out.open('w') as outp:
-            with path.open() as inp:
+        with out.open('w', encoding="utf8") as outp:
+            with path.open(encoding="utf8") as inp:
                 state = 'normal'
                 for line in inp:
                     line, _ = inline_sorry_regex.subn("sorry", line)

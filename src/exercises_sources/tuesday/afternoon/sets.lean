@@ -365,11 +365,44 @@ sorry
 
 example (i : I) (injf : injective f) : (⋂ i, f '' A i) ⊆ f '' (⋂ i, A i) :=
 sorry
-by { ext x, simp }
+
+example : f ⁻¹' (⋃ i, B i) = ⋃ i, f ⁻¹' (B i) :=
 sorry
-by { ext x, simp }
+
+example : f ⁻¹' (⋂ i, B i) = ⋂ i, f ⁻¹' (B i) :=
 sorry
-    from h₁
+
+/-
+There is a lot more in *Mathematics in Lean* that we will not have time for!
+There is a discussion of injectivity, more exercises on images and ranges,
+and a discussion of inverses.
+
+But we will close with on last exercise. Remember that `surjective f`
+says `∀ y, ∃ x, f x = y`.
+
+See if you can understand the proof of Cantor's famous theorem that there is no
+surjective function from its set to itw poweset, and
+fill in the two lines that are missing.
+-/
+
+theorem Cantor : ∀ f : α → set α, ¬ surjective f :=
+begin
+  intros f surjf,
+  let S := { i | i ∉ f i},
+  rcases surjf S with j,
+  have h₁ : j ∉ f j,
+  { intro h',
+    have : j ∉ f j,
+      { by rwa h at h' },
+    contradiction },
+  have h₂ : j ∈ S,
 sorry
-    by rwa h at h₁
+    ,
+  have h₃ : j ∉ S,
+sorry
+    ,
+  contradiction
+end
+
+end function_variables
 

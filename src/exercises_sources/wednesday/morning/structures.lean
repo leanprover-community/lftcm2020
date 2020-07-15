@@ -74,17 +74,7 @@ structure bounds (f : ℕ → ℕ) :=
   error. If you are unsure, ask a mentor to check whether your solution is correct.
 -/
 
--- omit
-/- There are different ways to do these, here is one way. -/
-structure eventually_constant_sequence : Type :=
-(seq : ℕ → ℕ)
-(eventually_constant : ∃ k v, ∀ n ≥ k, seq n = v)
 
-structure bipointed_type :=
-(A : Type)
-(x y : A)
-(x_ne_y : x ≠ y)
--- omit
 
 /-! ### Projections of a structure -/
 
@@ -170,17 +160,17 @@ example (n : ℕ) : is_even_cube_above_100' n → is_even_cube_above_100 n :=
 #print bounds
 
 def bounds' (f : ℕ → ℕ) : Type :=
-/- inline sorry -/ { n : ℕ // ∀ (m : ℕ), f m ≤ n } /- inline sorry -/
+sorry
 
 example (f : ℕ → ℕ) : bounds f → bounds' f :=
-/- inline sorry -/ λ ⟨n, hn⟩, ⟨n, hn⟩ /- inline sorry -/
+sorry
 
 /- In the example below, replace the `sorry` by an underscore `_`.
   A small yellow lightbulb will appear. Click it, and then select
   `Generate skeleton for the structure under construction`.
   This will automatically give an outline of the structure for you. -/
 example (f : ℕ → ℕ) : bounds' f → bounds f :=
-λ n, /- inline sorry -/ { bound := n.1, le_bound := n.2 } /- inline sorry -/
+λ n, sorry
 
 
 /-! ### Classes
@@ -221,11 +211,7 @@ classical.some_spec hn
   Hint: use `pow_left_inj` -/
 @[simp] lemma sqrt_eq_iff (n k : ℕ) [is_square n] : √n = k ↔ n = k^2 :=
 begin
-  -- sorry
-  split; intro h,
-  { simp [← h] },
-  { exact pow_left_inj (nat.zero_le _) (nat.zero_le k) two_pos (by simp [h]) }
-  -- sorry
+  sorry
 end
 
 /-! To help type-class inference, we have to tell it that some numbers are always squares.
@@ -246,16 +232,12 @@ instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
 #check nat.mul_pow
 lemma sqrt_mul (n m : ℕ) [is_square n] [is_square m] : √(n * m) = √n * √m :=
 begin
-  -- sorry
-  simp [nat.mul_pow]
-  -- sorry
+  sorry
 end
 
 example (n m : ℕ) [is_square n] : √(n * m ^ 2) = √n * m :=
 begin
-  -- sorry
-  simp [sqrt_mul, sqrt_square],
-  -- sorry
+  sorry
 end
 
 
@@ -264,9 +246,7 @@ end
 #check nat.pow_two
 lemma sqrt_le (n : ℕ) [is_square n] : √n ≤ n :=
 begin
-  -- sorry
-  conv_rhs { rw [← square_sqrt n, nat.pow_two] }, apply nat.le_mul_self
-  -- sorry
+  sorry
 end
 
 end is_square
@@ -320,26 +300,15 @@ by { cases f, cases g, congr, ext, exact hfg x }
   (the one you want has `bijective` in the name). -/
 def equiv_of_bijection (f : bijection α β) : α ≃ β :=
 begin
-  -- sorry
-  exact equiv.of_bijective f ⟨f.injective, f.surjective⟩
-  -- sorry
+  sorry
 end
 
 def bijection_of_equiv (f : α ≃ β) : bijection α β :=
--- sorry
-{ to_fun := f,
-  injective := f.injective,
-  surjective := f.surjective }
--- sorry
+sorry
 
 /-! Show that bijections are the same (i.e. equivalent) to equivalences. -/
 def bijection_equiv_equiv : bijection α β ≃ (α ≃ β) :=
--- sorry
-{ to_fun := equiv_of_bijection,
-  inv_fun := bijection_of_equiv,
-  left_inv := by { intro f, ext, simp [bijection_of_equiv, equiv_of_bijection] },
-  right_inv := by { intro f, ext, simp [bijection_of_equiv, equiv_of_bijection] } }
--- sorry
+sorry
 
 end bijections
 
@@ -385,40 +354,25 @@ lemma op_left_inv (x : G) : x⁻¹ * x = 1 := G.op_left_inv' x
   any lemmas from the library about `mul`. -/
 lemma eq_id_of_op_eq_self {G : Group} {x : G} : x * x = x → x = 1 :=
 begin
-  -- sorry
-  intro hx, rw [←id_op x, ← op_left_inv x, op_assoc, hx]
-  -- sorry
+  sorry
 end
 
 /- Apply the previous lemma to show that `⁻¹` is also a right-sided inverse. -/
 lemma op_right_inv {G : Group} (x : G) : x * x⁻¹ = 1 :=
 begin
-  -- sorry
-  apply eq_id_of_op_eq_self,
-  rw [op_assoc x x⁻¹ (x * x⁻¹), ← op_assoc x⁻¹ x x⁻¹, op_left_inv, id_op]
-  -- sorry
+  sorry
 end
 
 /- we can prove that `1` is also a right identity. -/
 lemma op_id {G : Group} (x : G) : x * 1 = x :=
 begin
-  -- sorry
-  rw [← op_left_inv x, ← op_assoc, op_right_inv, id_op]
-  -- sorry
+  sorry
 end
 
 /- show that the rationals under addition form a group. The underlying type will be `ℚ`.
   Use `library_search` for the proofs. -/
 def rat_Group : Group :=
--- sorry
-{ G := ℚ,
-  op := (+),
-  op_assoc' := add_assoc,
-  id := 0,
-  id_op' := zero_add,
-  inv := λ x, -x,
-  op_left_inv' := neg_add_self }
--- sorry
+sorry
 
 /-
   However, it is inconvenient to use this group instance directly.
@@ -431,15 +385,7 @@ def rat_Group : Group :=
 /- show that the cartesian product of two groups is a group. The underlying type will be `G × H`. -/
 
 def prod_Group (G H : Group) : Group :=
--- sorry
-{ G := G × H,
-  op := λ x y, (x.1 * y.1, x.2 * y.2),
-  op_assoc' := by { intros, ext; simp; rw [op_assoc] },
-  id := (1, 1),
-  id_op' := by { intros, ext; simp; rw [id_op] },
-  inv := λ x, (x.1⁻¹, x.2⁻¹),
-  op_left_inv' := by { intros, ext; simp; rw [op_left_inv] } }
--- sorry
+sorry
 
 end Group
 
@@ -488,81 +434,50 @@ instance : has_coe_to_fun (A →. B) := ⟨λ _, A → B, pointed_map.to_fun⟩
 
 @[ext] protected lemma ext (hf₁₂ : ∀ x, f₁ x = f₂ x) : f₁ = f₂ :=
 begin
-  -- sorry
-  cases f₁ with f₁ hf₁, cases f₂ with f₂ hf₂, congr, ext x, exact hf₁₂ x
-  -- sorry
+  sorry
 end
 
 /-! Below we show that pointed types form a category. -/
 
 def comp (g : B →. C) (f : A →. B) : A →. C :=
--- sorry
-{ to_fun := g ∘ f,
-  to_fun_point := by simp }
--- sorry
+sorry
 
 def id : A →. A :=
--- sorry
-{ to_fun := id,
-  to_fun_point := by simp }
--- sorry
+sorry
 
 /-! You can use projection notation for any declaration declared in the same namespace as the
   structure. For example, `g.comp f` means `pointed_map.comp g f` -/
 lemma comp_assoc : h.comp (g.comp f) = (h.comp g).comp f :=
--- sorry
-by { ext x, refl }
--- sorry
+sorry
 
 lemma id_comp : f.comp id = f :=
--- sorry
-by { ext x, refl }
--- sorry
+sorry
 
 lemma comp_id : id.comp f = f :=
--- sorry
-by { ext x, refl }
--- sorry
+sorry
 
 /-! Below we show that `A.prod B` (that is, `pointed_type.prod A B`) is a product in the category of
   pointed types. -/
 
 def fst : A.prod B →. A :=
--- sorry
-{ to_fun := prod.fst,
-  to_fun_point := rfl }
--- sorry
+sorry
 
 def snd : A.prod B →. B :=
--- sorry
-{ to_fun := prod.snd,
-  to_fun_point := rfl }
--- sorry
+sorry
 
 def pair (f : C →. A) (g : C →. B) : C →. A.prod B :=
--- sorry
-{ to_fun := λ c, (f c, g c),
-  to_fun_point := by simp }
--- sorry
+sorry
 
 lemma fst_pair (f : C →. A) (g : C →. B) : fst.comp (f.pair g) = f :=
--- sorry
-by { ext, simp [pair, fst, comp] }
--- sorry
+sorry
 
 lemma snd_pair (f : C →. A) (g : C →. B) : snd.comp (f.pair g) = g :=
--- sorry
-by { ext, simp [pair, snd, comp] }
--- sorry
+sorry
 
 lemma pair_unique (f : C →. A) (g : C →. B) (u : C →. A.prod B) (h1u : fst.comp u = f)
   (h2u : snd.comp u = g) : u = f.pair g :=
 begin
-  -- sorry
-  ext,
-  { have : fst (u x) = f x, { rw [←h1u], simp [comp] }, simpa using this },
-  { have : snd (u x) = g x, { rw [←h2u], simp [comp] }, simpa using this }
-  -- sorry
+  sorry
 end
 
 
@@ -589,21 +504,14 @@ open sum
   First define a relation that *only* relates `inl A.point ~ inr B.point`.
 -/
 def coprod_rel (A B : pointed_type) : (A ⊕ B) → (A ⊕ B) → Prop :=
--- sorry
-λ x y, x = inl A.point ∧ y = inr B.point
--- sorry
+sorry
 
 namespace pointed_type
 
 -- @[simps point]
--- omit
-@[simps point]
--- omit
+
 def coprod (A B : pointed_type) : pointed_type :=
--- sorry
-{ type := quot (coprod_rel A B),
-  point := quot.mk _ (inl A.point) }
--- sorry
+sorry
 end pointed_type
 
 namespace pointed_map
@@ -611,41 +519,25 @@ namespace pointed_map
 variables {A B C D : pointed_type}
 
 def inl : A →. A.coprod B :=
--- sorry
-{ to_fun := quot.mk _ ∘ sum.inl,
-  to_fun_point := rfl }
--- sorry
+sorry
 
 def inr : B →. A.coprod B :=
--- sorry
-{ to_fun := quot.mk _ ∘ sum.inr,
-  to_fun_point := by { refine (quot.sound _).symm, exact ⟨rfl, rfl⟩ } }
--- sorry
+sorry
 
 def elim (f : A →. C) (g : B →. C) : A.coprod B →. C :=
--- sorry
-{ to_fun := quot.lift (sum.elim f g) (by { rintro _ _ ⟨rfl, rfl⟩, simp }),
-  to_fun_point := by simp }
--- sorry
+sorry
 
 lemma elim_comp_inl (f : A →. C) (g : B →. C) : (f.elim g).comp inl = f :=
--- sorry
-by { ext, simp [elim, inl, comp] }
--- sorry
+sorry
 
 lemma elim_comp_inr (f : A →. C) (g : B →. C) : (f.elim g).comp inr = g :=
--- sorry
-by { ext, simp [elim, inr, comp] }
--- sorry
+sorry
 
 lemma elim_unique (f : A →. C) (g : B →. C) (u : A.coprod B →. C) (h1u : u.comp inl = f)
   (h2u : u.comp inr = g) : u = f.elim g :=
 begin
-  -- sorry
-  ext (x|y),
-  { have : u (inl x) = f x, { rw [←h1u], simp [comp] }, simpa [elim, inl] using this },
-  { have : u (inr y) = g y, { rw [←h2u], simp [comp] }, simpa [elim, inl] using this }
-  -- sorry
+  sorry
 end
 
 end pointed_map
+

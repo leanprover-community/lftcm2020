@@ -26,6 +26,7 @@ to add your name to the list below (in alphabetical order).
 
 * Aniruddh Agarwal (University of Michigan, US)
 * Aaron Anderson (University of California Los Angeles, US)
+* Shivam Arora (Memorial University of Newfoundland, CA)
 * Jeremy Avigad (Carnegie Mellon University US)
 * Anne Baanen (Vrije Universiteit Amsterdam, NL)
 * Jennifer Balakrishnan (Boston University, US)
@@ -54,11 +55,13 @@ to add your name to the list below (in alphabetical order).
 * Yury Kudryashov (University of Toronto, CA)
 * Julian Külshammer (Uppsala University, SE)
 * Jun Bo Lau (University of California San Diego, US)
+* Marius Leonhardt (Universität Heidelberg, DE)
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Heather Macbeth (Fordham University, US)
 * Sylvain Maillot (Université de Montpellier, FR)
 * Filip Marić (University of Belgrade, SR)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
+* Bhavik Mehta (University of Cambridge, UK)
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Harshit J Motwani
 * Khoi Nguyen
@@ -84,3 +87,4 @@ to add your name to the list below (in alphabetical order).
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
+* Apurva Nakade (University of Western Ontario, CA)
