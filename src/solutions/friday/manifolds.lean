@@ -13,8 +13,6 @@ Local homeomorphisms are globally defined maps with a globally defined "inverse"
 relevant set is the *source*, which should be mapped homeomorphically to the *target*.
 -/
 
-
-
 /- Define a local homeomorphism from `ℝ` to `ℝ` which is just `x ↦ -x`, but on `(-1, 1)`. In
 Lean, the interval `(-1, 1)` is denoted by `Ioo (-1 : ℝ) 1` (where `o` stands for _open_). -/
 
@@ -118,7 +116,7 @@ begin
 end
 
 /- The right equivalence relation for local homeos is not equality, but `eq_on_source`.
-Indeed, the two local homeos we have defined above coincide from the point of view. -/
+Indeed, the two local homeos we have defined above coincide from this point of view. -/
 
 #check @local_homeomorph.eq_on_source
 
@@ -272,10 +270,9 @@ be a smooth manifold. -/
 -- the type `tangent_bundle I myℝ` makes sense
 #check tangent_bundle I myℝ
 
-/- In `mathlib`, vector bundles have preferred trivializations at each point, just as manifolds have
-preferred charts.  So a point in a vector bundle can be specified just by an ordered pair. (Of
-course, this specification will not vary smoothly outside a fixed chart!) -/
-example : tangent_bundle I myℝ := ((4 : ℝ), 5)
+/- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
+So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
+example : tangent_bundle I myℝ := ((4 : ℝ), 0)
 
 /- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
 and this instance is not really needed. -/
@@ -328,6 +325,65 @@ begin
   -- sorry
 end
 
+/- Up to now, we have never used the definition of the tangent bundle, and this corresponds to
+the usual mathematical practice: one doesn't care if the tangent space is defined using germs of
+curves, or spaces of derivations, or whatever equivalent definition. Instead, one relies all the
+time on functoriality (i.e., a smooth map has a well defined derivative, and they compose well,
+together with the fact that the tangent bundle to a vector space is the product).
+
+If you want to know more about the internals of the tangent bundle in mathlib, you can browse
+through the next section, but it is maybe wiser to skip it on first reading, as it is not needed
+to use the library
+-/
+
+section you_should_probably_skip_this
+
+/- If `M` is a manifold modelled on a vector space `E`, then the underlying type for the tangent
+bundle is just `M × E` -/
+
+lemma tangent_bundle_myℝ_is_prod : tangent_bundle I myℝ = (myℝ × ℝ) :=
+/- inline sorry -/rfl/- inline sorry -/
+
+/- This means that you can specify a point in the tangent bundle as a pair `(x, y)`.
+However, in general, a tangent bundle is not trivial: the topology on `tangent_bundle I myℝ` is *not*
+the product topology. Instead, the tangent space at a point `x` is identified with `ℝ` through some
+preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
+manifold and the charts.
+
+Even though the tangent bundle to `myℝ` is trivial abstractly, with this construction the
+tangent bundle is *not* the product space with the product topology, as we have used various charts
+so the gluing is not trivial. The following exercise unfolds the definition to see what is going on.
+It is not a reasonable exercise, in the sense that one should never ever do this when working
+with a manifold! -/
+
+lemma crazy_formula_after_identifications (x : ℝ) (v : ℝ) :
+  let p : tangent_bundle I myℝ := ((3 : ℝ), 0) in
+  chart_at (model_prod ℝ ℝ) p (x, v) = if x ∈ Ioo (-1 : ℝ) 1 then (x, -v) else (x, v) :=
+begin
+  -- this exercise is not easy (and shouldn't be: you are not supposed to use the library like this!)
+  -- if you really want to do this, you should unfold as much as you can using simp and dsimp, until you
+  -- are left with a statement speaking of derivatives of real functions, without any manifold code left.
+  -- sorry
+  have : ¬ ((3 : ℝ) < 1), by norm_num,
+  simp only [chart_at, this, mem_Ioo, if_false, and_false],
+  dsimp [tangent_bundle_core, basic_smooth_bundle_core.chart,
+    topological_fiber_bundle_core.local_triv, topological_fiber_bundle_core.local_triv',
+    topological_fiber_bundle_core.index_at,
+    basic_smooth_bundle_core.to_topological_fiber_bundle_core],
+  split_ifs,
+  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, prod.mk.inj_iff, mem_Ioo]
+      with mfld_simps,
+    -- next lines should be more automatic, missing lemmas in mathlib
+    have A : fderiv ℝ (λ (y : ℝ), y) (-x) = continuous_linear_map.id ℝ ℝ := fderiv_id,
+    rw [fderiv_neg differentiable_at_id', A],
+    simp only [id.def, continuous_linear_map.coe_id', continuous_linear_map.neg_apply] },
+  { simp only [chart_at, h, fderiv_within_univ, mem_Ioo, if_false, @local_homeomorph.refl_symm ℝ,
+      fderiv_id, continuous_linear_map.coe_id'] with mfld_simps }
+  -- sorry
+end
+
+end you_should_probably_skip_this
+
 /-!
 ### The language of manifolds
 
@@ -378,6 +434,8 @@ manifold yet. Let's cheat and introduce it nevertheless.
 @[derive topological_space]
 definition sphere (n : ℕ) : Type := {x : euclidean_space (fin (n+1)) // ∥x∥ = (1 : ℝ)}
 
+/- Don't try to fill the following instances, the first two should follow from general theory, and
+the third one is too much work for an exercise session. -/
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
 instance (n : ℕ) : connected_space (sphere (n+1)) := sorry
@@ -386,6 +444,7 @@ instance (n : ℕ) : connected_space (sphere (n+1)) := sorry
 as you like. For the second one, you may need to use facts of the library such as -/
 #check compact_iff_compact_space
 #check metric.compact_iff_closed_bounded
+#check is_closed_eq
 
 instance (n : ℕ) : t2_space (sphere n) :=
 begin
@@ -420,8 +479,54 @@ theorem diffeomorph_circle_of_one_dim_compact_connected
 diffeomorph_of_one_dim_compact_connected M (sphere 1)
 -- sorry
 
+/- Can you express the sphere eversion theorem, i.e., the fact that there is a smooth isotopy
+of immersions between the canonical embedding of the sphere `S^2` and `ℝ^3`, and the antipodal
+embedding?
 
+Note that we haven't defined immersions in mathlib, but you can jut require that the fiber
+derivative is injective everywhere, which is easy to express if you know that the derivative
+of a function `f` from a manifold of dimension `2` to a manifold of dimension `3` at a point `x` is
+`mfderiv (𝓡 2) (𝓡 3) f x`.
 
+Don't forget to require the global smoothness of the map! You may need to know that the interval
+`[0,1]`, called `Icc (0 : ℝ) 1` in Lean, already has a manifold (with boundary!) structure,
+where the corresponding model with corners is called `𝓡∂ 1`.
+-/
+
+-- the following instances might be useful, fill them if you like or leave them sorried
+instance : has_zero (Icc (0 : ℝ) 1) := ⟨⟨(0 : ℝ), ⟨le_refl _, zero_le_one⟩⟩⟩
+instance : has_one (Icc (0 : ℝ) 1) := ⟨⟨(1 : ℝ), ⟨zero_le_one, le_refl _⟩⟩⟩
+instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
+
+/-- The sphere eversion theorem. You should fill the first sorry, the second one is out of reach
+(now). -/
+theorem sphere_eversion :
+  -- sorry
+  ∃ f : (Icc (0 : ℝ) 1) × (sphere 2) → (euclidean_space (fin 3)),
+  times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
+  ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
+    function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
+  ∧ ∀ (p : sphere 2), f (0, p) = p
+  ∧ ∀ (p : sphere 2), f (1, p) = - p
+  -- sorry
+:=
+sorry
+
+/- What about trying to say that there are uncountably many different smooth structures on `ℝ⁴`?
+(see https://en.wikipedia.org/wiki/Exotic_R4). The library is not really designed with this in mind,
+as in general we only work with one differentiable structure on a space, but it is perfectly
+capable of expressing this fact if one uses the `@` version of some definitions. -/
+
+theorem exotic_ℝ4 :
+  -- sorry
+  let E := (euclidean_space (fin 4)) in
+  ∃ f : ℝ → charted_space E E,
+  ∀ i, @has_groupoid E _ E _ (f i) (times_cont_diff_groupoid ∞ (𝓡 4))
+  ∧ ∀ i j, nonempty (@structomorph _ _ (times_cont_diff_groupoid ∞ (𝓡 4)) E E _ _ (f i) (f j)) →
+    i = j
+  -- sorry
+  :=
+sorry
 
 /-!
 ### Further things to do
@@ -437,5 +542,7 @@ for functions between vector spaces, but this is very much a work in progress.
 is ready for this, as the proofs I am thinking of are currently a little bit too high-powered.
 If you manage to do it, you should absolutely PR it!)
 
-
+4) Why not contribute to the proof of `sphere_eversion`? You can have a look at
+https://leanprover-community.github.io/sphere-eversion/ to learn more about this project
+by Patrick Massot.
 -/
