@@ -161,7 +161,7 @@ end
 
 /-- The smallest topological space containing the collection `g` of basic sets -/
 def generate_from (X : Type) (g : set (set X)) : topological_space X :=
-{ is_open   := /- inline sorry -/generated_open X g/- inline sorry -/,
+{ is_open   := generated_open X g,
   empty_mem := /- inline sorry -/generated_open.empty X g/- inline sorry -/,
   univ_mem  := /- inline sorry -/generated_open.univ/- inline sorry -/,
   inter     := /- inline sorry -/generated_open.inter/- inline sorry -/,
@@ -263,14 +263,13 @@ metric_space_basic (X × Y) :=
   -- sorry
   }
 
-/- ☡ Let's try to prove a simple lemma involving the product topology: ☡
-   Once you have filled in Exercise 4, this won't work!! -/
+/- ☡ Let's try to prove a simple lemma involving the product topology: ☡ -/
 -- omit
 set_option pp.all false
 set_option trace.class_instances false
-set_option trace.type_context.is_def_eq false
 set_option trace.type_context.is_def_eq_detail false
 -- omit
+set_option trace.type_context.is_def_eq false
 example (X : Type) [metric_space_basic X] : is_open {xy : X × X | dist xy.fst xy.snd < 100 } :=
 begin
   rw is_open_prod_iff X X,
@@ -285,8 +284,7 @@ end
 lemma diag_closed (X : Type) [topological_space X] : is_open {xy : X × X | xy.fst ≠ xy.snd } :=
 begin
   rw is_open_prod_iff X X,
-  intros x y h,
-  sorry,
+  sorry, -- Don't try and fill this in: see below!
 end
 
 /- ## Exercise 5 [short]:
@@ -357,14 +355,14 @@ def of_basic {X : Type} (m : metric_space_basic X) : metric_space X :=
 instance {X Y : Type} [metric_space X] [metric_space Y] : metric_space (X × Y) :=
 { compatible :=
   begin
-  -- Let's not fill this in for the demo, let me know if you do it!
-  -- sorry
-    rintros U,
-    rw is_open_prod_iff,
-    split; intro h,
-    sorry,
-    sorry,
-  -- sorry
+    -- Let's not fill this in for the demo, let me know if you do it!
+    -- sorry
+      rintros U,
+      rw is_open_prod_iff,
+      split; intro h,
+      sorry,
+      sorry,
+    -- sorry
   end,
   ..prod.topological_space X Y,
   ..prod.metric_space_basic X Y, }
