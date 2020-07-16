@@ -367,7 +367,7 @@ def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space
   right_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
   continuous_to_fun := begin
     -- if you think that `continuous_id` should work but `exact continuous_id` fails, you
-    -- can try `convert continuous_id`, that might show you what doesn't match and let you
+    -- can try `convert continuous_id`: it might show you what doesn't match and let you
     -- fix it afterwards.
     -- sorry
     convert continuous_id,
@@ -420,7 +420,7 @@ In this paragraph, we will try to write down interesting statements of theorems,
 goal here is that Lean should not complain on the statement, but the proof should be sorried.
 -/
 
-/- Here is a first example, to show you how diffeomorphisms are currently named
+/- Here is a first example, already filled up, to show you how diffeomorphisms are currently named
 (we will probably introduce an abbreviation, but this hasn't been done yet): -/
 
 /-- Two zero-dimensional connected manifolds are diffeomorphic. -/
@@ -565,28 +565,99 @@ has been introduced above, so don't hesitate to browse the file if you are stuck
 need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
 spaces and `times_cont_mdiff_on` for functions between manifolds.
 
-Lemma 1 : the inclusion of `[0, 1]` in `ℝ` is smooth.
+Lemma times_cont_mdiff_g : the inclusion `g` of `[0, 1]` in `ℝ` is smooth.
 
-Lemma 2 : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
+Lemma msmooth_of_smooth : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
 from `ℝ` to `ℝ` on a set `s`. Then it is manifold-smooth on `s`.
 
-Definition 3 : construct a function from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
+Definition : construct a function `f` from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
 
-Theorem 4 : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
+Theorem : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
 
-(Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
-into trouble. Instead, use functoriality of the derivative and Lemma 1 and Definition 3)
+Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
+into trouble. Instead, use the derivatives of the maps `f` and `g`, and rely on functoriality
+to check that they are inverse to each other. (This advice is slightly misleading as these derivatives
+do not go between the right spaces, so you will need to massage them a little bit).
+
+A global advice: don't hesitate to use and abuse `simp`, it is the main workhorse in this
+area of mathlib.
 -/
 
--- omit
-lemma lemma_one : times_cont_mdiff (𝓡∂ 1) I ∞ (subtype.val : Icc (0 : ℝ) 1 → ℝ) :=
+/- After doing the exercise myself, I realized it was (way!) too hard. So I will give at least the statements
+of the lemmas, to guide you a little bit more. To let you try the original version if you want,
+I have left a big blank space to avoid spoilers. -/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
+
+-- smoothness results for `euclidean_space` are expressed for general `L^p` spaces
+-- (as `euclidean_space` has the `L^2` norm), in:
+#check pi_Lp.times_cont_diff_coord
+#check pi_Lp.times_cont_diff_on_iff_coord
+
+lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) I ∞ g :=
 begin
+  -- sorry
   rw times_cont_mdiff_iff,
-  refine ⟨continuous_subtype_val, _⟩,
-  simp only with mfld_simps,
-  assume x y,
+  refine ⟨continuous_subtype_val, λ x y, _⟩,
   by_cases h : (x : ℝ) < 1,
-  { simp only [chart_at, h, Icc_left_chart, function.comp, model_with_corners_euclidean_half_space,
+  { simp only [g, chart_at, h, Icc_left_chart, function.comp, model_with_corners_euclidean_half_space,
       add_zero, dif_pos, if_true, max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype,
       subtype.coe_mk, subtype.val_eq_coe] with mfld_simps,
     refine (pi_Lp.times_cont_diff_coord 0).times_cont_diff_on.congr (λ x hx, _),
@@ -594,18 +665,20 @@ begin
     simp only [hx, le_of_lt hx.right.left, min_eq_left, max_eq_left] },
   { simp only [chart_at, h, Icc_right_chart, function.comp, model_with_corners_euclidean_half_space, dif_pos,
       max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype, if_false, subtype.coe_mk,
-      subtype.val_eq_coe] with mfld_simps,
+      subtype.val_eq_coe, g] with mfld_simps,
     have : times_cont_diff ℝ ⊤ (λ (x : euclidean_space (fin 1)), 1 - x 0) :=
       times_cont_diff_const.sub (pi_Lp.times_cont_diff_coord 0),
     apply this.times_cont_diff_on.congr (λ x hx, _),
     simp only [mem_inter_eq, mem_set_of_eq] at hx,
     have : 0 ≤ 1 - x 0, by linarith,
     simp only [hx, this, max_eq_left] }
+  -- sorry
 end
 
-lemma lemma_two {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
+lemma msmooth_of_smooth {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
   times_cont_mdiff_on I (𝓡∂ 1) ∞ f s :=
 begin
+  -- sorry
   rw times_cont_mdiff_on_iff,
   split,
   { have : embedding (subtype.val : Icc (0 : ℝ) 1 → ℝ) := embedding_subtype_coe,
@@ -620,23 +693,42 @@ begin
       pi_Lp.times_cont_diff_on_iff_coord],
     assume i,
     apply (times_cont_diff_on_const.sub h).mono (inter_subset_left _ _) }
+  -- sorry
 end
 
-def f (x : ℝ) : Icc (0 : ℝ) 1 :=
-⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
-
-def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
-
-lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) I ∞ g :=
-lemma_one
+/- A function from `ℝ` to `[0,1]` which is the identity on `[0,1]`. -/
+def f : ℝ → Icc (0 : ℝ) 1 :=
+λ x, ⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
 
 lemma times_cont_mdiff_on_f : times_cont_mdiff_on I (𝓡∂ 1) ∞ f (Icc 0 1) :=
 begin
-  apply lemma_two,
+  -- sorry
+  apply msmooth_of_smooth,
   apply times_cont_diff_id.times_cont_diff_on.congr,
   assume x hx,
   simp at hx,
   simp [f, hx],
+  -- sorry
+end
+
+lemma fog : f ∘ g = id :=
+begin
+  -- sorry
+  ext x,
+  rcases x with ⟨x', h'⟩,
+  simp at h',
+  simp [f, g, h'],
+  -- sorry
+end
+
+lemma gof : ∀ x ∈ Icc (0 : ℝ) 1, g (f x) = x :=
+begin
+  -- sorry
+  assume x hx,
+  simp at hx,
+  simp [g, f],
+  simp [hx],
+  -- sorry
 end
 
 def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
@@ -644,19 +736,25 @@ def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × �
 
 lemma continuous_G : continuous G :=
 begin
+  -- sorry
   apply continuous.prod_mk (tangent_bundle_proj_continuous _ _),
   refine continuous_snd.comp _,
   have Z := times_cont_mdiff_g.continuous_tangent_map le_top,
   convert Z,
   exact (tangent_bundle_model_space_topology_eq_prod ℝ I).symm
+  -- sorry
 end
 
+/- in the definition of `F`, we use the map `tangent_bundle_vector_space_triv`
+(which is just the identity pointwise) to make sure that Lean is not lost
+between the different topologies. -/
 def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
 λ p, tangent_map_within I (𝓡∂ 1) f (Icc 0 1)
   ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
 
 lemma continuous_F : continuous F :=
 begin
+  -- sorry
   rw continuous_iff_continuous_on_univ,
   apply (times_cont_mdiff_on_f.continuous_on_tangent_map_within le_top _).comp,
   { apply ((tangent_bundle_vector_space_triv ℝ).symm.continuous.comp _).continuous_on,
@@ -666,16 +764,67 @@ begin
     exact hx },
   { rw unique_mdiff_on_iff_unique_diff_on,
     exact unique_diff_on_Icc_zero_one }
+  -- sorry
+end
+
+lemma FoG : F ∘ G = id :=
+begin
+  -- sorry
+  ext1 p,
+  rcases p with ⟨x, v⟩,
+  simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
+  dsimp,
+  split,
+  { rcases x with ⟨x', h'⟩,
+    simp at h',
+    simp [h'] },
+  { change (tangent_map_within I (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) I g (x, v))).snd = v,
+    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at, fog, tangent_map_within_univ, tangent_map_id],
+    { refl },
+    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top,
+      simpa [g] using x.2 },
+    { apply (times_cont_mdiff_g.times_cont_mdiff_at.mdifferentiable_at le_top).mdifferentiable_within_at },
+    { assume z hz,
+      simpa [g] using z.2 },
+    { apply unique_mdiff_on_univ _ (mem_univ _) } }
+  -- sorry
+end
+
+lemma GoF : G ∘ F = id :=
+begin
+  -- sorry
+  ext1 p,
+  rcases p with ⟨x, v⟩,
+  simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
+  dsimp,
+  split,
+  { rcases x with ⟨x', h'⟩,
+    simp at h',
+    simp [h'] },
+  { have A : unique_mdiff_within_at I (Icc 0 1) ((x : ℝ), v).fst,
+    { rw unique_mdiff_within_at_iff_unique_diff_within_at,
+      apply unique_diff_on_Icc_zero_one _ x.2 },
+    change (tangent_map (𝓡∂ 1) I g (tangent_map_within I (𝓡∂ 1) f (Icc 0 1) (x, v))).snd = v,
+    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ _ A],
+    { have : tangent_map_within I I (g ∘ f) (Icc 0 1) (x, v) = tangent_map_within I I id (Icc 0 1) (x, v) :=
+        tangent_map_within_congr gof _ x.2 A,
+      rw [this, tangent_map_within_id A] },
+    { apply times_cont_mdiff_g.times_cont_mdiff_on.mdifferentiable_on le_top _ (mem_univ _) },
+    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top _ x.2 },
+    { simp only [preimage_univ, subset_univ], } }
+  -- sorry
 end
 
 def my_tangent_homeo : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) ≃ₜ (Icc (0 : ℝ) 1) × ℝ :=
+-- sorry
 { to_fun := G,
   inv_fun := F,
   continuous_to_fun := continuous_G,
   continuous_inv_fun := continuous_F,
-  left_inv := sorry,
-  right_inv := sorry }
--- omit
+  left_inv := λ p, show (F ∘ G) p = id p, by rw FoG,
+  right_inv := λ p, show (G ∘ F) p = id p, by rw GoF }
+-- sorry
+
 
 /-!
 ### Further things to do

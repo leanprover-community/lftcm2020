@@ -5,6 +5,8 @@ noncomputable theory
 open_locale manifold classical big_operators
 open set
 
+universe u
+
 
 /-! ### Local homeomorphisms
 
@@ -285,7 +287,32 @@ the product topology. Instead, the tangent space at a point `x` is identified wi
 preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
 manifold and the charts.
 
-Even though the tangent bundle to `myℝ` is trivial abstractly, with this construction the
+In vector spaces, the tangent space is canonically the product space, with the same topology, as
+there is only one chart so there is no strange gluing at play. The equality of the topologies
+is given in `tangent_bundle_model_space_topology_eq_prod`, but they are not definitionally equal
+so one can get strange behavior if abusing identifications.
+
+Let us register the identification explicitly, as a homeomorphism:
+-/
+
+def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
+  tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
+{ to_fun := id,
+  inv_fun := id,
+  left_inv := sorry,
+  right_inv := sorry,
+  continuous_to_fun := begin
+    -- if you think that `continuous_id` should work but `exact continuous_id` fails, you
+    -- can try `convert continuous_id`: it might show you what doesn't match and let you
+    -- fix it afterwards.
+    sorry
+  end,
+  continuous_inv_fun :=
+  begin
+    sorry
+  end }
+
+/- Even though the tangent bundle to `myℝ` is trivial abstractly, with this construction the
 tangent bundle is *not* the product space with the product topology, as we have used various charts
 so the gluing is not trivial. The following exercise unfolds the definition to see what is going on.
 It is not a reasonable exercise, in the sense that one should never ever do this when working
@@ -310,7 +337,7 @@ In this paragraph, we will try to write down interesting statements of theorems,
 goal here is that Lean should not complain on the statement, but the proof should be sorried.
 -/
 
-/- Here is a first example, to show you how diffeomorphisms are currently named
+/- Here is a first example, already filled up, to show you how diffeomorphisms are currently named
 (we will probably introduce an abbreviation, but this hasn't been done yet): -/
 
 /-- Two zero-dimensional connected manifolds are diffeomorphic. -/
@@ -348,8 +375,9 @@ definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n
 
 instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
-/- Don't try to fill the following instances, the first two should follow from general theory, and
-the third one is too much work for an exercise session. -/
+/- Don't try to fill the following instances: the first two should follow from general theory, and
+the third one is too much work for an exercise session (but you can work on it if you don't like
+manifolds and prefer topology -- then please PR it to mathlib!). -/
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
 instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
@@ -373,7 +401,7 @@ end
 the circle -/
 theorem diffeomorph_circle_of_one_dim_compact_connected
   (M : Type*) [topological_space M] [charted_space (euclidean_space (fin 1)) M]
-  [connected_space M] [compact_space M] [t2_space M] :
+  [connected_space M] [compact_space M] [t2_space M] [smooth_manifold_with_corners (𝓡 1) M] :
   nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
 sorry
 
@@ -420,19 +448,154 @@ has been introduced above, so don't hesitate to browse the file if you are stuck
 need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
 spaces and `times_cont_mdiff_on` for functions between manifolds.
 
-Lemma 1 : the inclusion of `[0, 1]` in `ℝ` is smooth.
+Lemma times_cont_mdiff_g : the inclusion `g` of `[0, 1]` in `ℝ` is smooth.
 
-Lemma 2 : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
+Lemma msmooth_of_smooth : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
 from `ℝ` to `ℝ` on a set `s`. Then it is manifold-smooth on `s`.
 
-Definition 3 : construct a function from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
+Definition : construct a function `f` from `ℝ` to `[0,1]` which is the identity on `[0, 1]`.
 
-Theorem 4 : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
+Theorem : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
 
-(Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
-into trouble. Instead, use functoriality of the derivative and Lemma 1 and Definition 3)
+Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
+into trouble. Instead, use the derivatives of the maps `f` and `g`, and rely on functoriality
+to check that they are inverse to each other. (This advice is slightly misleading as these derivatives
+do not go between the right spaces, so you will need to massage them a little bit).
+
+A global advice: don't hesitate to use and abuse `simp`, it is the main workhorse in this
+area of mathlib.
 -/
 
+/- After doing the exercise myself, I realized it was (way!) too hard. So I will give at least the statements
+of the lemmas, to guide you a little bit more. To let you try the original version if you want,
+I have left a big blank space to avoid spoilers. -/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
+
+-- smoothness results for `euclidean_space` are expressed for general `L^p` spaces
+-- (as `euclidean_space` has the `L^2` norm), in:
+#check pi_Lp.times_cont_diff_coord
+#check pi_Lp.times_cont_diff_on_iff_coord
+
+lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) I ∞ g :=
+begin
+  sorry
+end
+
+lemma msmooth_of_smooth {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
+  times_cont_mdiff_on I (𝓡∂ 1) ∞ f s :=
+begin
+  sorry
+end
+
+/- A function from `ℝ` to `[0,1]` which is the identity on `[0,1]`. -/
+def f : ℝ → Icc (0 : ℝ) 1 :=
+λ x, ⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
+
+lemma times_cont_mdiff_on_f : times_cont_mdiff_on I (𝓡∂ 1) ∞ f (Icc 0 1) :=
+begin
+  sorry
+end
+
+lemma fog : f ∘ g = id :=
+begin
+  sorry
+end
+
+lemma gof : ∀ x ∈ Icc (0 : ℝ) 1, g (f x) = x :=
+begin
+  sorry
+end
+
+def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
+λ p, (p.1, (tangent_map (𝓡∂ 1) I g p).2)
+
+lemma continuous_G : continuous G :=
+begin
+  sorry
+end
+
+/- in the definition of `F`, we use the map `tangent_bundle_vector_space_triv`
+(which is just the identity pointwise) to make sure that Lean is not lost
+between the different topologies. -/
+def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
+λ p, tangent_map_within I (𝓡∂ 1) f (Icc 0 1)
+  ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
+
+lemma continuous_F : continuous F :=
+begin
+  sorry
+end
+
+lemma FoG : F ∘ G = id :=
+begin
+  sorry
+end
+
+lemma GoF : G ∘ F = id :=
+begin
+  sorry
+end
+
+def my_tangent_homeo : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) ≃ₜ (Icc (0 : ℝ) 1) × ℝ :=
+sorry
 
 
 /-!

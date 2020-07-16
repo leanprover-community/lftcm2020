@@ -1,3 +1,5 @@
+/- Missing bits that should be added to mathlib after the workshop and after cleaning them up -/
+
 import geometry.manifold.times_cont_mdiff
 import geometry.manifold.real_instances
 
@@ -218,3 +220,44 @@ lemma embedding.continuous_on_iff
   {f : α → β} {g : β → γ} (hg : embedding g) {s : set α} :
   continuous_on f s ↔ continuous_on (g ∘ f) s :=
 inducing.continuous_on_iff hg.1
+
+section tangent_map
+
+variables {𝕜 : Type*} [nondiscrete_normed_field 𝕜]
+{E : Type*} [normed_group E] [normed_space 𝕜 E]
+{H : Type*} [topological_space H] {I : model_with_corners 𝕜 E H}
+{M : Type*} [topological_space M] [charted_space H M] [smooth_manifold_with_corners I M]
+{s : set M} {x : M}
+variables {E' : Type*} [normed_group E'] [normed_space 𝕜 E']
+{H' : Type*} [topological_space H'] {I' : model_with_corners 𝕜 E' H'}
+{M' : Type*} [topological_space M'] [charted_space H' M'] [smooth_manifold_with_corners I' M']
+
+@[simp, mfld_simps] lemma tangent_map_id : tangent_map I I (id : M → M) = id :=
+by { ext1 p, simp [tangent_map] }
+
+lemma tangent_map_within_id {p : tangent_bundle I M}
+  (hs : unique_mdiff_within_at I s (tangent_bundle.proj I M p)) :
+  tangent_map_within I I (id : M → M) s p = p :=
+begin
+  simp only [tangent_map_within, id.def],
+  rw mfderiv_within_id,
+  { rcases p, refl },
+  { exact hs }
+end
+
+lemma mfderiv_within_congr {f f₁ : M → M'} (hs : unique_mdiff_within_at I s x)
+  (hL : ∀ x ∈ s, f₁ x = f x) (hx : f₁ x = f x) :
+  mfderiv_within I I' f₁ s x = (mfderiv_within I I' f s x : _) :=
+filter.eventually_eq.mfderiv_within_eq hs (filter.eventually_eq_of_mem (self_mem_nhds_within) hL) hx
+
+lemma tangent_map_within_congr {f g : M → M'} {s : set M}
+  (h : ∀ x ∈ s, f x = g x)
+  (p : tangent_bundle I M) (hp : p.1 ∈ s) (hs : unique_mdiff_within_at I s p.1) :
+  tangent_map_within I I' f s p = tangent_map_within I I' g s p :=
+begin
+  simp only [tangent_map_within, h p.fst hp, true_and, prod.mk.inj_iff, eq_self_iff_true],
+  congr' 1,
+  exact mfderiv_within_congr hs h (h _ hp)
+end
+
+end tangent_map
