@@ -74,7 +74,7 @@ begin
   cases H, cases J,
   -- and note that they are the same set, and then a bunch of proofs
   -- which are equal by definition, so it's obvious
-  simp * at *
+  simp * at *,
 end
 
 -- Now let's prove that two subgroups are equal iff they have the same elements.
@@ -98,7 +98,7 @@ begin
     simp,
   },
   { -- the other way we just did
-    exact subgp.ext
+    exact subgp.ext,
   }
 end
 
@@ -170,7 +170,7 @@ def top : subgp G :=
   end,
   inv_mem := begin
     intros,
-    apply mem_univ
+    apply mem_univ,
   end }
 
 -- Add the `⊤` notation (typed with `\top`) for this subgroup:
@@ -198,16 +198,16 @@ definition inf (H K : subgp G) : subgp G :=
     rintros a b ⟨haH, haK⟩ ⟨hbH, hbK⟩,
     split,
     { apply H.mul_mem haH hbH },
-    { apply K.mul_mem haK hbK }
+    { apply K.mul_mem haK hbK },
   end,
   one_mem := begin
     split,
     { apply one_mem },
-    { apply one_mem }
+    { apply one_mem },
   end,
   inv_mem := begin
     rintros a ⟨haH, haK⟩,
-    exact ⟨H.inv_mem haH, K.inv_mem haK⟩
+    exact ⟨H.inv_mem haH, K.inv_mem haK⟩,
   end }
 
 -- Add the `⊓` notation (type with `\inf`) for the intersection (inf) of two subgroups:
@@ -229,7 +229,7 @@ begin
   -- by definition this says `H.carrier ∩ K.carrier ⊆ H.carrier`
   change H.carrier ∩ K.carrier ⊆ H.carrier,
   -- now try `library_search`, to find that this is called `inter_subset_left
-  apply inter_subset_left
+  apply inter_subset_left,
 end
 
 lemma inf_le_right (H K : subgp G) : H ⊓ K ≤ K :=
