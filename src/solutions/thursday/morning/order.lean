@@ -79,7 +79,8 @@ end
 
 -- Now let's prove that two subgroups are equal iff they have the same elements.
 -- This is the most useful "extensionality lemma" so we tag it `@[ext]`.
-@[ext] theorem ext {H J : subgp G} (h : ∀ (x : G), x ∈ H.carrier ↔ x ∈ J.carrier) : H = J :=
+@[ext] theorem ext {H J : subgp G} (h : ∀ (x : G), x ∈ H.carrier ↔ x ∈ J.carrier) :
+  H = J :=
 begin
   -- it suffices to prove the subsets are equal
   apply carrier_injective,
@@ -474,9 +475,27 @@ end
 
 -- Exercise (LONG): First, show that we have a Galois insertion.
 
-lemma monotone_is_open {X : Type} : monotone (forget : topological_space X → set (set X)) := sorry
+lemma monotone_is_open {X : Type} :
+  monotone (forget : topological_space X → set (set X)) :=
+begin
+  intros τ₁ τ₂,
+  intro h,
+  intros U hU,
+  exact h hU,
+end
 
-lemma monotone_span {X : Type} : monotone (generate_from : set (set X) → topological_space X) := sorry
+lemma monotone_span {X : Type} :
+  monotone (generate_from : set (set X) → topological_space X) :=
+begin
+  intros C₁ C₂,
+  intro h,
+  intros U hU,
+  induction hU with V h2 h3 h4 h5 h6 h7 h8 h9 h10 h11,
+  { sorry },
+  { sorry },
+  { sorry },
+  { sorry }
+end
 
 lemma subset_span {X : Type} (Us : set (set X)) : Us ≤ forget (generate_from Us) := sorry
 
