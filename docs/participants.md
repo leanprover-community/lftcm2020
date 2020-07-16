@@ -60,6 +60,7 @@ to add your name to the list below (in alphabetical order).
 * Robert Y. Lewis (Vrije Universiteit Amsterdam, NL)
 * Heather Macbeth (Fordham University, US)
 * Sylvain Maillot (Université de Montpellier, FR)
+* Christophe Margerin (CMLS, Ecole Polytechnique, FR)
 * Filip Marić (University of Belgrade, SR)
 * Patrick Massot (Université Paris-Saclay at Orsay, FR)
 * Bhavik Mehta (University of Cambridge, UK)
