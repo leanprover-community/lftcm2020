@@ -45,7 +45,7 @@ sorry
 
 /-!
 There are some further hints in
-`src/hints/thursday/afternoon/category_theory/exercise1/`
+`src/hints/thursday/afternoon/category_theory/exercise2/`
 -/
 
 /-!
