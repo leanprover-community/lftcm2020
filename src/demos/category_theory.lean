@@ -371,8 +371,6 @@ end
 
 def P_2 : P.cohomology_group 2 ≅ 0 :=
 begin
-  dunfold cohomology_group, -- `cohomomology_group` is an abbreviation, so we need to use `dunfold` rather than `dsimp`
-  dsimp [homology_group, homological_complex.image_to_kernel_map],
   change cokernel (image_to_kernel_map 0 (mul_by 2) _) ≅ 0,
   calc cokernel (image_to_kernel_map 0 (mul_by 2) (has_zero_morphisms.zero_comp _ _))
          ≅ cokernel (0 : image (0 : Z ⟶ Z) ⟶ kernel (mul_by 2)) : cokernel_iso_of_eq (by simp)
@@ -413,23 +411,33 @@ including:
 * ...
 -/
 
+#print category_theory.adjunction.right_adjoint_preserves_limits
+
 #print category_theory.abelian
 -- Right now we don't have a single instance of `abelian` in the library:
 -- constructing `abelian AddCommGroup` is a great exercise, and all the ingredients are available.
+
 -- The only things remaining are
 -- "every mono is the kernel of its cokernel" and "every epi is the cokernel of its kernel"
 -- and these should be easy consequences of statements in the non-categorical group theory library.
 instance : abelian AddCommGroup :=
 { normal_mono := λ X Y f f_mono,
+  -- If you're actually going to attempt this, write `by extract_goal` here
+  -- and prove this as a preliminary lemma.
   { Z := cokernel f,
     g := cokernel.π f,
     w := by tidy,
-    is_limit := sorry, },
+    is_limit :=
+    begin
+      fapply kernel_fork.is_limit.mk,
+      -- now look in group_theory/quotient_group.lean!
+      sorry,
+      sorry,
+      sorry,
+    end, },
   normal_epi := sorry, }
 
 
 example (R : CommRing) : monoidal_category (Module R) := by apply_instance
 
 example : reflective (forget₂ CpltSepUniformSpace UniformSpace) := by apply_instance
-
-#print category_theory.adjunction.right_adjoint_preserves_limits
