@@ -26,6 +26,8 @@ open category_theory.limits
 
 namespace exercise
 
+-- We work in the lowest universe, where `ℤ` lives, for convenience.
+-- If we wanted to work in higher universes we would need to use `ulift ℤ`.
 variables (C : Type) [category.{0} C] [has_zero_morphisms C]
 
 @[derive category]

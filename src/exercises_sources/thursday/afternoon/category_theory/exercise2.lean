@@ -44,6 +44,11 @@ sorry
 
 
 /-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise2/`
+-/
+
+/-!
 Bonus problem:
 
 Why did we set `local attribute [irreducible] polynomial.eval₂`?

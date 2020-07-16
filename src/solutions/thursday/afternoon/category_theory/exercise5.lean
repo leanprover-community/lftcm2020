@@ -8,15 +8,13 @@ This result is not in mathlib, so full marks for the exercise are only achievabl
 contribute to a pull request! :-)
 -/
 
-universes v₁ v₂ u₁ u₂
-
 open category_theory
 open category_theory.limits
 
 namespace category_theory
 
-variables {C : Type u₁} [category.{v₁} C] [preadditive C]
-variables {D : Type u₂} [category.{v₂} D] [preadditive D]
+variables {C : Type*} [category C] [preadditive C]
+variables {D : Type*} [category D] [preadditive D]
 
 /-!
 In fact, no one has gotten around to defining preadditive functors,
@@ -39,6 +37,11 @@ def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (
 -- This proof is not yet "mathlib-ready", because it uses "nonterminal" `simp`s.
 -- Can you fix it?
 -- sorry
+
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise5/`
+-/
 
 -- Challenge problem:
 -- In fact one could prove a better result,

@@ -21,9 +21,7 @@ Y --𝟙--→ Y
 is a pushout.
 -/
 
-universes v u
-
-variables {C : Type u} [category.{v} C]
+variables {C : Type*} [category C]
 
 def pushout_of_epi {X Y : C} (f : X ⟶ Y) [epi f] :
   is_colimit (pushout_cocone.mk (𝟙 Y) (𝟙 Y) rfl : pushout_cocone f f) :=
@@ -43,7 +41,7 @@ begin
     have snd := s.ι.naturality walking_span.hom.snd,
     simp at snd,
     rw snd, },
-  { tidy, specialize w walking_span.left, tidy, }
+  { tidy, }
 end
 -- sorry
 
@@ -68,3 +66,8 @@ theorem epi_of_pushout {X Y : C} (f : X ⟶ Y)
     rw [←hg, ←hh],
   end }
 -- sorry
+
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise6/`
+-/

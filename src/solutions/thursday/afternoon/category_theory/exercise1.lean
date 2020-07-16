@@ -4,9 +4,7 @@ import category_theory.yoneda
 open category_theory
 open opposite
 
-universes v u
-
-variables {C : Type u} [category.{v} C]
+variables {C : Type*} [category C]
 
 /-! Hint 1:
 `yoneda` is set up so that `(yoneda.obj X).obj (op Y) = (Y ⟶ X)`
@@ -25,6 +23,11 @@ def iso_of_hom_iso (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅ Y :=
 { hom := (h.app (op X)).hom (𝟙 X),
   inv := (h.symm.app (op Y)).hom (𝟙 Y), }
 -- sorry
+
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise1/`
+-/
 
 -- omit
 /-!

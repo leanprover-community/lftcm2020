@@ -35,7 +35,7 @@ begin
     apply s.ι.app walking_span.left, },
   { tidy, },
   { tidy, /- we clearly need to use that `f` is an epi here!-/ sorry },
-  { tidy, specialize w walking_span.left, tidy, }
+  { tidy, }
 end
 
 theorem epi_of_pushout {X Y : C} (f : X ⟶ Y)
