@@ -1,11 +1,9 @@
 import for_mathlib.category_theory -- This imports some simp lemmas that I realised belong in mathlib while writing this exercise.
 
-universes v₁ v₂ u₁ u₂
-
 open category_theory
 
-variables {C : Type u₁} [category.{v₁} C]
-variables {D : Type u₂} [category.{v₂} D]
+variables {C : Type*} [category C]
+variables {D : Type*} [category D]
 
 lemma equiv_reflects_mono {X Y : C} (f : X ⟶ Y) (e : C ≌ D)
   (hef : mono (e.functor.map f)) : mono f :=

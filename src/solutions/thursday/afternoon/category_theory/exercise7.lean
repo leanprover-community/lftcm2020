@@ -5,11 +5,9 @@ import algebra.category.CommRing.basic
 Let's define the category of monoid objects in a monoidal category.
 -/
 
-universes v u
-
 open category_theory
 
-variables (C : Type u) [category.{v} C] [monoidal_category C]
+variables (C : Type*) [category C] [monoidal_category C]
 
 structure Mon_in :=
 (X : C)
@@ -49,7 +47,7 @@ def comp {M N O : Mon_in C} (f : hom M N) (g : hom N O) : hom M O :=
 { hom := f.hom ≫ g.hom, }
 -- omit
 
-instance : category.{v} (Mon_in C) :=
+instance : category (Mon_in C) :=
 -- sorry
 { hom := λ M N, hom M N,
   id := id,
