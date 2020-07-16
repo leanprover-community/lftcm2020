@@ -308,7 +308,7 @@ def frobenius_hom : K →+* K :=
     -- sorry
       rw zero_pow,
       apply nat.prime.pos,
-      assumption
+      assumption,
     -- sorry
   end,
   map_one' :=
@@ -321,7 +321,7 @@ def frobenius_hom : K →+* K :=
   begin
     -- sorry
       intros x y,
-      rw mul_pow
+      rw mul_pow,
     -- sorry
   end,
   map_add' :=
@@ -372,7 +372,7 @@ begin
   have hφ_lcf : φ (leading_coeff f) ≠ 0,
   { apply is_unit.ne_zero,
     apply is_unit.map',
-    assumption },
+    assumption, },
   rw degree_map_eq_of_leading_coeff_ne_zero _ hφ_lcf at key,
   rw eq_C_of_degree_eq_zero key,
   apply is_unit.map',
@@ -400,22 +400,22 @@ begin
   { intro hf,
     apply h_irr.1,
     apply is_unit.map',
-    exact hf },
+    exact hf, },
   { intros g h Hf,
     have aux : is_unit (leading_coeff g * leading_coeff h),
-    { rw [← leading_coeff_mul, ← Hf, h_mon.leading_coeff], exact is_unit_one },
+    { rw [← leading_coeff_mul, ← Hf, h_mon.leading_coeff], exact is_unit_one, },
     have lc_g_unit : is_unit (leading_coeff g),
-    { apply is_unit_of_mul_is_unit_left aux },
+    { apply is_unit_of_mul_is_unit_left aux, },
     have lc_h_unit : is_unit (leading_coeff h),
-    { apply is_unit_of_mul_is_unit_right aux },
+    { apply is_unit_of_mul_is_unit_right aux, },
     rw Hf at h_irr,
     simp at h_irr,
     have key_fact := h_irr.2 _ _ rfl,
     cases key_fact with Hg Hh,
     { left,
-      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ g lc_g_unit Hg },
+      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ g lc_g_unit Hg, },
     { right,
-      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ h lc_h_unit Hh } }
+      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ h lc_h_unit Hh, } }
   -- sorry
 end
 
@@ -499,7 +499,7 @@ begin
   rw [pow_succ, sub_mul, one_mul, mul_comm X, coeff_sub, coeff_mul_X],
   rw ih,
   suffices : ((1 - X) ^ n : polynomial ℤ).coeff 0 = 1,
-  { rw [this, sub_eq_add_neg, add_comm], simp },
+  { rw [this, sub_eq_add_neg, add_comm], simp, },
   clear ih,
   induction n with n ih, { simp, },
   rw [pow_succ, sub_mul, one_mul, coeff_sub],
