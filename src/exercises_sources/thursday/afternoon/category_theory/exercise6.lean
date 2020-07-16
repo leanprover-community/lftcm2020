@@ -21,9 +21,7 @@ Y --𝟙--→ Y
 is a pushout.
 -/
 
-universes v u
-
-variables {C : Type u} [category.{v} C]
+variables {C : Type*} [category C]
 
 def pushout_of_epi {X Y : C} (f : X ⟶ Y) [epi f] :
   is_colimit (pushout_cocone.mk (𝟙 Y) (𝟙 Y) rfl : pushout_cocone f f) :=

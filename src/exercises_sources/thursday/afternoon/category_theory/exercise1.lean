@@ -4,9 +4,7 @@ import category_theory.yoneda
 open category_theory
 open opposite
 
-universes v u
-
-variables {C : Type u} [category.{v} C]
+variables {C : Type*} [category C]
 
 /-! Hint 1:
 `yoneda` is set up so that `(yoneda.obj X).obj (op Y) = (Y ⟶ X)`
