@@ -10,6 +10,13 @@ You can get this file by:
 * `code lftcm2020`
 * open the file `src/demos/category_theory.lean`
 
+If you've already got a copy of `lftcm2020`, you should update it now, using
+```
+  cd /path/to/lftcm2020/
+  git pull
+  leanproject get-mathlib-cache
+```
+
 There are also exercises associated with this demo, in
 `src/exercise_sources/thursday/afternoon/category_theory/`
 with hints at

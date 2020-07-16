@@ -15,9 +15,9 @@ def iso_of_hom_iso_attempt (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅
     have := h.app,
     dsimp at this,
     -- This says that for any `Z : Cᵒᵖ`, we get an isomorphism from
-    -- the morphism space `Z.unop ⟶ Z` to the morphism space `Z.unop ⟶ Y`.
+    -- the morphism space `unop Z ⟶ Z` to the morphism space `unop Z ⟶ Y`.
     -- This suggests we want to use `h.app (op X)`, and apply the forward direction of that
-    -- to some element of `X.op.unop ⟶ X` that we have available.
+    -- to some element of `unop (op X) ⟶ X` that we have available.
     sorry
   end,
   inv := sorry,
