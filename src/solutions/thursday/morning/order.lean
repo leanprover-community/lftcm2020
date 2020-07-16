@@ -5,13 +5,13 @@ Groups, rings, fields, modules etc are in the "algebra hierarchy".
 
 Metric and topological spaces are in the "topology hierarchy".
 
-The other important heirarchy is the "order hierarchy".
+The other important hierarchy is the "order hierarchy".
 
 It starts with partially ordered sets, and then goes on to lattices.
 
-Because I like algebra, let's demonstrate the order heirarchy by
+Because I like algebra, let's demonstrate the order hierarchy by
 making an algebraic type, namely the type of subgroups of a group G,
-and then working up the order heirarchy with it. Subgroups of a group
+and then working up the order hierarchy with it. Subgroups of a group
 are ordered by inclusion, and this is where we shall start. We will
 then define infs and sups, and bot and top, and go on from there.
 
@@ -256,9 +256,9 @@ subgroups is their inf, and for three or more you proceed by induction.
 
 We could now go on to make a `semilattice_sup_bot` structure, and then
 a lattice structure. But let's jump straight to the strongest type
-in the order heirarchy -- a `complete_lattice`. This has arbitrary `Inf` and `Sup`s.
+in the order hierarchy -- a `complete_lattice`. This has arbitrary `Inf` and `Sup`s.
 
-So let's first note that we can do better than finite intersetions -- we can take
+So let's first note that we can do better than finite intersections -- we can take
 arbitrary intersections! Let's now define the `Inf` of an arbitrary
 set of subgroups of `G`.
 
