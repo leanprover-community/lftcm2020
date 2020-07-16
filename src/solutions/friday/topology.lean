@@ -128,14 +128,9 @@ example {α β γ : Type*} {A : filter α} {B : filter β} {C : filter γ} {f : 
   (hf : tendsto f A B) (hg : tendsto g B C) : tendsto (g ∘ f) A C :=
 begin
   calc
-  map (g ∘ f) A = map g (map f A) : _
-            ... ≤ map g B         : _
-            ... ≤ C               : _,
-  -- sorry
-  { apply map_map },
-  { exact map_mono hf /- or simply: mono -/ },
-  { exact hg }
-  -- sorry
+  map (g ∘ f) A = map g (map f A) : /- inline sorry -/ map_map/- inline sorry -/
+            ... ≤ map g B         : /- inline sorry -/map_mono hf/- inline sorry -/
+            ... ≤ C               : /- inline sorry -/hg/- inline sorry -/,
 end
 
 /-
