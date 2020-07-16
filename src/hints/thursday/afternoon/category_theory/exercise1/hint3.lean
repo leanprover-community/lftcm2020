@@ -19,6 +19,4 @@ def iso_of_hom_iso_attempt (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅
     -- It's pretty similar the other way.
     apply (h.app (op Y)).inv,
     sorry
-  end,
-  hom_inv_id' := sorry,
-  inv_hom_id' := sorry, }
+  end, }

@@ -20,6 +20,4 @@ def iso_of_hom_iso_attempt (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅
     -- to some element of `unop (op X) ⟶ X` that we have available.
     sorry
   end,
-  inv := sorry,
-  hom_inv_id' := sorry,
-  inv_hom_id' := sorry, }
+  inv := sorry, }

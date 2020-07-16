@@ -27,7 +27,6 @@ Any of Exercises 1-7 should be approachable after the demo.
 The later exercises are quite hard, and will take you longer than the afternoon problem session!
 -/
 
-
 open category_theory
 
 /-!
