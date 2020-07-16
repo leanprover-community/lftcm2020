@@ -453,7 +453,7 @@ lemma generate_forget {X : Type} (τ : topological_space X) : generate_from (for
 def gi_top (X : Type) :
   galois_insertion (generate_from : set (set X) → topological_space X)
     (forget : topological_space X → set (set X)) :=
-galois_insertion.monotone_intro monotone_is_open monotone_span subset_span span_subgp
+galois_insertion.monotone_intro monotone_is_open monotone_span subset_forget generate_forget
 
 /-
 Then deduce that the type of topological space structures on X
