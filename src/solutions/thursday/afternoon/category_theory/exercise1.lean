@@ -24,6 +24,11 @@ def iso_of_hom_iso (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅ Y :=
   inv := (h.symm.app (op Y)).hom (𝟙 Y), }
 -- sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise1/`
+-/
+
 -- omit
 /-!
 Notice that we didn't need to provide proofs for the fields `hom_inv_id'` and `inv_hom_id'`.
