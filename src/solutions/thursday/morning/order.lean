@@ -490,21 +490,44 @@ begin
   intros C₁ C₂,
   intro h,
   intros U hU,
-  induction hU with V h2 h3 h4 h5 h6 h7 h8 h9 h10 h11,
-  { sorry },
-  { sorry },
-  { sorry },
-  { sorry }
+  induction hU with V hV V W _ _ hV2 hW2 C _ hC,
+  { apply generated_open.basic,
+    apply h, assumption },
+  { apply generated_open.univ },
+  { apply generated_open.inter, exact hV2, exact hW2},
+  { apply generated_open.sUnion, exact hC },
 end
 
-lemma subset_span {X : Type} (Us : set (set X)) : Us ≤ forget (generate_from Us) := sorry
+lemma subset_forget {X : Type} (Us : set (set X)) :
+  Us ≤ forget (generate_from Us) :=
+begin
+  intros U hU,
+  apply generated_open.basic,
+  assumption,
+end
 
-lemma span_subgp {X : Type} (τ : topological_space X) : generate_from (forget τ) = τ := sorry
+lemma generate_forget {X : Type} (τ : topological_space X) :
+  generate_from (forget τ) = τ :=
+begin
+  ext U,
+  split,
+  { intro hU,
+    induction hU with V hV V W _ _ hV2 hW2 C _ hC,
+  { exact hV },
+  { apply univ_mem },
+  { apply inter _ _ hV2 hW2 },
+  { apply union _ hC }},
+  { -- easy way
+    intro hU,
+    apply generated_open.basic,
+    exact hU }
+end
+
 
 def gi_top (X : Type) :
   galois_insertion (generate_from : set (set X) → topological_space X)
     (forget : topological_space X → set (set X)) :=
-galois_insertion.monotone_intro monotone_is_open monotone_span subset_span span_subgp
+galois_insertion.monotone_intro monotone_is_open monotone_span subset_forget generate_forget
 
 /-
 Then deduce that the type of topological space structures on X
