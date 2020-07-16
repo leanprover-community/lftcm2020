@@ -108,7 +108,7 @@ example {X : C} : C ⥤ Type* :=
 
 /-!
 However Lean will automatically attempt to fill in the `map_id'` and `map_comp'` fields itself,
-because these fields are marked with `auto_param`. This lets us specifiy a tactic to use to
+because these fields are marked with `auto_param`. This lets us specify a tactic to use to
 try to synthesize the field.
 
 (In fact, the whole category theory library started off as an experiment to see how far we could
@@ -232,7 +232,6 @@ We talk about limits using the following notions:
   * `c.π`, a natural transformation with components `c.π.app j : c.X ⟶ F.obj j`.
 * For `c : cone F`, `is_limit c` expresses that `c` is a limit cone.
 * `has_limit F`, a typeclass specifying a particular choice of limit cone for a functor `F`.
-* `has_limits_of_shape J C`, a typeclass specifying a choice of limit for any functor `F : J ⥤ C`.
 * `has_limits C`, a typeclass specifying a choice of limit for any functor into `C`.
 
 (There are also all the dual notions, `cocone`, `is_colimit`, `has_colimit`, etc.)
