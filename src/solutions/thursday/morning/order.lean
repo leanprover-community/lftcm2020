@@ -18,6 +18,12 @@ then define infs and sups, and bot and top, and go on from there.
 -/
 import tactic
 
+-- We will be using all of the theory of subsets of a type
+-- without further comment (e.g. `inter_subset_left A B : A ∩ B ⊆ A`)
+-- so let's open the `set` namespace.
+
+open set
+
 -- The type of subgroups of a group G is called `subgroup G` in Lean.
 -- It already has a lattice structure in Lean.
 
@@ -38,10 +44,7 @@ namespace subgp
 Note in particular that we have a function `subgp.carrier : subgp G → set G`,
 sending a subgroup of `G` to the underlying subset (`set G` is the type
 of subsets of G).
-
-We'll be using sets, so let's open the `set` namespace.
 -/
-open set
 
 -- Let G be a group, let H,J,K be subgroups of G, and let a,b,c be elements of G.
 variables {G : Type} [group G] (H J K : subgp G) (a b c : G)
@@ -207,7 +210,7 @@ definition inf (H K : subgp G) : subgp G :=
     exact ⟨H.inv_mem haH, K.inv_mem haK⟩
   end }
 
--- Add the `⊓` notation (type with `\glb`) for the intersection (inf) of two subgroups:
+-- Add the `⊓` notation (type with `\inf`) for the intersection (inf) of two subgroups:
 instance : has_inf (subgp G) := ⟨inf⟩
 
 -- We now check the four axioms for a semilattice_inf_top.
@@ -367,7 +370,9 @@ using the fact that `carrier` is part of a Galois insertion.
 
 
 -- The adjoint functor to the `carrier` functor is the `span` functor
--- from subsets to subgps. Here's a cool definition!
+-- from subsets to subgps. Here we will CHEAT by using `Inf` to
+-- define `span`. We could have built `span` directly with
+-- an inductive definition.
 def span (S : set G) : subgp G := Inf {H : subgp G | S ⊆ H.carrier}
 
 -- Here are some theorems about it.
@@ -434,6 +439,8 @@ class topological_space (X : Type) :=
 
 namespace topological_space
 
+def forget {X : Type} : topological_space X → set (set X) := @is_open X
+
 /-- The open sets of the least topology containing a collection of basic sets. -/
 inductive generated_open (X : Type) (g : set (set X)) : set X → Prop
 | basic  : ∀ s ∈ g, generated_open s
@@ -456,21 +463,29 @@ def generate_from {X : Type} (g : set (set X)) : topological_space X :=
 -- a partial order:
 
 instance (X : Type) : partial_order (topological_space X) :=
-partial_order.lift (@is_open X)
+partial_order.lift (forget)
 begin
   -- need to show that a top space is determined by its open sets
   intros τ₁ τ₂ h,
   cases τ₁, cases τ₂,
-  simp * at *
+  simp [forget, *] at *,
 end
 
 
 -- Exercise (LONG): First, show that we have a Galois insertion.
 
+lemma monotone_is_open {X : Type} : monotone (forget : topological_space X → set (set X)) := sorry
+
+lemma monotone_span {X : Type} : monotone (generate_from : set (set X) → topological_space X) := sorry
+
+lemma subset_span {X : Type} (Us : set (set X)) : Us ≤ forget (generate_from Us) := sorry
+
+lemma span_subgp {X : Type} (τ : topological_space X) : generate_from (forget τ) = τ := sorry
+
 def gi_top (X : Type) :
   galois_insertion (generate_from : set (set X) → topological_space X)
-    (@is_open X : topological_space X → set (set X)) :=
-sorry
+    (forget : topological_space X → set (set X)) :=
+galois_insertion.monotone_intro monotone_is_open monotone_span subset_span span_subgp
 
 /-
 Then deduce that the type of topological space structures on X
