@@ -1,9 +1,9 @@
 /-
-This is a file full of sorries covering the material on Wednesday afternoon
+This is a sorry-free file covering the material on Wednesday afternoon
 at LFTCM2020. It's how to build some algebraic structures in Lean
 -/
 
-import data.rat.basic -- we'll need the rationals later on in this file
+import data.rat.basic -- we'll need the rationals at the end of this file
 
 /-
 As a mathematician I essentially always start my Lean files with the following line:
@@ -27,7 +27,7 @@ Then we will define rings, fields, modules, vector spaces, and just demonstrate
 that they are usable, rather than making a complete interface for all of them.
 
 Let's start with the theory of groups. Unfortunately Lean has groups already,
-so we will have to do everything in a namespace.
+so we will have to do everything in a namespace
 -/
 
 
@@ -108,18 +108,34 @@ get them. Here is a route:
 lemma mul_left_cancel (a b c : G) (Habac : a * b = a * c) : b = c :=
  calc b = 1 * b         : by rw one_mul
     ... = (a⁻¹ * a) * b : by rw mul_left_inv
-    ... = a⁻¹ * (a * b) : by sorry
-    ... = a⁻¹ * (a * c) : by sorry
-    ... = (a⁻¹ * a) * c : by sorry
-    ... = 1 * c         : by sorry
-    ... = c             : by sorry
+    ... = a⁻¹ * (a * b) : by rw mul_assoc
+    ... = a⁻¹ * (a * c) : by rw Habac
+    ... = (a⁻¹ * a) * c : by rw mul_assoc
+    ... = 1 * c         : by rw mul_left_inv
+    ... = c             : by rw one_mul
+
+-- more mathlib-ish proof:
+lemma mul_left_cancel' (a b c : G) (Habac : a * b = a * c) : b = c :=
+begin
+  rw [←one_mul b, ←mul_left_inv a, mul_assoc, Habac, ←mul_assoc, mul_left_inv, one_mul],
+end
 
 lemma mul_eq_of_eq_inv_mul {a x y : G} (h : x = a⁻¹ * y) : a * x = y :=
 begin
   apply mul_left_cancel a⁻¹,
   -- ⊢ a⁻¹ * (a * x) = a⁻¹ * y
-  sorry
+  rw ←mul_assoc,
+  -- ⊢ a⁻¹ * a * x = a⁻¹ * y (remember this means (a⁻¹ * a) * x = ...)
+  rw mul_left_inv,
+  -- ⊢ 1 * x = a⁻¹ * y
+  rw one_mul,
+  -- ⊢ x = a⁻¹ * y
+  exact h
 end
+
+-- The same proof
+lemma mul_eq_of_eq_inv_mul' {a x y : G} (h : x = a⁻¹ * y) : a * x = y :=
+mul_left_cancel a⁻¹ _ _ $ by rwa [←mul_assoc, mul_left_inv, one_mul]
 
 /-
 
@@ -160,31 +176,38 @@ above, and observe that the proof breaks.
 
 -/
 
+-- term mode proof
+theorem mul_one' (a : G) : a * 1 = a :=
+mul_eq_of_eq_inv_mul $ by simp
+
 -- see if you can get the simplifier to do this one too
 @[simp] theorem mul_right_inv (a : G) : a * a⁻¹ = 1 :=
 begin
-  sorry
+  apply mul_eq_of_eq_inv_mul,
+  -- ⊢ a⁻¹ = a⁻¹ * 1
+  simp
 end
 
 -- Now here's a question. Can we train the simplifier to solve the following problem:
 
--- example (a b c d : G) :
+--example (a b c d : G) :
 --  ((a * b)⁻¹ * a * 1⁻¹⁻¹⁻¹ * b⁻¹ * b * b * 1 * 1⁻¹)⁻¹ = (c⁻¹⁻¹ * d * d⁻¹ * 1⁻¹⁻¹ * c⁻¹⁻¹⁻¹)⁻¹⁻¹ :=
--- by simp
+--by simp
 
--- Remove the --'s (pro tip: highlight all three lines and hold down ctrl and press `/`)
--- and see that it fails. Let's see if we can get it to work.
+-- Remove the --'s and see that it fails. Let's see if we can get it to work.
 
 -- We start with two very natural `simp` lemmas.
 
 @[simp] lemma one_inv : (1 : G)⁻¹ = 1 :=
 begin
-  sorry
+  apply mul_left_cancel (1 : G),
+  simp,
 end
 
 @[simp] lemma inv_inv (a : G) : a⁻¹⁻¹ = a :=
 begin
-  sorry
+  apply mul_left_cancel a⁻¹,
+  simp,
 end
 
 -- Here is a riskier looking `[simp]` lemma.
@@ -197,19 +220,23 @@ attribute [simp] mul_assoc -- recall this says (a * b) * c = a * (b * c)
 
 @[simp] lemma inv_mul_cancel_left (a b : G) : a⁻¹ * (a * b) = b :=
 begin
-  sorry
+  rw ←mul_assoc,
+  simp,
 end
 
 @[simp] lemma mul_inv_cancel_left (a b : G) : a * (a⁻¹ * b) = b :=
 begin
-  sorry
+  rw ←mul_assoc,
+  simp
 end
 
 -- Finally, let's make a `simp` lemma which enables us to
 -- reduce all inverses to inverses of variables
 @[simp] lemma mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ :=
 begin
-  sorry
+  apply mul_left_cancel (a * b),
+  rw mul_right_inv,
+  simp,
 end
 
 /-
@@ -236,23 +263,22 @@ instance (G : Type) [group G] (H : Type) [group H] : group (G × H) :=
   one := (1,1),
   inv := λ k, (k.1⁻¹, k.2⁻¹),
   mul_assoc := begin
-    -- let a b c be in G × H
     intros a b c,
-    -- Break them up into terms of type G and terms of type H
     cases a, cases b, cases c,
-    -- To prove an equality of two elements of G × H,
-    -- it suffices to prove that the G parts are equal and the H parts are equal
     ext;
-    -- there are now two goals, but they are goals involving groups,
-    -- and we trained the simplifier to solve these already.
-    -- The semicolon trick above enables us to solve both at once.
     simp,
   end,
   one_mul := begin
-    sorry
+    intro a,
+    cases a,
+    ext;
+    simp,
   end,
   mul_left_inv := begin
-    sorry
+    intro a,
+    cases a,
+    ext;
+    simp
   end }
 
 -- the type class inference system now knows that products of groups are groups
@@ -261,7 +287,7 @@ by apply_instance
 
 end group
 
--- Now let's make a group of order two.
+-- let's make a group of order two.
 
 -- First the elements {+1, -1}
 inductive mu2
@@ -311,14 +337,11 @@ begin
   -- first define the structure
   refine_struct { mul := mul, one := one, inv := inv },
   -- now we have three goals (the axioms)
-  -- and we can prove them all by explicitly checking all the cases
-  -- as our group is known to be finite by Lean, and equality is
-  -- known to be decidable. `dec_trivial` means "there is obviously
-  -- a finite algorithm which will check the axiom, namely checking all the cases"
   all_goals {exact dec_trivial}
 end
 
 end mu2
+
 
 -- Now let's build rings and modules and stuff (via monoids and add_comm_groups)
 
@@ -360,9 +383,6 @@ extends has_scalar R M :=
 (add_smul : ∀(r s : R) (x : M), (r + s) • x = r • x + s • x)
 (mul_smul : ∀ (r s : R) (x : M), (r * s) • x = r • s • x)
 (one_smul : ∀ x : M, (1 : R) • x = x)
-
--- the type of ideals of a ring
-def ideal (R : Type) [comm_ring R] := module R R
 
 -- for fields we let ⁻¹ be defined on the entire field, and demand 0⁻¹ = 0
 -- and that a⁻¹ * a = 1 for non-zero a. This is merely for convenience;
@@ -473,13 +493,8 @@ begin
   rw add_comm_group.zero_add,
 end
 
--- Now why don't you try rings?
-
 variables {R : Type} [ring R]
 
--- note that this is pretty horrible because
--- we have to tell Lean to use our own versions of `add_comm_group`s
--- and `ring`s.
 lemma ring.mul_zero (r : R) : r * 0 = 0 :=
 begin
   apply add_comm_group.add_left_cancel (r * 0),
@@ -490,18 +505,29 @@ end
 
 lemma ring.mul_neg (a b : R) : a * -b = -(a * b) :=
 begin
-  sorry
+  symmetry,
+  apply add_comm_group.neg_eq_of_add_eq_zero,
+  rw ←ring.mul_add,
+  rw add_comm_group.add_right_neg,
+  rw ring.mul_zero
 end
 
-lemma ring.mul_sub (R : Type) [ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
+lemma ring.mul_sub (R : Type) [comm_ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
 begin
-  sorry
+  rw add_comm_group.sub_eq_add_neg,
+  rw ring.mul_add,
+  rw ring.mul_neg,
+  refl,
 end
 
-lemma ring.sub_mul (R : Type) [ring R] (r a b : R) : (a - b) * r = a * r - b * r :=
+lemma comm_ring.sub_mul (R : Type) [comm_ring R] (r a b : R) : (a - b) * r = a * r - b * r :=
 begin
-  sorry
+  rw comm_ring.mul_comm (a - b),
+  rw comm_ring.mul_comm a,
+  rw comm_ring.mul_comm b,
+  apply ring.mul_sub
 end
+
 
 -- etc etc, for thousands of lines of mathlib, which develop the interface
 -- abelian groups, rings, commutative rings, modules, fields, vector spaces etc.
@@ -607,3 +633,4 @@ Prove a theorem. Write a function. @XenaProject
 https://twitter.com/XenaProject
 
 -/
+
