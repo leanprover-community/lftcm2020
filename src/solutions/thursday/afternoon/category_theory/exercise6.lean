@@ -66,3 +66,8 @@ theorem epi_of_pushout {X Y : C} (f : X ⟶ Y)
     rw [←hg, ←hh],
   end }
 -- sorry
+
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise6/`
+-/

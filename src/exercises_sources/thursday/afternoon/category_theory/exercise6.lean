@@ -37,3 +37,8 @@ theorem epi_of_pushout {X Y : C} (f : X ⟶ Y)
 -- Hint: if `simp` won't correctly simplify `𝟙 X ≫ f`, try `dsimp, simp`.
 sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise6/`
+-/
+

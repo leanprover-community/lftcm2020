@@ -37,6 +37,10 @@ The actual exercise!
 def CommRing_forget_representable : Σ (R : CommRing), (forget CommRing) ≅ coyoneda.obj (op R) :=
 sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise4/`
+-/
 
 /-
 If you get an error message

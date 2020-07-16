@@ -31,6 +31,11 @@ def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (
   F.obj (X ⊞ Y) ≅ F.obj X ⊞ F.obj Y :=
 sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise5/`
+-/
+
 -- Challenge problem:
 -- In fact one could prove a better result,
 -- not requiring chosen biproducts in D,

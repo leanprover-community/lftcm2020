@@ -43,6 +43,10 @@ def CommRing_forget_representable : Σ (R : CommRing), (forget CommRing) ≅ coy
    { app := λ R f, by { dsimp at f, exact f X, }, }, }⟩
 -- sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise4/`
+-/
 
 /-
 If you get an error message
