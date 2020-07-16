@@ -35,3 +35,8 @@ begin
   exact w,
 end
 -- sorry
+
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise3/`
+-/

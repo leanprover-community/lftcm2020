@@ -18,3 +18,8 @@ lemma equiv_preserves_mono {X Y : C} (f : X ⟶ Y) [mono f] (e : C ≌ D) :
 --   you can use `have w' := congr_arg (λ k, F.map k) w`.
 sorry
 
+/-!
+There are some further hints in
+`src/hints/thursday/afternoon/category_theory/exercise3/`
+-/
+
