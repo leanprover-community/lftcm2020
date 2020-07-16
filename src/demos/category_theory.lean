@@ -87,7 +87,20 @@ To build a functor `F : C ⥤ D` we need to specify four fields
 * `obj : C → D`
 * `map : ∀ {X Y : C} (f : X ⟶ Y), obj X ⟶ obj Y`
 * `map_id'` and `map_comp'`, expressing the functor laws.
+-/
 
+example {X : C} : C ⥤ Type* :=
+{ obj := λ Y, X ⟶ Y,
+  map := λ Y Y' f g, g ≫ f,
+  map_id' := λ X, begin funext, simp, end,
+  map_comp' := λ X Y Z f g, begin funext, simp, end }
+
+
+
+
+
+
+/-!
 However Lean will automatically attempt to fill in the `map_id'` and `map_comp'` fields itself,
 because these fields are marked with `auto_param`. This lets us specifiy a tactic to use to
 try to synthesize the field.
@@ -120,7 +133,13 @@ example {X : C} : C ⥤ Type* :=
 
 /-!
 Sebastien's talk on differential geometry tomorrow will give another example of `auto_param` being used.
+
+You can also watch me doing a speed-run https://youtu.be/oz3z2NSNY8c of Floris's "pointed map" exercises
+from yesterday, taking advantage of `auto_param`.
 -/
+
+
+
 
 /-!
 ## Natural transformations
@@ -181,8 +200,7 @@ you should just allow two independent universe variables, as above.
 /-!
 ## Concrete categories
 
-We've set up a number of concrete categories in mathlib,
-although at this point they are not widely used.
+We've set up a number of concrete categories in mathlib.
 -/
 
 example (R S : CommRing) (f : R ⟶ S) (x y : R) : f (x * y) = f x * f y := by simp
@@ -197,17 +215,6 @@ There's a coercion from `CommRing` to `Type`,
 so we can still talk about elements by writing `x : R`,
 and morphisms automatically behave properly as functions (e.g. in `f (x * y)`).
 -/
-
-/-!
-## Adjunctions and equivalences
-
-I won't go into this much in this demo, but of course we have adjunctions and equivalences.
-(In fact, our equivalences are definitionally set up to always be adjunctions, too, with
-helper functions that adjust any equivalence into this form.)
--/
-
-#print adjunction
-#print category_theory.equivalence
 
 
 /-!
@@ -254,14 +261,19 @@ def pt : Top := Top.of unit
 -- Let's construct the mapping cylinder.
 def to_pt (X : Top) : X ⟶ pt :=
 { val := λ _, unit.star, property := continuous_const }
+
 def I₀ : pt ⟶ I :=
 { val := λ _, ⟨(0 : ℝ), by norm_num [set.left_mem_Icc]⟩,
   property := continuous_const }
+
 def I₁ : pt ⟶ I :=
 { val := λ _, ⟨(1 : ℝ), by norm_num [set.right_mem_Icc]⟩,
   property := continuous_const }
 
+-- We now construct a cylinder as a categorical limit.
+-- `limits.prod` is a shorthand for constructing a limit over the two point diagram:
 def cylinder (X : Top) : Top := prod X I
+
 -- To define a map to the cylinder, we give a map to each factor.
 -- `prod.lift` is a helper method, providing a wrapper around `limit.lift` for binary products.
 def cylinder₀ (X : Top) : X ⟶ cylinder X := prod.lift (𝟙 X) (to_pt X ≫ I₀)
@@ -278,12 +290,21 @@ The mapping cylinder is the pushout of the diagram
 -/
 def mapping_cylinder {X Y : Top} (f : X ⟶ Y) : Top := pushout f (cylinder₁ X)
 
+
+/-!
+It's perhaps worth admitting here that constructing objects using categorical (co)limits
+typically gives quite ghastly "definitional" properties --- if you want to use these objects,
+you're going to have to work through their universal properties.
+
+This is not necessarily a bad thing, but takes some getting used to.
+-/
+
 /-!
 ## Applications
 
 We're only just getting to the point in mathlib where we're ready to do the sorts of mathematics
 that rely on category theory as a basic language. There's lots more to come ---
-big chunks of algebraic geometry, quantum topology, homological algebra, etc.
+big chunks of algebraic geometry, homological algebra, quantum topology, etc.
 
 One important way in which we'll use the category theory library is to achieve polymorphism.
 We don't want to separately prove theorems about sheaves of sets, sheaves of rings, etc.
@@ -311,7 +332,7 @@ local notation `Ab` := AddCommGroup.{0}
 local attribute [instance] has_equalizers_of_has_finite_limits
 local attribute [instance] has_coequalizers_of_has_finite_colimits
 
-noncomputable theory -- `has_images Ab` is noncomputable
+noncomputable theory -- `has_images Ab` is noncomputable!
 
 open cochain_complex homological_complex
 
@@ -319,15 +340,6 @@ abbreviation Z := AddCommGroup.of ℤ
 
 def mul_by (k : ℤ) : Z ⟶ Z :=
 add_monoid_hom.of (gsmul k)
-
-@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := by simp [mul_by]
-
-lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
-begin
-  tidy,
-  { simp only [add_monoid_hom.mem_ker] at a, finish, },
-  { subst a, simp [add_monoid_hom.mem_ker], },
-end
 
 /--
 We define the complex `... --0--> ℤ --2--> ℤ --0--> ℤ --4--> ℤ --0--> ...`
@@ -343,6 +355,19 @@ def P : cochain_complex Ab :=
   end }
 
 #check (graded_cohomology Ab).obj P
+
+/--
+Let's try to calculate the cohomology!
+-/
+
+@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := by simp [mul_by]
+
+lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
+begin
+  tidy,
+  { simp only [add_monoid_hom.mem_ker] at a, finish, },
+  { subst a, simp [add_monoid_hom.mem_ker], },
+end
 
 def P_2 : P.cohomology_group 2 ≅ 0 :=
 begin
@@ -380,14 +405,31 @@ end
 There's a bunch in mathlib's `category_theory/` folder that hasn't been mentioned at all here,
 including:
 
+* Adjunctions
+* Equivalences
 * Monads
 * Abelian categories
 * Monoidal categories
 * ...
 -/
 
-#check category_theory.abelian
+#print category_theory.abelian
+-- Right now we don't have a single instance of `abelian` in the library:
+-- constructing `abelian AddCommGroup` is a great exercise, and all the ingredients are available.
+-- The only things remaining are
+-- "every mono is the kernel of its cokernel" and "every epi is the cokernel of its kernel"
+-- and these should be easy consequences of statements in the non-categorical group theory library.
+instance : abelian AddCommGroup :=
+{ normal_mono := λ X Y f f_mono,
+  { Z := cokernel f,
+    g := cokernel.π f,
+    w := by tidy,
+    is_limit := sorry, },
+  normal_epi := sorry, }
+
 
 example (R : CommRing) : monoidal_category (Module R) := by apply_instance
 
 example : reflective (forget₂ CpltSepUniformSpace UniformSpace) := by apply_instance
+
+#print category_theory.adjunction.right_adjoint_preserves_limits
