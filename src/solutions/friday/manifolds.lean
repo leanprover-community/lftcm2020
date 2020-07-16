@@ -5,6 +5,8 @@ noncomputable theory
 open_locale manifold classical big_operators
 open set
 
+universe u
+
 
 /-! ### Local homeomorphisms
 
@@ -349,7 +351,38 @@ the product topology. Instead, the tangent space at a point `x` is identified wi
 preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
 manifold and the charts.
 
-Even though the tangent bundle to `myℝ` is trivial abstractly, with this construction the
+In vector spaces, the tangent space is canonically the product space, with the same topology, as
+there is only one chart so there is no strange gluing at play. The equality of the topologies
+is given in `tangent_bundle_model_space_topology_eq_prod`, but they are not definitionally equal
+so one can get strange behavior if abusing identifications.
+
+Let us register the identification explicitly, as a homeomorphism:
+-/
+
+def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
+  tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
+{ to_fun := id,
+  inv_fun := id,
+  left_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
+  right_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
+  continuous_to_fun := begin
+    -- if you think that `continuous_id` should work but `exact continuous_id` fails, you
+    -- can try `convert continuous_id`, that might show you what doesn't match and let you
+    -- fix it afterwards.
+    -- sorry
+    convert continuous_id,
+    exact (tangent_bundle_model_space_topology_eq_prod _ _).symm
+    -- sorry
+  end,
+  continuous_inv_fun :=
+  begin
+    -- sorry
+    convert continuous_id,
+    exact (tangent_bundle_model_space_topology_eq_prod _ _)
+    -- sorry
+  end }
+
+/- Even though the tangent bundle to `myℝ` is trivial abstractly, with this construction the
 tangent bundle is *not* the product space with the product topology, as we have used various charts
 so the gluing is not trivial. The following exercise unfolds the definition to see what is going on.
 It is not a reasonable exercise, in the sense that one should never ever do this when working
@@ -411,6 +444,7 @@ theorem diffeomorph_of_one_dim_compact_connected
   [charted_space (euclidean_space (fin 1)) M] [charted_space (euclidean_space (fin 1)) M']
   [connected_space M] [connected_space M'] [compact_space M] [compact_space M']
   [t2_space M] [t2_space M']
+  [smooth_manifold_with_corners (𝓡 1) M] [smooth_manifold_with_corners (𝓡 1) M']
   -- omit
   :
   -- sorry
@@ -432,8 +466,9 @@ definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n
 
 instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
-/- Don't try to fill the following instances, the first two should follow from general theory, and
-the third one is too much work for an exercise session. -/
+/- Don't try to fill the following instances: the first two should follow from general theory, and
+the third one is too much work for an exercise session (but you can work on it if you don't like
+manifolds and prefer topology -- then please PR it to mathlib!). -/
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
 instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
@@ -468,7 +503,7 @@ end
 the circle -/
 theorem diffeomorph_circle_of_one_dim_compact_connected
   (M : Type*) [topological_space M] [charted_space (euclidean_space (fin 1)) M]
-  [connected_space M] [compact_space M] [t2_space M] :
+  [connected_space M] [compact_space M] [t2_space M] [smooth_manifold_with_corners (𝓡 1) M] :
   nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
 -- sorry
 diffeomorph_of_one_dim_compact_connected M (sphere 1)
@@ -492,7 +527,7 @@ where the corresponding model with corners is called `𝓡∂ 1`.
 (now). -/
 theorem sphere_eversion :
   -- sorry
-  ∃ f : (Icc (0 : ℝ) 1) × (sphere 2) → (euclidean_space (fin 3)),
+  ∃ f : Icc (0 : ℝ) 1 × sphere 2 → euclidean_space (fin 3),
   times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
   ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
     function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
@@ -568,9 +603,78 @@ begin
     simp only [hx, this, max_eq_left] }
 end
 
-def direct_function : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
-λ p, (p.1, mfderiv (𝓡∂ 1) I (subtype.val : Icc (0 : ℝ) 1 → ℝ) p.1 p.2)
+lemma lemma_two {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
+  times_cont_mdiff_on I (𝓡∂ 1) ∞ f s :=
+begin
+  rw times_cont_mdiff_on_iff,
+  split,
+  { have : embedding (subtype.val : Icc (0 : ℝ) 1 → ℝ) := embedding_subtype_coe,
+    exact (embedding.continuous_on_iff this).2 h.continuous_on },
+  simp only with mfld_simps,
+  assume y,
+  by_cases hy : (y : ℝ) < 1,
+  { simp [chart_at, model_with_corners_euclidean_half_space, (∘), hy, Icc_left_chart,
+      pi_Lp.times_cont_diff_on_iff_coord],
+    apply h.mono (inter_subset_left _ _) },
+  { simp [chart_at, model_with_corners_euclidean_half_space, (∘), hy, Icc_right_chart,
+      pi_Lp.times_cont_diff_on_iff_coord],
+    assume i,
+    apply (times_cont_diff_on_const.sub h).mono (inter_subset_left _ _) }
+end
 
+def f (x : ℝ) : Icc (0 : ℝ) 1 :=
+⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
+
+def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
+
+lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) I ∞ g :=
+lemma_one
+
+lemma times_cont_mdiff_on_f : times_cont_mdiff_on I (𝓡∂ 1) ∞ f (Icc 0 1) :=
+begin
+  apply lemma_two,
+  apply times_cont_diff_id.times_cont_diff_on.congr,
+  assume x hx,
+  simp at hx,
+  simp [f, hx],
+end
+
+def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
+λ p, (p.1, (tangent_map (𝓡∂ 1) I g p).2)
+
+lemma continuous_G : continuous G :=
+begin
+  apply continuous.prod_mk (tangent_bundle_proj_continuous _ _),
+  refine continuous_snd.comp _,
+  have Z := times_cont_mdiff_g.continuous_tangent_map le_top,
+  convert Z,
+  exact (tangent_bundle_model_space_topology_eq_prod ℝ I).symm
+end
+
+def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
+λ p, tangent_map_within I (𝓡∂ 1) f (Icc 0 1)
+  ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
+
+lemma continuous_F : continuous F :=
+begin
+  rw continuous_iff_continuous_on_univ,
+  apply (times_cont_mdiff_on_f.continuous_on_tangent_map_within le_top _).comp,
+  { apply ((tangent_bundle_vector_space_triv ℝ).symm.continuous.comp _).continuous_on,
+    apply (continuous_subtype_coe.comp continuous_fst).prod_mk continuous_snd },
+  { rintros ⟨⟨x, hx⟩, v⟩ _,
+    simp [tangent_bundle_vector_space_triv],
+    exact hx },
+  { rw unique_mdiff_on_iff_unique_diff_on,
+    exact unique_diff_on_Icc_zero_one }
+end
+
+def my_tangent_homeo : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) ≃ₜ (Icc (0 : ℝ) 1) × ℝ :=
+{ to_fun := G,
+  inv_fun := F,
+  continuous_to_fun := continuous_G,
+  continuous_inv_fun := continuous_F,
+  left_inv := sorry,
+  right_inv := sorry }
 -- omit
 
 /-!
