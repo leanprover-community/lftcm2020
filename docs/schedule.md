@@ -45,41 +45,41 @@ to automate some proofs.
 Time | Activity | Speaker
 ---- | -------- | -------
 07:00 -- 12:00 | Tech support ([installing Lean, using git + GitHub](https://www.youtube.com/playlist?list=PLlF-CfQhukNnxF1S22cNGKyfOrd380NUv)) |
-13:00 -- 13:30 | Welcome + 1st Lean proof                 | Scott Morrison
-13:30 -- 18:00 | Natural number game (demo and exercises) | Kevin Buzzard
+13:00 -- 13:30 | [Welcome](https://www.youtube.com/watch?v=8mVOIGW5US4) + [1st Lean proof](https://www.youtube.com/watch?v=b59fpAJ8Mfs)   | Scott Morrison
+13:30 -- 18:00 | [Natural number game (demo and exercises)](https://www.youtube.com/watch?v=9V1Xo1n_3Qw) | Kevin Buzzard
 13:30 -- 18:00 | [Meta-programming and tactic writing](https://www.youtube.com/playlist?list=PLlF-CfQhukNnq2kDCw2P_vI5AfXN7egP2)      | Rob Lewis
 
 
-### Tuesday: 
+### Tuesday:
 
 This second day focuses on basic proving techniques and manipulating elementary
-objects. It will mostly rely on the 
+objects. It will mostly rely on the
 [Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/)
 tutorial. We will cover most of the content of the tutorial and help people
 doing the exercises.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Mathematics in Lean: [basics](https://www.imo.universite-paris-saclay.fr/~pmassot/basics.pdf)              | Patrick Massot
-13:00 -- 15:00 | Mathematics in Lean: logic               | Jeremy Avigad
-15:00 -- 16:30 | Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ      | Rob Lewis
-16:30 -- 18:00 | Dealing with sets and operations on them | Jeremy Avigad
+10:00 -- 12:00 | [Mathematics in Lean: basics](https://www.youtube.com/watch?v=lw8EfTmWzRU&list=PLlF-CfQhukNlxexiNJErGJd2dte_J1t1N&index=5&t=443s) [(slides)](https://www.imo.universite-paris-saclay.fr/~pmassot/basics.pdf)              | Patrick Massot
+13:00 -- 15:00 | [Mathematics in Lean: logic](https://www.youtube.com/watch?v=WGwKefZ8KFo)               | Jeremy Avigad
+15:00 -- 16:30 | [Dealing with numbers: ℕ, ℤ, ℚ, ℝ, ℂ](https://www.youtube.com/watch?v=iEs2U_kzYy4)      | Rob Lewis
+16:30 -- 18:00 | [Dealing with sets and operations on them](https://www.youtube.com/watch?v=qlJrCtYiEkI) | Jeremy Avigad
 
 ### Wednesday:
 
 This third day focuses on *theory building*. This includes defining
 mathematical structures (such as groups, rings, topological spaces...)
 and their relations as well as proving enough basic lemmas to make them
-usable. 
-All the examples that will be discussed are already 
+usable.
+All the examples that will be discussed are already
 [known to Lean](https://leanprover-community.github.io/mathlib-overview.html),
 but we will explain how build them from scratch.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | Structures and classes               | Floris van Doorn
-13:00 -- 15:00 | Rebuilding an algebraic hierarchy    | Kevin Buzzard
-15:00 -- 17:00 | Rebuilding a topological hierarchy   | Alex J. Best
+10:00 -- 12:00 | Structures and classes [(video 1)](https://www.youtube.com/watch?v=xYenPIeX6MY) [(video 2)](https://www.youtube.com/watch?v=1W_fyjaaY0M)           | Floris van Doorn
+13:00 -- 15:00 | [Rebuilding an algebraic hierarchy](https://www.youtube.com/watch?v=ATlAQPAtiTY)    | Kevin Buzzard
+15:00 -- 17:00 | [Rebuilding a topological hierarchy](https://www.youtube.com/watch?v=RTfjSlwbKjQ)   | Alex J. Best
 
 
 ### Thursday:
@@ -91,10 +91,10 @@ be used, mostly by reproving lemmas that are already in mathlib.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 11:00 | “Order”, including Galois connections  | Kevin Buzzard
-11:00 -- 12:00 | “Groups, rings and fields”             | Johan Commelin
-13:00 -- 15:00 | “Linear algebra”                       | Anne Baanen
-15:00 -- 18:00 | “Category theory”                      | Scott Morrison
+10:00 -- 11:00 | [“Order”, including Galois connections](https://www.youtube.com/watch?v=vsnB7W9nODI)  | Kevin Buzzard
+11:00 -- 12:00 | [“Groups, rings and fields”](https://www.youtube.com/watch?v=SdXvUU75cDA)             | Johan Commelin
+13:00 -- 15:00 | [“Linear algebra”](https://www.youtube.com/watch?v=EnZvGCU_jpc)                       | Anne Baanen
+15:00 -- 18:00 | [“Category theory”](https://www.youtube.com/watch?v=1NUc-ZNC_2s)                      | Scott Morrison
 
 
 ### Friday:
@@ -104,6 +104,6 @@ and differential geometry.
 
 Time | Activity | Speaker
 ---- | -------- | -------
-10:00 -- 12:00 | “[Topology](https://www.imo.universite-paris-saclay.fr/~pmassot/topology.pdf)”, including filters          | Patrick Massot
+10:00 -- 12:00 | [“Topology”, including filters](https://youtu.be/hhOPRaR3tx0) [(slides)](https://www.imo.universite-paris-saclay.fr/~pmassot/topology.pdf)        | Patrick Massot
 13:00 -- 15:30 | “Calculus and integration”             | Yury Kudryashov
 15:30 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather Macbeth
