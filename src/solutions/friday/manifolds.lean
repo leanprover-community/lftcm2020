@@ -733,7 +733,8 @@ begin
 end
 
 /- Now, you can prove that any one-dimensional compact connected manifold is diffeomorphic to
-the circle -/
+the circle. Here, you should fill the `sorry` (but luckily you may use
+`diffeomorph_of_one_dim_compact_connected`). -/
 theorem diffeomorph_circle_of_one_dim_compact_connected
   (M : Type*) [topological_space M] [charted_space (euclidean_space (fin 1)) M]
   [connected_space M] [compact_space M] [t2_space M] [smooth_manifold_with_corners (𝓡 1) M] :
