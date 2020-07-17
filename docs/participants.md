@@ -90,6 +90,7 @@ to add your name to the list below (in alphabetical order).
 * Daan van Gent (Universiteit Leiden, NL)
 * Philip A. Vetter (Institute of Deep-sea Science and Engineering, CAS, Sanya Hainan, CN)
 * David Wärn (University of Cambridge, UK)
+* Eric Wieser (University of Cambridge, UK)
 * Chris Wong
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
 * Apurva Nakade (University of Western Ontario, CA)
