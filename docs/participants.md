@@ -47,6 +47,7 @@ to add your name to the list below (in alphabetical order).
 * Thomas Eckl (University of Liverpool, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
+* Damián Gvirtz (Leibniz Universität Hannover, DE)
 * Jeroen Hanselman (Universität Ulm, DE)
 * Yun Hao (DE)
 * Jan Hennig (Leibniz Universität Hannover, DE)
