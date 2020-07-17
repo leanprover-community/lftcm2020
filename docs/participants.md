@@ -88,6 +88,7 @@ to add your name to the list below (in alphabetical order).
 * Adam Topaz (University of Alberta, CA)
 * Eloi Torrents (Universitat Politècnica de Catalunya, CAT)
 * Daan van Gent (Universiteit Leiden, NL)
+* Philip A. Vetter (Institute of Deep-sea Science and Engineering, CAS, Sanya Hainan, CN)
 * David Wärn (University of Cambridge, UK)
 * Chris Wong
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
