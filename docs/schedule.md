@@ -45,9 +45,9 @@ to automate some proofs.
 Time | Activity | Speaker
 ---- | -------- | -------
 07:00 -- 12:00 | Tech support ([installing Lean, using git + GitHub](https://www.youtube.com/playlist?list=PLlF-CfQhukNnxF1S22cNGKyfOrd380NUv)) |
-13:00 -- 13:30 | [Welcome](https://www.youtube.com/watch?v=8mVOIGW5US4) + [1st Lean proof](https://www.youtube.com/watch?v=b59fpAJ8Mfs)   | Scott Morrison
-13:30 -- 18:00 | [Natural number game (demo and exercises)](https://www.youtube.com/watch?v=9V1Xo1n_3Qw) | Kevin Buzzard
-13:30 -- 18:00 | [Meta-programming and tactic writing](https://www.youtube.com/playlist?list=PLlF-CfQhukNnq2kDCw2P_vI5AfXN7egP2)      | Rob Lewis
+13:00 -- 13:30 | [Welcome](https://www.youtube.com/watch?v=8mVOIGW5US4) + [1st Lean proof](https://www.youtube.com/watch?v=b59fpAJ8Mfs)  | Scott Morrison
+13:30 -- 18:00 | [Natural number game (demo and exercises)](https://www.youtube.com/watch?v=9V1Xo1n_3Qw)                                 | Kevin Buzzard
+13:30 -- 18:00 | [Meta-programming and tactic writing](https://www.youtube.com/playlist?list=PLlF-CfQhukNnq2kDCw2P_vI5AfXN7egP2)         | Rob Lewis
 
 
 ### Tuesday:
@@ -105,5 +105,5 @@ and differential geometry.
 Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 12:00 | [“Topology”, including filters](https://youtu.be/hhOPRaR3tx0) [(slides)](https://www.imo.universite-paris-saclay.fr/~pmassot/topology.pdf)        | Patrick Massot
-13:00 -- 15:30 | “Calculus and integration”             | Yury Kudryashov
+13:00 -- 15:30 | [“Calculus and integration”](https://youtu.be/p8Etfv1_VqQ)             | Yury Kudryashov
 15:30 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather Macbeth
