@@ -5,7 +5,10 @@ import analysis.calculus.iterated_deriv
 
 namespace lftcm
 
+noncomputable theory
+
 open real
+open_locale topological_space filter classical
 
 /-!
 # Derivatives
@@ -34,9 +37,29 @@ begin
   sorry
 end
 
--- Currently `simp` is unable to solve the next example
+-- Currently `simp` is unable to solve the next example.
 -- A PR that will make this example provable `by simp` would be very welcome!
 example : iterated_deriv 7 (λ x, sin (tan x) - tan (sin x)) 0 = -168 := sorry
+
+variables (m n : Type) [fintype m] [fintype n]
+
+-- Generalizations of the next two instances should go to `analysis/normed_space/basic`
+instance : normed_group (matrix m n ℝ) := pi.normed_group
+instance : normed_space ℝ (matrix m n ℝ) := pi.normed_space
+
+/-- Trace of a matrix as a continuous linear map. -/
+def matrix.trace_clm : matrix n n ℝ →L[ℝ] ℝ :=
+(matrix.trace n ℝ ℝ).mk_continuous (fintype.card n)
+begin
+  sorry
+end
+
+-- Another hard exercise that would make a very good PR
+example :
+  has_fderiv_at (λ m : matrix n n ℝ, m.det) (matrix.trace_clm n) 1 :=
+begin
+  sorry
+end
 
 end lftcm
 
