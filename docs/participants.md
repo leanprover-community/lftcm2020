@@ -68,6 +68,7 @@ to add your name to the list below (in alphabetical order).
 * Bhavik Mehta (University of Cambridge, UK)
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Harshit J Motwani
+* Apurva Nakade (University of Western Ontario, CA)
 * Khoi Nguyen
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Andrew O'Desky (University of Michigan, US)
@@ -94,4 +95,3 @@ to add your name to the list below (in alphabetical order).
 * Eric Wieser (University of Cambridge, UK)
 * Chris Wong
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
-* Apurva Nakade (University of Western Ontario, CA)
