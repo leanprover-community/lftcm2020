@@ -68,6 +68,13 @@ Manifold in Lean:
   of the group of local homeos of the model space. This is Prop (and a typeclass). The same
   manifold can be at the same time an analytic manifold, a smooth manifold and a topological
   manifold (with the same fixed atlas).
+* A charted space is a smooth manifold (with corners) if it is compatible with the smooth
+  groupoid on the model space. To cover uniformly both situations with and without boundary,
+  the smooth groupoid is with respect to a map `I : H → E` (think of `H` as the half-space and
+  `E` the full space), which is the identity in the boundaryless situation, the inclusion in
+  the half-space situation. This map `I` is called a _model with corners_. The most standard ones
+  (identity in `ℝ^n` and inclusion of half-space in `ℝ^n`) have dedicated notations:
+  `𝓡 n` and `𝓡∂ n`.
 -/
 
 #check charted_space (euclidean_half_space 1) (Icc (0 : ℝ) 1)
@@ -93,7 +100,10 @@ instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) :=
   chart_mem_atlas := begin sorry end }
 
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) :=
-{ compatible := begin sorry end }
+{ compatible := begin
+    assume e e' he he',
+    sorry
+  end }
 
 -- smooth functions
 
@@ -101,14 +111,25 @@ def inc (n : ℕ) : sphere n → euclidean_space (fin (n+1)) :=
 λ p : sphere n, (p : euclidean_space (fin (n+1)))
 
 lemma inc_smooth (n : ℕ) : times_cont_mdiff (𝓡 n) (𝓡 (n+1)) ∞ (inc n) :=
-sorry
+begin
+  rw times_cont_mdiff_iff,
+  split,
+  { exact continuous_subtype_coe, },
+  { assume x y,
+    sorry }
+end
 
 lemma inc_continuous (n : ℕ) : continuous (inc n) :=
 (inc_smooth n).continuous
 
+lemma inc_mdifferentiable (n : ℕ) : mdifferentiable (𝓡 n) (𝓡 (n+1)) (inc n) :=
+(inc_smooth n).mdifferentiable le_top
+
 -- tangent space and tangent bundles
 
-example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) : tangent_bundle (𝓡 n) (sphere n) := ⟨p, v⟩
+example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) :
+  tangent_bundle (𝓡 n) (sphere n) :=
+⟨p, v⟩
 
 -- tangent map, derivatives
 
@@ -116,7 +137,7 @@ example (n : ℕ) : times_cont_mdiff ((𝓡 n).prod (𝓡 n)) ((𝓡 (n+1)).prod
   (tangent_map (𝓡 n) (𝓡 (n+1)) (inc n)) :=
 (inc_smooth n).times_cont_mdiff_tangent_map le_top
 
-example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) (f : sphere n → sphere (n^2)) :
+example (n : ℕ) (f : sphere n → sphere (n^2)) (p : sphere n) (v : tangent_space (𝓡 n) p) :
   mfderiv (𝓡 n) (𝓡 (n^2)) f p v = (tangent_map (𝓡 n) (𝓡 (n^2)) f ⟨p, v⟩).2 :=
 rfl
 
@@ -585,7 +606,7 @@ manifold yet. Since we have cheated and introduced it (with sorries) at the begi
 let's cheat again and use it to reformulate the previous statement.
 -/
 
--- the next result is nontrivial, leave it sorried (but you can work on it if you don't like
+-- the next result is not trivial, leave it sorried (but you can work on it if you don't like
 -- manifolds and prefer topology -- then please PR it to mathlib!).
 instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 
