@@ -250,14 +250,14 @@ Local homeomorphisms are globally defined maps with a globally defined "inverse"
 relevant set is the *source*, which should be mapped homeomorphically to the *target*.
 -/
 
-/- Define a local homeomorphism from `ℝ` to `ℝ` which is just `x ↦ -x`, but on `(-1, 1)`. In
-Lean, the interval `(-1, 1)` is denoted by `Ioo (-1 : ℝ) 1` (where `o` stands for _open_). -/
-
 -- set up a simple helper simp lemma to simplify our life later.
 @[simp] lemma neg_mem_Ioo_minus_one_one (x : ℝ) : -x ∈ Ioo (-1 : ℝ) 1 ↔ x ∈ Ioo (-1 : ℝ) 1 :=
 begin
   sorry
 end
+
+/- Define a local homeomorphism from `ℝ` to `ℝ` which is just `x ↦ -x`, but on `(-1, 1)`. In
+Lean, the interval `(-1, 1)` is denoted by `Ioo (-1 : ℝ) 1` (where `o` stands for _open_). -/
 
 def my_first_local_homeo : local_homeomorph ℝ ℝ :=
 { to_fun := λ x, -x,
@@ -388,7 +388,7 @@ but for `n = 1` this does not coincide with the above one, as `ℝ^1` (a.k.a. `f
 the same as `ℝ`! Still, since they are of the same nature, the notation we have just introduced
 is very close, compare `𝓡1` with `𝓡 1` (and try not to get confused): -/
 
-instance : has_groupoid myℝ (times_cont_diff_groupoid ∞ 𝓡1) :=
+instance smooth_myℝ : has_groupoid myℝ (times_cont_diff_groupoid ∞ 𝓡1) :=
 begin
   -- in theory, we should prove that all compositions of charts are diffeos, i.e., they are smooth
   -- and their inverse are smooth. For symmetry reasons, it suffices to check one direction
