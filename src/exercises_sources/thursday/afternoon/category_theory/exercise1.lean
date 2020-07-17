@@ -19,10 +19,12 @@ If you have a natural isomorphism `α : F ≅ G`, you can access
 -/
 
 def iso_of_hom_iso (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅ Y :=
-{ hom := (h.hom.app (op X)) (𝟙 X),
-  inv := (h.inv.app (op Y)) (𝟙 Y) }
+sorry
 
 /-!
 There are some further hints in
 `src/hints/thursday/afternoon/category_theory/exercise1/`
 -/
+
+
+

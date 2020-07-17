@@ -163,9 +163,11 @@ Just like division by zero! But worse:
 * issue with 3): it works perfectly well, but it makes mathematicians unhappy/uneasy (and it is *not*
   equivalent to 1) or 2) when one of the spaces is empty)
 
+I picked 3)
+
 #### Tangent vectors
 
-What is a tangent vector?
+What is a tangent vector (for a manifold `M` modelled on a vector space `E`)?
 1) An equivalence class of germs of curves
 2) A derivation
 3) Physicist point of view: I don't know what a tangent vector is, but I know in charts.
@@ -174,10 +176,45 @@ What is a tangent vector?
 4) ...
 
 Issues:
-1)
+1) Pictures are pretty, but this doesn't bring anything compared to 3) when you go down to details.
+   And what about boundaries, where you can only have a half-curve
+2) Need partitions of unity to show that this is local and coincides with the usual point of view.
+   Doesn't work well in finite smoothness, nor in complex manifolds
+3) Fine, works in all situations, but requires a lot of work to define the equivalence classes,
+   the topology, check that the topology is compatible with the vector space structure, and so on.
+   In a vector space, the tangent space is not defeq to the vector space itself
+4) Pick one favorite chart at `x`, say `e_x`, and *define* the tangent space at `x` to be `E`,
+   but "seen" in the chart `e_x` (this will show up in the definition of the derivative : the
+   derivative of `f : M → M'` at `x` is defined to be the derivative of the map
+   `e_{f x} ∘ f ∘ e_x⁻¹`). Works perfectly fine, but makes mathematicians unhappy/uneasy.
+   (Axiom of choice? In fact we put the choice of `e_x` in the *definition* of charted spaces,
+   so not further choice)
 
-#### Derivatives in domains
+I picked 4)
 
+#### Smooth functions in manifolds with boundary
+
+Usual definition of smooth functions in a half space: extend to a smooth function a little bit
+beyond the boundary, so one only really needs to speak of smooth functions in open subsets of
+vector spaces.
+
+When you define the derivative, you will need to check that it does not depend on the choice
+of the extension. Even worse when you want to define the tangent bundle: choose an open extension
+of your manifold with boundary, and then check that the restriction of the tangent bundle does
+not depend on the choice of the extension. Very easy when handwaving, nightmare to formalize.
+(What is the extension of the manifold with boundary? Another type?)
+
+Instead, if you define derivatives in (non-open) domains, you can talk of smooth functions in
+domains, and do everything without extending. Need to know this early enough: when starting to
+define derivatives, you should already think of manifolds with boundaries! That's what we did
+in mathlib.
+
+Difficulty: if a domain `s` is too small (think `s = ℝ ⊆ ℝ^2`), the values of `f` on `s` do not
+prescribe uniquely a derivative, so `fderiv_within_at ℝ f s x` may behave badly: derivative of
+a sum might be different from sum of derivatives, as there is an arbitrary choice to be made.
+This does not happen with the half-space, as it is large enough: derivatives within domains only
+work well if the tangent directions span the whole space. Predicate `unique_diff_on` for sets
+in vector spaces. You won't find this in books!
 -/
 
 
@@ -192,6 +229,7 @@ relevant set is the *source*, which should be mapped homeomorphically to the *ta
 /- Define a local homeomorphism from `ℝ` to `ℝ` which is just `x ↦ -x`, but on `(-1, 1)`. In
 Lean, the interval `(-1, 1)` is denoted by `Ioo (-1 : ℝ) 1` (where `o` stands for _open_). -/
 
+-- set up a simple helper simp lemma to simplify our life later.
 @[simp] lemma neg_mem_Ioo_minus_one_one (x : ℝ) : -x ∈ Ioo (-1 : ℝ) 1 ↔ x ∈ Ioo (-1 : ℝ) 1 :=
 begin
   -- sorry
@@ -294,7 +332,7 @@ end
 /- The right equivalence relation for local homeos is not equality, but `eq_on_source`.
 Indeed, the two local homeos we have defined above coincide from this point of view. -/
 
-#check @local_homeomorph.eq_on_source
+#check local_homeomorph.eq_on_source
 
 lemma eq_on_source_my_first_local_homeo_my_second_local_homeo :
   local_homeomorph.eq_on_source my_first_local_homeo my_second_local_homeo :=
@@ -362,7 +400,7 @@ abbreviation 𝓡1 := model_with_corners_self ℝ ℝ
 /- In the library, there are such shortcuts for manifolds modelled on `ℝ^n`, denoted with `𝓡 n`,
 but for `n = 1` this does not coincide with the above one, as `ℝ^1` (a.k.a. `fin 1 → ℝ`) is not
 the same as `ℝ`! Still, since they are of the same nature, the notation we have just introduced
-is very close, compare `𝓡1` with `𝓡 1` (and try not to get confused:) -/
+is very close, compare `𝓡1` with `𝓡 1` (and try not to get confused): -/
 
 instance : has_groupoid myℝ (times_cont_diff_groupoid ∞ 𝓡1) :=
 begin
@@ -635,10 +673,10 @@ sense, but it would just turn out to be wrong.
 The previous statement is not really satisfactory: we would instead like to express that any such
 manifold is diffeomorphic to the circle. The trouble is that we don't have the circle as a smooth
 manifold yet. Since we have cheated and introduced it (with sorries) at the beginning of the tutorial,
-let's cheat and use it.
+let's cheat again and use it to reformulate the previous statement.
 -/
 
--- next result is nontrivial, leave it sorried (but you can work on it if you don't like
+-- the next result is nontrivial, leave it sorried (but you can work on it if you don't like
 -- manifolds and prefer topology -- then please PR it to mathlib!).
 instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 
