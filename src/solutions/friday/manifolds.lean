@@ -506,7 +506,7 @@ end
 /- Now, let's go to tangent bundles. We have a smooth manifold, so its tangent bundle should also
 be a smooth manifold. -/
 
--- the type `tangent_bundle I myℝ` makes sense
+-- the type `tangent_bundle 𝓡1 myℝ` makes sense
 #check tangent_bundle 𝓡1 myℝ
 
 /- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
@@ -543,11 +543,11 @@ begin
 end
 
 /- (Harder question) Can you show that this tangent bundle is homeomorphic to `ℝ × ℝ`? You could
-try to build the homeomorphism by hand, using `tangent_map I I my_map` in one direction and a
+try to build the homeomorphism by hand, using `tangent_map 𝓡1 𝓡1 my_map` in one direction and a
 similar map in the other direction, but it is probably more efficient to use one of the charts of
 the tangent bundle.
 
-Remember, the model space for `tangent_bundle I myℝ` is `model_prod ℝ ℝ`, not `ℝ × ℝ`. But the
+Remember, the model space for `tangent_bundle 𝓡1 myℝ` is `model_prod ℝ ℝ`, not `ℝ × ℝ`. But the
 topologies on `model_prod ℝ ℝ` and `ℝ × ℝ` are the same, so it is by definition good enough to
 construct a homeomorphism with `model_prod ℝ ℝ`.
  -/
@@ -584,7 +584,7 @@ lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = (myℝ × ℝ)
 /- inline sorry -/rfl/- inline sorry -/
 
 /- This means that you can specify a point in the tangent bundle as a pair `(x, y)`.
-However, in general, a tangent bundle is not trivial: the topology on `tangent_bundle I myℝ` is *not*
+However, in general, a tangent bundle is not trivial: the topology on `tangent_bundle 𝓡1 myℝ` is *not*
 the product topology. Instead, the tangent space at a point `x` is identified with `ℝ` through some
 preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
 manifold and the charts.
