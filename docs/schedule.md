@@ -106,4 +106,4 @@ Time | Activity | Speaker
 ---- | -------- | -------
 10:00 -- 12:00 | [“Topology”, including filters](https://youtu.be/hhOPRaR3tx0) [(slides)](https://www.imo.universite-paris-saclay.fr/~pmassot/topology.pdf)        | Patrick Massot
 13:00 -- 15:30 | [“Calculus and integration”](https://youtu.be/p8Etfv1_VqQ)             | Yury Kudryashov
-15:30 -- 18:00 | “Differential geometry”                | Sébastien Gouëzel and Heather Macbeth
+15:30 -- 18:00 | [“Differential geometry”](https://youtu.be/1xXRQmhldFs)                | Sébastien Gouëzel and Heather Macbeth
