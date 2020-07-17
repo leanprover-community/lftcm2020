@@ -38,6 +38,9 @@ Don’t forget to copy the updated files to `src/my_exercises`.
 /-!
 ## An overview of manifolds in Lean, discussing design decisions
 
+Warning: there are sorries in this section, they are not supposed to be filled! The exercises section
+start later, and there you will have plenty of sorries to fill.
+
 What is a manifold?
 
 1) allow field other than `ℝ` or `ℂ`?
@@ -656,7 +659,8 @@ goal here is that Lean should not complain on the statement, but the proof shoul
 -/
 
 /- Here is a first example, already filled up, to show you how diffeomorphisms are currently named
-(we will probably introduce an abbreviation, but this hasn't been done yet): -/
+(we will probably introduce an abbreviation, but this hasn't been done yet).
+Don't try to fill the sorried proof! -/
 
 /-- Two zero-dimensional connected manifolds are diffeomorphic. -/
 theorem diffeomorph_of_zero_dim_connected
@@ -670,7 +674,8 @@ sorry
 are smooth, nor that they are separated, but this is maybe automatic in zero dimension).
 
 Now, write down a version of this theorem in dimension 1, replacing the first sorry with meaningful content
-(and adding what is needed before the colon): -/
+(and adding what is needed before the colon).
+Don't try to fill the sorried proof! -/
 
 /-- Two one-dimensional smooth compact connected manifolds are diffeomorphic. -/
 theorem diffeomorph_of_one_dim_compact_connected
@@ -741,7 +746,10 @@ diffeomorph_of_one_dim_compact_connected M (sphere 1)
 /- What about trying to say that there are uncountably many different smooth structures on `ℝ⁴`?
 (see https://en.wikipedia.org/wiki/Exotic_R4). The library is not really designed with this in mind,
 as in general we only work with one differentiable structure on a space, but it is perfectly
-capable of expressing this fact if one uses the `@` version of some definitions. -/
+capable of expressing this fact if one uses the `@` version of some definitions.
+
+Don't try to fill the sorried proof!
+-/
 
 theorem exotic_ℝ4 :
   -- sorry
