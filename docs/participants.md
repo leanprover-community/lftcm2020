@@ -71,6 +71,7 @@ to add your name to the list below (in alphabetical order).
 * Sophie Morel (CNRS/ENS Lyon, FR)
 * Harshit J Motwani
 * Apurva Nakade (University of Western Ontario, CA)
+* Wojciech Nawrocki (University of Cambridge, UK)
 * Khoi Nguyen
 * Filippo A. E. Nuccio (Université de Lyon, UJM Saint-Étienne, FR)
 * Andrew O'Desky (University of Michigan, US)
