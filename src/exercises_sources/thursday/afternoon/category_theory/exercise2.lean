@@ -30,18 +30,23 @@ Hints:
 -/
 
 def Ring.polynomial : Ring ⥤ Ring :=
-sorry
+{ obj := λ R, Ring.of (polynomial R),
+  map := λ R S f, ring_hom.of (polynomial.map f),
+  map_id' := by { intros X, ext1, dsimp at *, simp at *, ext1, simp at * },
+  map_comp' := by { intros X Y Z f g, ext1, dsimp at *, simp at *, ext1, simp at * } }
 
 def CommRing.polynomial : CommRing ⥤ CommRing :=
-sorry
+{ obj := λ R, CommRing.of (polynomial R),
+  map := λ R S f, ring_hom.of (polynomial.map f),
+  map_id' := by { intros X, ext1, dsimp at *, simp at *, ext1, simp at * },
+  map_comp' := by { intros X Y Z f g, ext1, dsimp at *, simp at *, ext1, simp at * } }
 
 open category_theory
 
 def commutes :
   (forget₂ CommRing Ring) ⋙ Ring.polynomial ≅ CommRing.polynomial ⋙ (forget₂ CommRing Ring) :=
--- Hint: You can do this in two lines, ≤ 33 columns!
-sorry
-
+{ hom := { app := λ R, 𝟙 _ },
+  inv := { app := λ R, 𝟙 _ } }
 
 /-!
 There are some further hints in
@@ -54,5 +59,3 @@ Bonus problem:
 Why did we set `local attribute [irreducible] polynomial.eval₂`?
 What goes wrong without it? Why?
 -/
-
-
