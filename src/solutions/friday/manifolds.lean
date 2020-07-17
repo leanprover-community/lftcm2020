@@ -8,6 +8,218 @@ open set
 universe u
 
 
+/-!
+## Reminder on updating the exercises
+
+These instructions are now available at:
+https://leanprover-community.github.io/lftcm2020/exercises.html
+
+To get a new copy of the exercises,
+run the following commands in your terminal:
+
+```
+leanproject get lftcm2020
+cp -r lftcm2020/src/exercises_sources/ lftcm2020/src/my_exercises
+code lftcm2020
+```
+
+To update your exercise files, run the following commands:
+
+```
+cd /path/to/lftcm2020
+git pull
+leanproject get-mathlib-cache
+```
+
+Don’t forget to copy the updated files to `src/my_exercises`.
+
+-/
+
+/-!
+## An overview of manifolds in Lean, discussing design decisions
+
+What is a manifold?
+
+1) allow field other than `ℝ` or `ℂ`?
+2) allow infinite dimension?
+3) allow boundary?
+4) allow model space depending on the point of the manifold?
+
+Bourbaki: 2, 4 (and just definitions and statements, no proofs!)
+Lean: 1, 2, 3
+
+Perelman geometrization theorem : any compact connected irreducible 3-manifold can
+be cut along tori into finitely many pieces, each of which has a _geometric structure_ of
+finite volume, i.e., it is locally like a model space, with changes of coordinates given
+locally by the action of a Lie group
+
+Typical dynamics theorem : let `M` be a compact manifold, and `f : M → M` a map with property
+such and such. Then ...
+
+Or : Consider a hyperbolic surface of genus `g`, and a random geodesic of length `T`. How many
+times does it typically self-intersect?
+
+
+Manifold in Lean:
+
+* charted space structure, i.e., set of local homeos to a model space. This is data, fixed
+  once and for all (and a typeclass)
+* compatibility condition, i.e., the change of coordinates should belong to some subgroup
+  of the group of local homeos of the model space. This is Prop (and a typeclass). The same
+  manifold can be at the same time an analytic manifold, a smooth manifold and a topological
+  manifold (with the same fixed atlas).
+-/
+
+#check charted_space (euclidean_half_space 1) (Icc (0 : ℝ) 1)
+#check has_groupoid (Icc (0 : ℝ) 1) (times_cont_diff_groupoid ∞ (𝓡∂ 1))
+#check smooth_manifold_with_corners (𝓡∂ 1) (Icc (0 : ℝ) 1)
+
+-- atlases are not maximal in general
+
+#check (times_cont_diff_groupoid ∞ (𝓡∂ 1)).maximal_atlas (Icc (0 : ℝ) 1)
+
+-- let's try to put a smooth manifold structure on the sphere
+-- (we don't have submanifolds yet, but it's coming in the near future)
+
+@[derive topological_space]
+definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n+1))) 1
+
+instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
+
+instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) :=
+{ atlas := begin sorry end,
+  chart_at := begin sorry end,
+  mem_chart_source := begin sorry end,
+  chart_mem_atlas := begin sorry end }
+
+instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) :=
+{ compatible := begin sorry end }
+
+-- smooth functions
+
+def inc (n : ℕ) : sphere n → euclidean_space (fin (n+1)) :=
+λ p : sphere n, (p : euclidean_space (fin (n+1)))
+
+lemma inc_smooth (n : ℕ) : times_cont_mdiff (𝓡 n) (𝓡 (n+1)) ∞ (inc n) :=
+sorry
+
+lemma inc_continuous (n : ℕ) : continuous (inc n) :=
+(inc_smooth n).continuous
+
+-- tangent space and tangent bundles
+
+example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) : tangent_bundle (𝓡 n) (sphere n) := ⟨p, v⟩
+
+-- tangent map, derivatives
+
+example (n : ℕ) : times_cont_mdiff ((𝓡 n).prod (𝓡 n)) ((𝓡 (n+1)).prod (𝓡 (n+1))) ∞
+  (tangent_map (𝓡 n) (𝓡 (n+1)) (inc n)) :=
+(inc_smooth n).times_cont_mdiff_tangent_map le_top
+
+example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) (f : sphere n → sphere (n^2)) :
+  mfderiv (𝓡 n) (𝓡 (n^2)) f p v = (tangent_map (𝓡 n) (𝓡 (n^2)) f ⟨p, v⟩).2 :=
+rfl
+
+/- Can you express the sphere eversion theorem, i.e., the fact that there is a smooth isotopy
+of immersions between the canonical embedding of the sphere `S^2` and `ℝ^3`, and the antipodal
+embedding?
+
+Note that we haven't defined immersions in mathlib, but you can jut require that the fiber
+derivative is injective everywhere, which is easy to express if you know that the derivative
+of a function `f` from a manifold of dimension `2` to a manifold of dimension `3` at a point `x` is
+`mfderiv (𝓡 2) (𝓡 3) f x`.
+
+Don't forget to require the global smoothness of the map! You may need to know that the interval
+`[0,1]`, called `Icc (0 : ℝ) 1` in Lean, already has a manifold (with boundary!) structure,
+where the corresponding model with corners is called `𝓡∂ 1`.
+-/
+theorem sphere_eversion :
+  ∃ f : (Icc (0 : ℝ) 1) × sphere 2 → euclidean_space (fin 3),
+  times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
+  ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
+    function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
+  ∧ ∀ (p : sphere 2), f (0, p) = p
+  ∧ ∀ (p : sphere 2), f (1, p) = - p :=
+sorry
+
+/- Dicussing three (controversial?) design decisions
+
+#### Local homeos
+
+What is a local homeo `f` between an open subset of `E` and an open subset of `F`?
+1) a map defined on a subtype: `f x` only makes sense for `x : f.source`
+2) a map defined on the whole space `E`, but taking values in `option F = F ∪ {junk}`, with
+  `f x = junk` when `x ∉ f.source`
+3) a map defined on the whole space `E`, taking values in `F`, and we don't care about its values
+  outside of `f.source`.
+
+Just like division by zero! But worse:
+
+* issue with 1): you keep intersecting chart domains. But the subtype `u ∩ v` is not the same as
+  the subtype `v ∩ u`, so you keep adding casts everywhere
+* issue with 2): if you want to say that a chart is smooth, then you define to define smooth functions
+  between `option E` and `option F` when `E` and `F` are vector spaces. All notions need to be
+  redefined with `option`.
+* issue with 3): it works perfectly well, but it makes mathematicians unhappy/uneasy (and it is *not*
+  equivalent to 1) or 2) when one of the spaces is empty)
+
+I picked 3)
+
+#### Tangent vectors
+
+What is a tangent vector (for a manifold `M` modelled on a vector space `E`)?
+1) An equivalence class of germs of curves
+2) A derivation
+3) Physicist point of view: I don't know what a tangent vector is, but I know in charts.
+  Mathematician's interpretation: equivalence class of `(e, v)` where `e` is a chart at `x`, `v` a vector
+  in the vector space, and `(e, v) ∼ (e', v')` if `D(e' ∘ e ⁻¹) v = v'`
+4) ...
+
+Issues:
+1) Pictures are pretty, but this doesn't bring anything compared to 3) when you go down to details.
+   And what about boundaries, where you can only have a half-curve
+2) Need partitions of unity to show that this is local and coincides with the usual point of view.
+   Doesn't work well in finite smoothness, nor in complex manifolds
+3) Fine, works in all situations, but requires a lot of work to define the equivalence classes,
+   the topology, check that the topology is compatible with the vector space structure, and so on.
+   In a vector space, the tangent space is not defeq to the vector space itself
+4) Pick one favorite chart at `x`, say `e_x`, and *define* the tangent space at `x` to be `E`,
+   but "seen" in the chart `e_x` (this will show up in the definition of the derivative : the
+   derivative of `f : M → M'` at `x` is defined to be the derivative of the map
+   `e_{f x} ∘ f ∘ e_x⁻¹`). Works perfectly fine, but makes mathematicians unhappy/uneasy.
+   (Axiom of choice? In fact we put the choice of `e_x` in the *definition* of charted spaces,
+   so not further choice)
+
+I picked 4)
+
+#### Smooth functions in manifolds with boundary
+
+Usual definition of smooth functions in a half space: extend to a smooth function a little bit
+beyond the boundary, so one only really needs to speak of smooth functions in open subsets of
+vector spaces.
+
+When you define the derivative, you will need to check that it does not depend on the choice
+of the extension. Even worse when you want to define the tangent bundle: choose an open extension
+of your manifold with boundary, and then check that the restriction of the tangent bundle does
+not depend on the choice of the extension. Very easy when handwaving, nightmare to formalize.
+(What is the extension of the manifold with boundary? Another type?)
+
+Instead, if you define derivatives in (non-open) domains, you can talk of smooth functions in
+domains, and do everything without extending. Need to know this early enough: when starting to
+define derivatives, you should already think of manifolds with boundaries! That's what we did
+in mathlib.
+
+Difficulty: if a domain `s` is too small (think `s = ℝ ⊆ ℝ^2`), the values of `f` on `s` do not
+prescribe uniquely a derivative, so `fderiv_within_at ℝ f s x` may behave badly: derivative of
+a sum might be different from sum of derivatives, as there is an arbitrary choice to be made.
+This does not happen with the half-space, as it is large enough: derivatives within domains only
+work well if the tangent directions span the whole space. Predicate `unique_diff_on` for sets
+in vector spaces. You won't find this in books!
+-/
+
+
+/-! ## Exercises -/
+
 /-! ### Local homeomorphisms
 
 Local homeomorphisms are globally defined maps with a globally defined "inverse", but the only
@@ -17,6 +229,7 @@ relevant set is the *source*, which should be mapped homeomorphically to the *ta
 /- Define a local homeomorphism from `ℝ` to `ℝ` which is just `x ↦ -x`, but on `(-1, 1)`. In
 Lean, the interval `(-1, 1)` is denoted by `Ioo (-1 : ℝ) 1` (where `o` stands for _open_). -/
 
+-- set up a simple helper simp lemma to simplify our life later.
 @[simp] lemma neg_mem_Ioo_minus_one_one (x : ℝ) : -x ∈ Ioo (-1 : ℝ) 1 ↔ x ∈ Ioo (-1 : ℝ) 1 :=
 begin
   -- sorry
@@ -119,7 +332,7 @@ end
 /- The right equivalence relation for local homeos is not equality, but `eq_on_source`.
 Indeed, the two local homeos we have defined above coincide from this point of view. -/
 
-#check @local_homeomorph.eq_on_source
+#check local_homeomorph.eq_on_source
 
 lemma eq_on_source_my_first_local_homeo_my_second_local_homeo :
   local_homeomorph.eq_on_source my_first_local_homeo my_second_local_homeo :=
@@ -171,7 +384,7 @@ instance : charted_space ℝ myℝ :=
 
 /- Now come more interesting bits. We have endowed `myℝ` with a charted space structure, with charts
 taking values in `ℝ`. We want to say that this is a smooth structure, i.e., the changes of
-coordinates are smooth. In Lean, this is written with `has_structure_groupoid`. A groupoid is a set
+coordinates are smooth. In Lean, this is written with `has_groupoid`. A groupoid is a set
 of local homeomorphisms of the model space (for example, local homeos that are smooth on their
 domain). A charted space admits the groupoid as a structure groupoid if all the changes of
 coordinates belong to the groupoid.
@@ -182,13 +395,14 @@ name `times_cont_diff_groupoid ∞ (model_with_corners_self ℝ ℝ)`. To avoid 
 `model_with_corners_self ℝ ℝ`, let us introduce a shortcut
 -/
 
-abbreviation I := model_with_corners_self ℝ ℝ
+abbreviation 𝓡1 := model_with_corners_self ℝ ℝ
 
 /- In the library, there are such shortcuts for manifolds modelled on `ℝ^n`, denoted with `𝓡 n`,
 but for `n = 1` this does not coincide with the above one, as `ℝ^1` (a.k.a. `fin 1 → ℝ`) is not
-the same as `ℝ`! -/
+the same as `ℝ`! Still, since they are of the same nature, the notation we have just introduced
+is very close, compare `𝓡1` with `𝓡 1` (and try not to get confused): -/
 
-instance : has_groupoid myℝ (times_cont_diff_groupoid ∞ I) :=
+instance : has_groupoid myℝ (times_cont_diff_groupoid ∞ 𝓡1) :=
 begin
   -- in theory, we should prove that all compositions of charts are diffeos, i.e., they are smooth
   -- and their inverse are smooth. For symmetry reasons, it suffices to check one direction
@@ -217,7 +431,7 @@ end
 
 /- The statement of the previous instance is not very readable. There is a shortcut notation: -/
 
-instance : smooth_manifold_with_corners I myℝ := {}
+instance : smooth_manifold_with_corners 𝓡1 myℝ := {}
 
 /- We will now study a very simple map from `myℝ` to `ℝ`, the identity. -/
 
@@ -248,7 +462,7 @@ smoothness of a map, we should always specify explicitly the model with corners 
 because there might be several around (think of a complex manifold that you may want to consider
 as a real manifold, to talk about functions which are real-smooth but not holomorphic) -/
 
-lemma times_cont_mdiff_my_map : times_cont_mdiff I I ∞ my_map :=
+lemma times_cont_mdiff_my_map : times_cont_mdiff 𝓡1 𝓡1 ∞ my_map :=
 begin
   -- put things in a nicer form. The simpset `mfld_simps` registers many simplification rules for
   -- manifolds. `simp` is used heavily in manifold files to bring everything into manageable form.
@@ -269,15 +483,15 @@ end
 be a smooth manifold. -/
 
 -- the type `tangent_bundle I myℝ` makes sense
-#check tangent_bundle I myℝ
+#check tangent_bundle 𝓡1 myℝ
 
 /- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
-example : tangent_bundle I myℝ := ((4 : ℝ), 0)
+example : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0)
 
 /- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
 and this instance is not really needed. -/
-instance tangent_bundle_myℝ : smooth_manifold_with_corners (I.prod I) (tangent_bundle I myℝ) :=
+instance tangent_bundle_myℝ : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
 -- sorry
 by apply_instance
 -- sorry
@@ -288,13 +502,13 @@ NB: the model space for the tangent bundle to a product manifold or a tangent sp
 structures with model `ℝ × ℝ`, the identity one and the product one, which are not definitionally
 equal. And this would be bad.
 -/
-#check tangent_bundle.charted_space I myℝ
+#check tangent_bundle.charted_space 𝓡1 myℝ
 
 /- A smooth map between manifolds induces a map between their tangent bundles. In `mathlib` this is
 called the `tangent_map` (you might instead know it as the "differential" or "pushforward" of the
 map).  Let us check that the `tangent_map` of `my_map` is smooth. -/
 lemma times_cont_mdiff_tangent_map_my_map :
-  times_cont_mdiff (I.prod I) (I.prod I) ∞ (tangent_map I I my_map) :=
+  times_cont_mdiff (𝓡1.prod 𝓡1) (𝓡1.prod 𝓡1) ∞ (tangent_map 𝓡1 𝓡1 my_map) :=
 begin
   -- hopefully, there is a theorem providing the general result, i.e. the tangent map to a smooth
   -- map is smooth.
@@ -314,10 +528,10 @@ topologies on `model_prod ℝ ℝ` and `ℝ × ℝ` are the same, so it is by de
 construct a homeomorphism with `model_prod ℝ ℝ`.
  -/
 
-def my_homeo : tangent_bundle I myℝ ≃ₜ (ℝ × ℝ) :=
+def my_homeo : tangent_bundle 𝓡1 myℝ ≃ₜ (ℝ × ℝ) :=
 begin
   -- sorry
-  let p : tangent_bundle I myℝ := ((4 : ℝ), 0),
+  let p : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0),
   let F := chart_at (model_prod ℝ ℝ) p,
   have A : ¬ ((4 : ℝ) < 1), by norm_num,
   have S : F.source = univ, by simp [F, chart_at, A, @local_homeomorph.refl_source ℝ _],
@@ -342,7 +556,7 @@ section you_should_probably_skip_this
 /- If `M` is a manifold modelled on a vector space `E`, then the underlying type for the tangent
 bundle is just `M × E` -/
 
-lemma tangent_bundle_myℝ_is_prod : tangent_bundle I myℝ = (myℝ × ℝ) :=
+lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = (myℝ × ℝ) :=
 /- inline sorry -/rfl/- inline sorry -/
 
 /- This means that you can specify a point in the tangent bundle as a pair `(x, y)`.
@@ -389,7 +603,7 @@ It is not a reasonable exercise, in the sense that one should never ever do this
 with a manifold! -/
 
 lemma crazy_formula_after_identifications (x : ℝ) (v : ℝ) :
-  let p : tangent_bundle I myℝ := ((3 : ℝ), 0) in
+  let p : tangent_bundle 𝓡1 myℝ := ((3 : ℝ), 0) in
   chart_at (model_prod ℝ ℝ) p (x, v) = if x ∈ Ioo (-1 : ℝ) 1 then (x, -v) else (x, v) :=
 begin
   -- this exercise is not easy (and shouldn't be: you are not supposed to use the library like this!)
@@ -458,19 +672,12 @@ sense, but it would just turn out to be wrong.
 
 The previous statement is not really satisfactory: we would instead like to express that any such
 manifold is diffeomorphic to the circle. The trouble is that we don't have the circle as a smooth
-manifold yet. Let's cheat and introduce it nevertheless.
+manifold yet. Since we have cheated and introduced it (with sorries) at the beginning of the tutorial,
+let's cheat again and use it to reformulate the previous statement.
 -/
 
-@[derive topological_space]
-definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n+1))) 1
-
-instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
-
-/- Don't try to fill the following instances: the first two should follow from general theory, and
-the third one is too much work for an exercise session (but you can work on it if you don't like
-manifolds and prefer topology -- then please PR it to mathlib!). -/
-instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) := sorry
-instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) := sorry
+-- the next result is nontrivial, leave it sorried (but you can work on it if you don't like
+-- manifolds and prefer topology -- then please PR it to mathlib!).
 instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 
 /- The next two instances are easier to prove, you can prove them or leave them sorried
@@ -509,33 +716,6 @@ theorem diffeomorph_circle_of_one_dim_compact_connected
 diffeomorph_of_one_dim_compact_connected M (sphere 1)
 -- sorry
 
-/- Can you express the sphere eversion theorem, i.e., the fact that there is a smooth isotopy
-of immersions between the canonical embedding of the sphere `S^2` and `ℝ^3`, and the antipodal
-embedding?
-
-Note that we haven't defined immersions in mathlib, but you can jut require that the fiber
-derivative is injective everywhere, which is easy to express if you know that the derivative
-of a function `f` from a manifold of dimension `2` to a manifold of dimension `3` at a point `x` is
-`mfderiv (𝓡 2) (𝓡 3) f x`.
-
-Don't forget to require the global smoothness of the map! You may need to know that the interval
-`[0,1]`, called `Icc (0 : ℝ) 1` in Lean, already has a manifold (with boundary!) structure,
-where the corresponding model with corners is called `𝓡∂ 1`.
--/
-
-/-- The sphere eversion theorem. You should fill the first sorry, the second one is out of reach
-(now). -/
-theorem sphere_eversion :
-  -- sorry
-  ∃ f : Icc (0 : ℝ) 1 × sphere 2 → euclidean_space (fin 3),
-  times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
-  ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
-    function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
-  ∧ ∀ (p : sphere 2), f (0, p) = p
-  ∧ ∀ (p : sphere 2), f (1, p) = - p
-  -- sorry
-:=
-sorry
 
 /- What about trying to say that there are uncountably many different smooth structures on `ℝ⁴`?
 (see https://en.wikipedia.org/wiki/Exotic_R4). The library is not really designed with this in mind,
@@ -651,7 +831,7 @@ def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
 #check pi_Lp.times_cont_diff_coord
 #check pi_Lp.times_cont_diff_on_iff_coord
 
-lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) I ∞ g :=
+lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) 𝓡1 ∞ g :=
 begin
   -- sorry
   rw times_cont_mdiff_iff,
@@ -676,7 +856,7 @@ begin
 end
 
 lemma msmooth_of_smooth {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
-  times_cont_mdiff_on I (𝓡∂ 1) ∞ f s :=
+  times_cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f s :=
 begin
   -- sorry
   rw times_cont_mdiff_on_iff,
@@ -700,7 +880,7 @@ end
 def f : ℝ → Icc (0 : ℝ) 1 :=
 λ x, ⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
 
-lemma times_cont_mdiff_on_f : times_cont_mdiff_on I (𝓡∂ 1) ∞ f (Icc 0 1) :=
+lemma times_cont_mdiff_on_f : times_cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f (Icc 0 1) :=
 begin
   -- sorry
   apply msmooth_of_smooth,
@@ -732,7 +912,7 @@ begin
 end
 
 def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
-λ p, (p.1, (tangent_map (𝓡∂ 1) I g p).2)
+λ p, (p.1, (tangent_map (𝓡∂ 1) 𝓡1 g p).2)
 
 lemma continuous_G : continuous G :=
 begin
@@ -741,7 +921,7 @@ begin
   refine continuous_snd.comp _,
   have Z := times_cont_mdiff_g.continuous_tangent_map le_top,
   convert Z,
-  exact (tangent_bundle_model_space_topology_eq_prod ℝ I).symm
+  exact (tangent_bundle_model_space_topology_eq_prod ℝ 𝓡1).symm
   -- sorry
 end
 
@@ -749,7 +929,7 @@ end
 (which is just the identity pointwise) to make sure that Lean is not lost
 between the different topologies. -/
 def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
-λ p, tangent_map_within I (𝓡∂ 1) f (Icc 0 1)
+λ p, tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1)
   ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
 
 lemma continuous_F : continuous F :=
@@ -778,7 +958,7 @@ begin
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { change (tangent_map_within I (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) I g (x, v))).snd = v,
+  { change (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) 𝓡1 g (x, v))).snd = v,
     rw [← tangent_map_within_univ, ← tangent_map_within_comp_at, fog, tangent_map_within_univ, tangent_map_id],
     { refl },
     { apply times_cont_mdiff_on_f.mdifferentiable_on le_top,
@@ -801,12 +981,13 @@ begin
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { have A : unique_mdiff_within_at I (Icc 0 1) ((x : ℝ), v).fst,
+  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) ((x : ℝ), v).fst,
     { rw unique_mdiff_within_at_iff_unique_diff_within_at,
       apply unique_diff_on_Icc_zero_one _ x.2 },
-    change (tangent_map (𝓡∂ 1) I g (tangent_map_within I (𝓡∂ 1) f (Icc 0 1) (x, v))).snd = v,
+    change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (x, v))).snd = v,
     rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ _ A],
-    { have : tangent_map_within I I (g ∘ f) (Icc 0 1) (x, v) = tangent_map_within I I id (Icc 0 1) (x, v) :=
+    { have : tangent_map_within 𝓡1 𝓡1 (g ∘ f) (Icc 0 1) (x, v)
+             = tangent_map_within 𝓡1 𝓡1 id (Icc 0 1) (x, v) :=
         tangent_map_within_congr gof _ x.2 A,
       rw [this, tangent_map_within_id A] },
     { apply times_cont_mdiff_g.times_cont_mdiff_on.mdifferentiable_on le_top _ (mem_univ _) },
