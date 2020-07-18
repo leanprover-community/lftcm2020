@@ -101,11 +101,6 @@ example {X : C} : C ⥤ Type* :=
   map_id' := λ X, begin funext, simp, end,
   map_comp' := λ X Y Z f g, begin funext, simp, end }
 
-
-
-
-
-
 /-!
 However Lean will automatically attempt to fill in the `map_id'` and `map_comp'` fields itself,
 because these fields are marked with `auto_param`. This lets us specify a tactic to use to
@@ -386,7 +381,7 @@ begin
 end.
 
 -- Somehow this isn't in mathlib?
-lemma quotient_gsmul (k : ℕ) :
+def quotient_gsmul (k : ℕ) :
   quotient_add_group.quotient (set.range (gsmul k : ℤ → ℤ)) ≃+ zmod k :=
 sorry
 
@@ -421,27 +416,6 @@ including:
 #print category_theory.abelian
 -- Right now we don't have a single instance of `abelian` in the library:
 -- constructing `abelian AddCommGroup` is a great exercise, and all the ingredients are available.
-
--- The only things remaining are
--- "every mono is the kernel of its cokernel" and "every epi is the cokernel of its kernel"
--- and these should be easy consequences of statements in the non-categorical group theory library.
-instance : abelian AddCommGroup :=
-{ normal_mono := λ X Y f f_mono,
-  -- If you're actually going to attempt this, write `by extract_goal` here
-  -- and prove this as a preliminary lemma.
-  { Z := cokernel f,
-    g := cokernel.π f,
-    w := by tidy,
-    is_limit :=
-    begin
-      fapply kernel_fork.is_limit.of_ι,
-      -- now look in group_theory/quotient_group.lean!
-      sorry,
-      sorry,
-      sorry,
-    end, },
-  normal_epi := sorry, }
-
 
 example (R : CommRing) : monoidal_category (Module R) := by apply_instance
 

@@ -44,8 +44,19 @@ namespace AddCommGroup
 @[simp]
 lemma coe_of {G : Type*} [add_comm_group G] : (AddCommGroup.of G : Type*) = G := rfl
 
+-- What is the right generality to prove this?
+@[simp]
+lemma zero_morphism_apply {G H : AddCommGroup} (g : G) : (0 : G ⟶ H) g = 0 := rfl
+
+
+@[simps]
 def of_add_subgroup_bot {G : Type*} [add_comm_group G] : AddCommGroup.of (⊥ : add_subgroup G) ≅ 0 :=
-by tidy.
+{ hom := 0, inv := 0, }
+
+def of_add_subgroup_top {G : Type*} [add_comm_group G] :
+  AddCommGroup.of (⊤ : add_subgroup G) ≅ AddCommGroup.of G :=
+{ hom := add_subgroup.subtype ⊤,
+  inv := { to_fun := λ g, ⟨g, by trivial⟩, map_zero' := by tidy, map_add' := by tidy, }, }
 
 def of_add_subgroup_le {G : Type*} [add_comm_group G] {H K : add_subgroup G} (w : H ≤ K) :
   AddCommGroup.of H ⟶ AddCommGroup.of K :=
@@ -64,16 +75,16 @@ def of_add_subgroup_eq {G : Type*} [add_comm_group G] {H K : add_subgroup G} (w 
   inv := of_add_subgroup_le (le_of_eq w.symm), }
 
 
--- What is the right generality to prove this?
-@[simp]
-lemma zero_morphism_apply {G H : AddCommGroup} (g : G) : (0 : G ⟶ H) g = 0 := rfl
-
+/--
+The categorical kernel of a morphism in `AddCommGroup`
+agrees with the usual group-theoretical kernel.
+-/
 def kernel_iso_ker {G H : AddCommGroup} (f : G ⟶ H) :
   kernel f ≅ AddCommGroup.of f.ker :=
 { hom :=
   { to_fun := λ g, ⟨kernel.ι f g,
     begin
-      -- FIXME where is this `has_coe_t_aux.coe` coming from? how do we get rid of it?
+      -- TODO where is this `has_coe_t_aux.coe` coming from? can we prevent it appearing?
       change (kernel.ι f) g ∈ f.ker,
       simp [add_monoid_hom.mem_ker],
     end⟩,
@@ -89,6 +100,10 @@ lemma kernel_iso_ker_hom_comp_subtype {G H : AddCommGroup} (f : G ⟶ H) :
 lemma kernel_iso_ker_inv_comp_ι {G H : AddCommGroup} (f : G ⟶ H) :
   (kernel_iso_ker f).inv ≫ kernel.ι f = add_subgroup.subtype f.ker := rfl
 
+/--
+The categorical kernel inclusion for `f : G ⟶ H`, as an object over `G`,
+agrees with the `subtype` map.
+-/
 @[simps]
 def kernel_iso_ker_over {G H : AddCommGroup} (f : G ⟶ H) :
   over.mk (kernel.ι f) ≅ @over.mk _ _ G (AddCommGroup.of f.ker) (add_subgroup.subtype f.ker) :=
@@ -97,15 +112,25 @@ def kernel_iso_ker_over {G H : AddCommGroup} (f : G ⟶ H) :
   inv := over.hom_mk (kernel_iso_ker f).inv (by simp), }.
 
 -- TODO why is this not always an instance?
+-- I guess it's deprecated in any case.
 local attribute [instance] normal_add_subgroup_of_add_comm_group
 
 open quotient_add_group
 
+/--
+The categorical cokernel of a morphism in `AddCommGroup`
+agrees with the usual group-theoretical quotient.
+-/
 def cokernel_iso_quotient {G H : AddCommGroup} (f : G ⟶ H) :
   cokernel f ≅ AddCommGroup.of (quotient (set.range f)) :=
-{ hom := cokernel.desc f (add_monoid_hom.of mk) begin ext, apply quotient.sound, fsplit, exact -x, simp, end,
+{ hom := cokernel.desc f (add_monoid_hom.of mk)
+    (by { ext, apply quotient.sound, fsplit, exact -x, simp, }),
   inv := add_monoid_hom.of (quotient_add_group.lift (set.range f) (cokernel.π f) (by tidy)), }
 
+/--
+The categorical image of a morphism in `AddCommGroup`
+agrees with the usual group-theoretical range.
+-/
 def image_iso_range {G H : AddCommGroup} (f : G ⟶ H) :
   image f ≅ AddCommGroup.of (set.range f) :=
 iso.refl _
