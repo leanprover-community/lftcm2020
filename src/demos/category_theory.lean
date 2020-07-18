@@ -434,7 +434,7 @@ instance : abelian AddCommGroup :=
     w := by tidy,
     is_limit :=
     begin
-      fapply kernel_fork.is_limit.mk,
+      fapply kernel_fork.is_limit.of_ι,
       -- now look in group_theory/quotient_group.lean!
       sorry,
       sorry,

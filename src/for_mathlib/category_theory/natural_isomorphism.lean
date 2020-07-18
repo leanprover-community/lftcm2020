@@ -1,4 +1,4 @@
-import category_theory.equivalence
+import category_theory.natural_isomorphism
 
 open category_theory
 
