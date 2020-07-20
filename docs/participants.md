@@ -43,6 +43,7 @@ to add your name to the list below (in alphabetical order).
 * John Cremona (University of Warwick, UK)
 * Sander Dahmen (Vrije Universiteit Amsterdam, NL)
 * Dhruva Divate (University of Tübingen, DE)
+* Floris van Doorn (University of Pittsburgh, US)
 * Matt Earnshaw
 * Thomas Eckl (University of Liverpool, UK)
 * Cameron Freer (Massachusetts Institute of Technology, US)
