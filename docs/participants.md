@@ -46,6 +46,7 @@ to add your name to the list below (in alphabetical order).
 * Floris van Doorn (University of Pittsburgh, US)
 * Matt Earnshaw
 * Thomas Eckl (University of Liverpool, UK)
+* Blake Farman (University of Louisiana Monroe, US)
 * Cameron Freer (Massachusetts Institute of Technology, US)
 * Sébastien Gouëzel (University of Nantes, FR)
 * Damián Gvirtz (Leibniz Universität Hannover, DE)
