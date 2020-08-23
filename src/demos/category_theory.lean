@@ -1,4 +1,19 @@
-import demos.category_theory_imports
+import category_theory.category
+import category_theory.functor
+import category_theory.functor_category
+import algebra.category.CommRing
+import algebra.category.Group.images
+import algebra.homology.homology
+import topology.category.Top
+import topology.instances.real
+import category_theory.limits.shapes.finite_limits
+import data.int.parity
+import data.zmod.basic
+import category_theory.abelian.basic
+import algebra.category.Module.monoidal
+import topology.category.UniformSpace
+import ..for_mathlib.algebra.category.Group.kernels
+
 
 /-!
 This is a demo of the category theory library in mathlib,
@@ -6,23 +21,23 @@ as part of "Lean for the Curious Mathematician 2020".
 
 You can get this file by:
 * installing Lean if necessary: https://leanprover-community.github.io/get_started.html#regular-install
-* `leanproject get lftcm2020`
-* `code lftcm2020`
-* open the file `src/demos/category_theory.lean`
+* `leanproject get mathlib`
+* `code mathlib`
+* open the file `docs/tutorial/lftcm2020/src/demos/category_theory.lean`
 
-If you've already got a copy of `lftcm2020`, you should update it now, using
+If you've already got a copy of `mathlib`, you should update it now, using
 ```
-  cd /path/to/lftcm2020/
+  cd /path/to/mathlib/
   git pull
-  leanproject get-mathlib-cache
+  leanproject get-cache
 ```
 
 There are also exercises associated with this demo, in
-`src/exercise_sources/thursday/afternoon/category_theory/`
+`exercise_sources/thursday/category_theory/`
 with hints at
-`src/hints/thursday/afternoon/category_theory/`
+`hints/category_theory/`
 and (partial) solutions at
-`src/solutions/thursday/afternoon/category_theory/`
+`solutions/thursday/category_theory/`
 Any of Exercises 1-7 should be approachable after the demo.
 The later exercises are quite hard, and will take you longer than the afternoon problem session!
 -/
@@ -260,15 +275,15 @@ def pt : Top := Top.of unit
 
 -- Let's construct the mapping cylinder.
 def to_pt (X : Top) : X ⟶ pt :=
-{ val := λ _, unit.star, property := continuous_const }
+{ to_fun := λ _, unit.star, continuous_to_fun := continuous_const }
 
 def I₀ : pt ⟶ I :=
-{ val := λ _, ⟨(0 : ℝ), by norm_num [set.left_mem_Icc]⟩,
-  property := continuous_const }
+{ to_fun := λ _, ⟨(0 : ℝ), by norm_num [set.left_mem_Icc]⟩,
+  continuous_to_fun := continuous_const }
 
 def I₁ : pt ⟶ I :=
-{ val := λ _, ⟨(1 : ℝ), by norm_num [set.right_mem_Icc]⟩,
-  property := continuous_const }
+{ to_fun := λ _, ⟨(1 : ℝ), by norm_num [set.right_mem_Icc]⟩,
+  continuous_to_fun := continuous_const }
 
 -- We now construct a cylinder as a categorical limit.
 -- `limits.prod` is a shorthand for constructing a limit over the two point diagram:

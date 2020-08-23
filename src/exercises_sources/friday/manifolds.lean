@@ -1,4 +1,4 @@
-import for_mathlib.manifolds
+import ...for_mathlib.manifolds
 
 noncomputable theory
 
