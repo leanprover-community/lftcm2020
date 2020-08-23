@@ -216,5 +216,5 @@ begin
   -- we try to discharge the side conditions with as little work as possible
   { assumption_mod_cast },
   { field_simp,
-    apply one_le_div_of_le; norm_cast; linarith }
+    rw one_le_div; norm_cast; linarith }
 end
