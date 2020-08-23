@@ -11,9 +11,10 @@ import category_theory.limits.shapes.finite_limits
 import data.int.parity
 import data.zmod.basic
 import category_theory.abelian.basic
+import algebra.category.Group.abelian
 import algebra.category.Module.monoidal
 import topology.category.UniformSpace
-import ..for_mathlib.algebra.category.Group.kernels
+-- import ..for_mathlib.algebra.category.Group.kernels
 
 
 /-!
@@ -331,86 +332,6 @@ and prove our theorems there.
 -/
 
 /-!
-### Homological algebra
-
-We've recently set up the very basics of homoological algebra using the category theory library.
-There's still a way to go --- good projects for the near future include
-* injective covers and resolutions
-* `Ext` and `Tor`
-* bicomplexes, the salamander, snake, five, and nine lemmas
-
-Here's something you can do already:
--/
-
-open category_theory.limits
-local notation `Ab` := AddCommGroup.{0}
-
-noncomputable theory -- `has_images Ab` is noncomputable!
-
-open cochain_complex homological_complex
-
-abbreviation Z := AddCommGroup.of ℤ
-
-def mul_by (k : ℤ) : Z ⟶ Z :=
-add_monoid_hom.of (gsmul k)
-
-/--
-We define the complex `... --0--> ℤ --2--> ℤ --0--> ℤ --4--> ℤ --0--> ...`
--/
-def P : cochain_complex Ab :=
-{ X := λ i, Z,
-  d := λ i, if i.even then mul_by i else 0,
-  d_squared' :=
-  begin
-    ext i, dsimp,
-    by_cases h : i.even;
-    simp [h] with parity_simps,
-  end }
-
-#check (graded_cohomology Ab).obj P
-
-/--
-Let's try to calculate the cohomology!
--/
-
-@[simp] lemma mul_by_apply (k x : ℤ) : mul_by k x = (k * x : ℤ) := by simp [mul_by]
-
-lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
-begin
-  tidy,
-  { simp [add_monoid_hom.mem_ker] at a, sorry, },
-  { subst a, simp [add_monoid_hom.mem_ker], },
-end
-
-def P_2 : P.cohomology_group 2 ≅ 0 :=
-begin
-  change cokernel (image_to_kernel_map 0 (mul_by 2) _) ≅ 0,
-  calc cokernel (image_to_kernel_map 0 (mul_by 2) (has_zero_morphisms.zero_comp _ _))
-         ≅ cokernel (0 : image (0 : Z ⟶ Z) ⟶ kernel (mul_by 2)) : cokernel_iso_of_eq (by simp)
-     ... ≅ kernel (mul_by 2) : cokernel_zero_iso_target
-     ... ≅ AddCommGroup.of (mul_by 2).ker : AddCommGroup.kernel_iso_ker (mul_by 2)
-     ... ≅ AddCommGroup.of (⊥ : add_subgroup Z) : AddCommGroup.of_add_subgroup_eq (mul_by_ker (by norm_num))
-     ... ≅ 0 : AddCommGroup.of_add_subgroup_bot,
-end.
-
--- Somehow this isn't in mathlib?
-def quotient_gsmul (k : ℕ) :
-  quotient_add_group.quotient (set.range (gsmul k : ℤ → ℤ)) ≃+ zmod k :=
-sorry
-
-def P_3 : P.cohomology_group 3 ≅ AddCommGroup.of (zmod 2) :=
-begin
-  change cokernel (image_to_kernel_map (mul_by 2) 0 _) ≅ AddCommGroup.of (zmod 2),
-  calc cokernel (image_to_kernel_map (mul_by 2) 0 _)
-         ≅ cokernel (image.ι (mul_by 2) ≫ inv (kernel.ι (0 : Z ⟶ Z))) :
-            cokernel_iso_of_eq (image_to_kernel_map_zero_right _)
-     ... ≅ cokernel (image.ι (mul_by 2)) : cokernel_comp_is_iso _ _
-     ... ≅ cokernel (mul_by 2) : cokernel_image_ι _
-     ... ≅ AddCommGroup.of (quotient_add_group.quotient (set.range (mul_by 2))) : AddCommGroup.cokernel_iso_quotient _
-     ... ≅ AddCommGroup.of (zmod 2) : add_equiv_iso_AddCommGroup_iso.hom (quotient_gsmul 2),
-end
-
-/-!
 ## Odds and ends
 
 There's a bunch in mathlib's `category_theory/` folder that hasn't been mentioned at all here,
@@ -422,6 +343,11 @@ including:
 * Abelian categories
 * Monoidal categories
 * ...
+
+Built on top of the category theory library we have things like
+* (Co)homology of chain complexes in `algebra.homology.homology`.
+* The (pre)sheaf of continuous functions in `topology.sheaves.sheaf_of_functions`.
+* The Giry monad in `measure_theory.category.Meas`.
 -/
 
 #print category_theory.adjunction.right_adjoint_preserves_limits
@@ -429,6 +355,7 @@ including:
 #print category_theory.abelian
 
 -- When this tutorial was written we didn't have a single instance of `abelian` in the library.
+example : abelian AddCommGroup.{0} := by apply_instance
 example (R : Ring) : abelian (Module R) := by apply_instance
 
 example (R : CommRing) : monoidal_category (Module R) := by apply_instance
