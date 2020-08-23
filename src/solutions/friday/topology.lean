@@ -263,7 +263,7 @@ We hence have the important
   {A : set X}, F ≠ ⊥ → tendsto f F (𝓝 a) → (∀ᶠ x in F, f x ∈ A) → a ∈ closure A
 
 If `A` is known to be closed then we can replace `closure A` by `A`, this is
-`mem_of_closed_of_tendsto`.
+`is_closed.mem_of_tendsto`.
 -/
 
 /-
@@ -375,13 +375,13 @@ begin
       from mem_sets_of_superset V_in this,
     intros y y_in,
     have hVx : V ∈ 𝓝 y := mem_nhds_sets V_op y_in,
-    apply mem_of_closed_of_tendsto _ (hφ y) V'_closed,
-    { exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
-    { simpa [mem_closure_iff_comap_ne_bot] using hA y } },
+    haveI : (comap (coe : A → X) (𝓝 y)).ne_bot := by simpa [mem_closure_iff_comap_ne_bot] using hA y,
+    apply is_closed.mem_of_tendsto V'_closed (hφ y),
+    exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
   { intros a,
     have lim : tendsto f (𝓝 a) (𝓝 $ φ a),
       by simpa [nhds_induced] using hφ a,
-    exact tendsto_nhds_unique nhds_ne_bot lim f_cont.continuous_at },
+    exact tendsto_nhds_unique lim f_cont.continuous_at },
   -- sorry
 end
 

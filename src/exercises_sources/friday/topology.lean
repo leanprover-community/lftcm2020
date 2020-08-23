@@ -193,7 +193,7 @@ We hence have the important
   {A : set X}, F ≠ ⊥ → tendsto f F (𝓝 a) → (∀ᶠ x in F, f x ∈ A) → a ∈ closure A
 
 If `A` is known to be closed then we can replace `closure A` by `A`, this is
-`mem_of_closed_of_tendsto`.
+`is_closed.mem_of_tendsto`.
 -/
 
 /-
@@ -331,4 +331,3 @@ begin
 end
 
 end lftcm
-
