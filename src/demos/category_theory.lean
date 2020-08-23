@@ -3,6 +3,7 @@ import category_theory.functor
 import category_theory.functor_category
 import algebra.category.CommRing
 import algebra.category.Group.images
+import algebra.category.Group.colimits
 import algebra.homology.homology
 import topology.category.Top
 import topology.instances.real
@@ -344,9 +345,6 @@ Here's something you can do already:
 open category_theory.limits
 local notation `Ab` := AddCommGroup.{0}
 
-local attribute [instance] has_equalizers_of_has_finite_limits
-local attribute [instance] has_coequalizers_of_has_finite_colimits
-
 noncomputable theory -- `has_images Ab` is noncomputable!
 
 open cochain_complex homological_complex
@@ -380,7 +378,7 @@ Let's try to calculate the cohomology!
 lemma mul_by_ker {k : ℤ} (h : k ≠ 0) : (mul_by k).ker = ⊥ :=
 begin
   tidy,
-  { simp only [add_monoid_hom.mem_ker] at a, finish, },
+  { simp [add_monoid_hom.mem_ker] at a, sorry, },
   { subst a, simp [add_monoid_hom.mem_ker], },
 end
 
@@ -429,8 +427,9 @@ including:
 #print category_theory.adjunction.right_adjoint_preserves_limits
 
 #print category_theory.abelian
--- Right now we don't have a single instance of `abelian` in the library:
--- constructing `abelian AddCommGroup` is a great exercise, and all the ingredients are available.
+
+-- When this tutorial was written we didn't have a single instance of `abelian` in the library.
+example (R : Ring) : abelian (Module R) := by apply_instance
 
 example (R : CommRing) : monoidal_category (Module R) := by apply_instance
 

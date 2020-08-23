@@ -32,30 +32,11 @@ def Ring.polynomial_2 : Ring ⥤ Ring :=
     apply_instance,
   end, }
 
--- Usually I would say that since the first step of the tactic block is an `apply`,
--- we should convert that into a function application outside the block.
--- However because of the `@`, this is a little more complicated, so let's get rid of the `@` first.
-
 -- If you hover over `@ring_hom.of`, you'll see it has six arguments:
 --    Π {α β : Type (max u_1 u_2)} [rα : semiring α] [rβ : semiring β] (f : α → β) [_inst_1 : is_semiring_hom f], α →+* β
 -- corresponding to the six underscores above. It's the second last two that we've solved explicitly.
 
 def Ring.polynomial_3 : Ring ⥤ Ring :=
-{ obj := λ R, Ring.of (polynomial R),
-  map := λ R S f,
-  begin
-    apply @ring_hom.of _ _ _ _ (polynomial.map f) _,
-    -- apply_instance, -- suddenly this isn't even necessary!
-  end, }
-
-def Ring.polynomial_4 : Ring ⥤ Ring :=
-{ obj := λ R, Ring.of (polynomial R),
-  map := λ R S f,
-  begin
-    apply ring_hom.of (polynomial.map f),
-  end, }
-
-def Ring.polynomial_5 : Ring ⥤ Ring :=
 { obj := λ R, Ring.of (polynomial R),
   map := λ R S f, ring_hom.of (polynomial.map f), }
 
