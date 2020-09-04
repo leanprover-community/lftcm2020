@@ -132,8 +132,8 @@ sorry
 /- Check your definition here: -/
 def v : fin 2 → ℤ := ![1, 3]
 def w : fin 2 → ℤ := ![2, 4]
--- #eval matrix_to_bilin_form A v w
--- #eval your_bilin_form v w
+#eval matrix_to_bilin_form A v w
+#eval your_bilin_form v w
 
 end matrix
 
@@ -214,3 +214,4 @@ sorry
 end pi
 
 end exercise4
+

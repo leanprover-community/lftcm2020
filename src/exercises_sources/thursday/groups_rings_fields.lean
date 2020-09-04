@@ -326,7 +326,7 @@ Useful library lemmas (in no particular order):
 - `is_unit.ne_zero`
 -/
 
-lemma is_unit_of_is_unit_leading_coeff_of_is_unit_map
+lemma is_unit_of_is_unit_leading_coeff_of_is_unit_map'
   (f : polynomial R) (hf : is_unit (leading_coeff f)) (H : is_unit (map φ f)) :
   is_unit f :=
 begin
