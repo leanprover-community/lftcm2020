@@ -511,7 +511,7 @@ be a smooth manifold. -/
 
 /- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
-example : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0)
+example : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩
 
 /- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
 and this instance is not really needed. -/
@@ -555,7 +555,7 @@ construct a homeomorphism with `model_prod ℝ ℝ`.
 def my_homeo : tangent_bundle 𝓡1 myℝ ≃ₜ (ℝ × ℝ) :=
 begin
   -- sorry
-  let p : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0),
+  let p : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩,
   let F := chart_at (model_prod ℝ ℝ) p,
   have A : ¬ ((4 : ℝ) < 1), by norm_num,
   have S : F.source = univ, by simp [F, chart_at, A, @local_homeomorph.refl_source ℝ _],
@@ -578,12 +578,12 @@ to use the library
 section you_should_probably_skip_this
 
 /- If `M` is a manifold modelled on a vector space `E`, then the underlying type for the tangent
-bundle is just `M × E` -/
+bundle is just `Σ (x : M), E` -/
 
-lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = (myℝ × ℝ) :=
+lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = (Σ (x : myℝ), ℝ) :=
 /- inline sorry -/rfl/- inline sorry -/
 
-/- This means that you can specify a point in the tangent bundle as a pair `(x, y)`.
+/- This means that you can specify a point in the tangent bundle as a pair `⟨x, y⟩`.
 However, in general, a tangent bundle is not trivial: the topology on `tangent_bundle 𝓡1 myℝ` is *not*
 the product topology. Instead, the tangent space at a point `x` is identified with `ℝ` through some
 preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
@@ -599,10 +599,10 @@ Let us register the identification explicitly, as a homeomorphism:
 
 def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
   tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
-{ to_fun := id,
-  inv_fun := id,
-  left_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
-  right_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
+{ to_fun := λ p, (p.1, p.2),
+  inv_fun := λ p, ⟨p.1, p.2⟩,
+  left_inv := /- inline sorry -/begin rintro ⟨x, v⟩, refl end/- inline sorry -/,
+  right_inv := /- inline sorry -/begin rintro ⟨x, v⟩, refl end/- inline sorry -/,
   continuous_to_fun := begin
     -- if you think that `continuous_id` should work but `exact continuous_id` fails, you
     -- can try `convert continuous_id`: it might show you what doesn't match and let you
