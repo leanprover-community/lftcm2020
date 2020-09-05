@@ -15,15 +15,15 @@ structure Mon_in :=
 (μ : X ⊗ X ⟶ X)
 -- There are three missing axioms here!
 -- Use `λ_ X`, `ρ_ X` and `α_ X Y Z` for unitors and associators.
-sorry
+-- sorry
 
 namespace Mon_in
 
 variables {C}
 
-@[ext]
-structure hom (M N : Mon_in C) :=
-sorry
+-- @[ext]
+-- structure hom (M N : Mon_in C) :=
+-- sorry
 
 
 
@@ -48,4 +48,3 @@ Bonus projects (all but the first will be non-trivial with today's mathlib):
 * Can you transport this monoidal structure to `Ring` or `Algebra R`?
   How does it compare to the "native" one?
 -/
-
