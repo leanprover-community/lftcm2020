@@ -348,7 +348,7 @@ properties it satisfies, i.e. a `metric_space_basic`, so we should setup a metri
 constructor from a `metric_space_basic` by setting the topology to be the induced one. -/
 
 def of_basic {X : Type} (m : metric_space_basic X) : metric_space X :=
-{ compatible := begin intros, refl, /- this should when the above parts are complete -/ end,
+{ compatible := begin intros, refl, /- this should work when the above parts are complete -/ end,
   ..m,
   ..@metric_space_basic.topological_space X m }
 
@@ -367,6 +367,9 @@ instance {X Y : Type} [metric_space X] [metric_space Y] : metric_space (X × Y) 
   end,
   ..prod.topological_space X Y,
   ..prod.metric_space_basic X Y, }
+
+/- unregister the bad instance we defined earlier -/
+local attribute [-instance] metric_space_basic.topological_space
 
 /- Now this will work, there is only one topological space on the product, we can
 rewrite like we tried to before a lemma about topologies our result on metric spaces,
