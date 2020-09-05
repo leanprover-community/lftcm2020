@@ -944,7 +944,7 @@ begin
 end
 
 def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
-λ p, (p.1, ((tangent_bundle_model_space_homeomorph ℝ (model_with_corners_self ℝ ℝ)) (tangent_map (𝓡∂ 1) 𝓡1 g p)).2)
+λ p, (p.1, ((tangent_bundle_vector_space_triv ℝ) (tangent_map (𝓡∂ 1) 𝓡1 g p)).2)
 
 lemma continuous_G : continuous G :=
 begin
@@ -956,9 +956,6 @@ begin
   -- sorry
 end
 
-/- in the definition of `F`, we use the map `tangent_bundle_vector_space_triv`
-(which is just the identity pointwise) to make sure that Lean is not lost
-between the different topologies. -/
 def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
 λ p, tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1)
   ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
@@ -981,15 +978,14 @@ end
 lemma FoG : F ∘ G = id :=
 begin
   -- sorry
-  ext1 p,
-  rcases p with ⟨x, v⟩,
+  ext1 ⟨x, v⟩,
   simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
   dsimp,
   split,
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { change (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) 𝓡1 g (x, v))).snd = v,
+  { change (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) 𝓡1 g ⟨x, v⟩)).snd = v,
     rw [← tangent_map_within_univ, ← tangent_map_within_comp_at, fog, tangent_map_within_univ, tangent_map_id],
     { refl },
     { apply times_cont_mdiff_on_f.mdifferentiable_on le_top,
@@ -1004,26 +1000,24 @@ end
 lemma GoF : G ∘ F = id :=
 begin
   -- sorry
-  ext1 p,
-  rcases p with ⟨x, v⟩,
+  ext1 ⟨x, v⟩,
   simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
   dsimp,
   split,
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) ((x : ℝ), v).fst,
+  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).fst,
     { rw unique_mdiff_within_at_iff_unique_diff_within_at,
       apply unique_diff_on_Icc_zero_one _ x.2 },
-    change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (x, v))).snd = v,
-    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ _ A],
-    { have : tangent_map_within 𝓡1 𝓡1 (g ∘ f) (Icc 0 1) (x, v)
-             = tangent_map_within 𝓡1 𝓡1 id (Icc 0 1) (x, v) :=
+    change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) ⟨x, v⟩)).snd = v,
+    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ subset_preimage_univ A],
+    { have : tangent_map_within 𝓡1 𝓡1 (g ∘ f) (Icc 0 1) ⟨x, v⟩
+             = tangent_map_within 𝓡1 𝓡1 id (Icc 0 1) ⟨x, v⟩ :=
         tangent_map_within_congr gof _ x.2 A,
       rw [this, tangent_map_within_id _ A] },
     { apply times_cont_mdiff_g.times_cont_mdiff_on.mdifferentiable_on le_top _ (mem_univ _) },
-    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top _ x.2 },
-    { simp only [preimage_univ, subset_univ], } }
+    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top _ x.2 } }
   -- sorry
 end
 
