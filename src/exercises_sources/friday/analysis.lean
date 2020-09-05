@@ -122,6 +122,7 @@ lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}
   ∫ x in t \ s, f x ∂μ = ∫ x in t, f x ∂μ - ∫ x in s, f x ∂μ :=
 begin
   -- hint: apply `integral_union` to `s` and `t \ s`
+  sorry
 end
 
 lemma integral_Icc_sub_Icc_of_le [linear_order α] [topological_space α] [order_topology α]
@@ -129,7 +130,7 @@ lemma integral_Icc_sub_Icc_of_le [linear_order α] [topological_space α] [order
   {f : α → ℝ} (hfm : measurable f) (hfi : integrable f (μ.restrict $ Icc x z)) :
   ∫ a in Icc x z, f a ∂μ - ∫ a in Icc x y, f a ∂μ = ∫ a in Ioc y z, f a ∂μ :=
 begin
-  rw [sub_eq_iff_eq_add', ← integral_union, Icc_union_Ioc_eq_Icc],
+  rw [sub_eq_iff_eq_add', ← integral_union, Icc_union_Ioc_eq_Icc];
   sorry
 end
 
