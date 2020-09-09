@@ -7,99 +7,6 @@ open set
 
 open_locale big_operators
 
-@[simp] lemma homeomorph_mk_coe {α : Type*} {β : Type*} [topological_space α] [topological_space β]
-  (a : equiv α β) (b c) : ((homeomorph.mk a b c) : α → β) = a :=
-rfl
-
-@[simp] lemma homeomorph_mk_coe_symm {α : Type*} {β : Type*} [topological_space α] [topological_space β]
-  (a : equiv α β) (b c) : ((homeomorph.mk a b c).symm : β → α) = a.symm :=
-rfl
-
-namespace metric
-
-end metric
-
-section fderiv_id
-
-variables {𝕜 : Type*} [nondiscrete_normed_field 𝕜]
-variables {E : Type*} [normed_group E] [normed_space 𝕜 E]
-
-lemma fderiv_id' {x : E} : fderiv 𝕜 (λ (x : E), x) x = continuous_linear_map.id 𝕜 E :=
-fderiv_id
-
-end fderiv_id
-
-section times_cont_diff_sum
-
-variables {𝕜 : Type*} [nondiscrete_normed_field 𝕜]
-{E : Type*} [normed_group E] [normed_space 𝕜 E]
-{F : Type*} [normed_group F] [normed_space 𝕜 F]
-{G : Type*} [normed_group G] [normed_space 𝕜 G]
-{ι : Type*} {f : ι → E → F} {s : finset ι} {n : with_top ℕ} {t : set E} {x : E}
-
-/- When adding it to mathlib, make `x` explicit in times_cont_diff_within_at.comp -/
-
-/-- The sum of two `C^n`functions on a domain is `C^n`. -/
-lemma times_cont_diff_within_at.add {n : with_top ℕ} {s : set E} {f g : E → F}
-  (hf : times_cont_diff_within_at 𝕜 n f s x) (hg : times_cont_diff_within_at 𝕜 n g s x) :
-  times_cont_diff_within_at 𝕜 n (λx, f x + g x) s x :=
-begin
-  have A : times_cont_diff 𝕜 n (λp : F × F, p.1 + p.2),
-  { apply is_bounded_linear_map.times_cont_diff,
-    exact is_bounded_linear_map.add is_bounded_linear_map.fst is_bounded_linear_map.snd },
-  have B : times_cont_diff_within_at 𝕜 n (λp : F × F, p.1 + p.2) univ (prod.mk (f x) (g x)) :=
-    A.times_cont_diff_at.times_cont_diff_within_at,
-  exact @times_cont_diff_within_at.comp _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ x B (hf.prod hg) (subset_preimage_univ),
-end
-
-/-- The sum of two `C^n`functions on a domain is `C^n`. -/
-lemma times_cont_diff_at.add {n : with_top ℕ} {f g : E → F}
-  (hf : times_cont_diff_at 𝕜 n f x) (hg : times_cont_diff_at 𝕜 n g x) :
-  times_cont_diff_at 𝕜 n (λx, f x + g x) x :=
-begin
-  simp [← times_cont_diff_within_at_univ] at *,
-  exact hf.add hg
-end
-
-lemma times_cont_diff_within_at.sum (h : ∀ i ∈ s, times_cont_diff_within_at 𝕜 n (λ x, f i x) t x) :
-  times_cont_diff_within_at 𝕜 n (λ x, (∑ i in s, f i x)) t x :=
-begin
-  classical,
-  induction s using finset.induction_on with i s is IH,
-  { simp [times_cont_diff_within_at_const] },
-  { simp only [is, finset.sum_insert, not_false_iff],
-    exact (h _ (finset.mem_insert_self i s)).add (IH (λ j hj, h _ (finset.mem_insert_of_mem hj))) }
-end
-
-lemma times_cont_diff_at.sum (h : ∀ i ∈ s, times_cont_diff_at 𝕜 n (λ x, f i x) x) :
-  times_cont_diff_at 𝕜 n (λ x, (∑ i in s, f i x)) x :=
-begin
-  simp [← times_cont_diff_within_at_univ] at *,
-  exact times_cont_diff_within_at.sum h
-end
-
-lemma times_cont_diff_on.sum (h : ∀ i ∈ s, times_cont_diff_on 𝕜 n (λ x, f i x) t) :
-  times_cont_diff_on 𝕜 n (λ x, (∑ i in s, f i x)) t :=
-λ x hx, times_cont_diff_within_at.sum (λ i hi, h i hi x hx)
-
-lemma times_cont_diff.sum (h : ∀ i ∈ s, times_cont_diff 𝕜 n (λ x, f i x)) :
-  times_cont_diff 𝕜 n (λ x, (∑ i in s, f i x)) :=
-begin
-  simp [← times_cont_diff_on_univ] at *,
-  exact times_cont_diff_on.sum h
-end
-
-lemma times_cont_diff.comp_times_cont_diff_within_at {g : F → G} {f : E → F} (h : times_cont_diff 𝕜 n g)
-  (hf : times_cont_diff_within_at 𝕜 n f t x) :
-  times_cont_diff_within_at 𝕜 n (g ∘ f) t x :=
-begin
-  have : times_cont_diff_within_at 𝕜 n g univ (f x) :=
-    h.times_cont_diff_at.times_cont_diff_within_at,
-  exact this.comp hf (subset_univ _),
-end
-
-end times_cont_diff_sum
-
 section pi_Lp_smooth
 
 variables
@@ -122,7 +29,7 @@ calc
     simp only [pi_Lp.norm_eq, one_mul, linear_map.coe_mk],
     apply real.rpow_le_rpow (A i),
     { exact finset.single_le_sum (λ j hj, A j) (finset.mem_univ _) },
-    { exact div_nonneg zero_le_one (lt_of_lt_of_le zero_lt_one hp) }
+    { exact div_nonneg zero_le_one (le_trans zero_le_one hp) }
   end
 
 lemma pi_Lp.times_cont_diff_coord :

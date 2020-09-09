@@ -251,7 +251,7 @@ begin
   -- sorry
   intro x,
   rw is_algebraic_iff_is_integral,
-  apply is_integral_of_noetherian',
+  apply is_integral_of_noetherian,
   assumption,
   -- sorry
 end

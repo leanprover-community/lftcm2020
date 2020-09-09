@@ -236,8 +236,8 @@ def other_example_matrix : matrix (fin 3) (fin 2) ℤ :=
   ![2, 3]]
 
 /- We have the 0 matrix and the sum of two matrices: -/
-example (i j) : (0 : matrix m n R) i j = 0 := matrix.zero_val i j
-example (A B : matrix m n R) (i j) : (A + B) i j = A i j + B i j := matrix.add_val A B i j
+example (i j) : (0 : matrix m n R) i j = 0 := matrix.zero_apply i j
+example (A B : matrix m n R) (i j) : (A + B) i j = A i j + B i j := matrix.add_apply A B i j
 
 /-
 Matrices have multiplication and transpose operators `matrix.mul` and `matrix.transpose`.

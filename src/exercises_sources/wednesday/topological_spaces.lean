@@ -221,7 +221,8 @@ metric_space_basic (X × Y) :=
 set_option trace.type_context.is_def_eq false
 example (X : Type) [metric_space_basic X] : is_open {xy : X × X | dist xy.fst xy.snd < 100 } :=
 begin
-  rw is_open_prod_iff X X,
+  -- rw is_open_prod_iff X X,
+
   -- this fails, why? Because we have two subtly different topologies on the product
   -- they are equal but the proof that they are equal is nontrivial and the
   -- typeclass mechanism can't see that they automatically to apply. We need to change
@@ -280,7 +281,7 @@ properties it satisfies, i.e. a `metric_space_basic`, so we should setup a metri
 constructor from a `metric_space_basic` by setting the topology to be the induced one. -/
 
 def of_basic {X : Type} (m : metric_space_basic X) : metric_space X :=
-{ compatible := begin intros, refl, /- this should when the above parts are complete -/ end,
+{ compatible := begin intros, refl, /- this should work when the above parts are complete -/ end,
   ..m,
   ..@metric_space_basic.topological_space X m }
 
@@ -293,6 +294,9 @@ instance {X Y : Type} [metric_space X] [metric_space Y] : metric_space (X × Y) 
   end,
   ..prod.topological_space X Y,
   ..prod.metric_space_basic X Y, }
+
+/- unregister the bad instance we defined earlier -/
+local attribute [-instance] metric_space_basic.topological_space
 
 /- Now this will work, there is only one topological space on the product, we can
 rewrite like we tried to before a lemma about topologies our result on metric spaces,
