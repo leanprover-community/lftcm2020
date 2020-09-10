@@ -35,7 +35,8 @@ Note: this exists as `tactic.interactive.contradiction`.
 
 -/
 
-meta def tactic.interactive.contr : tactic unit := sorry
+meta def tactic.interactive.contr : tactic unit :=
+admit -- change this
 
 example (P Q R : Prop) (hp : P) (hq : Q) (hr : ¬ R) (hnq : ¬ Q) : false :=
 by contr
@@ -79,13 +80,16 @@ Hints:
 -/
 
 
-meta def add_nonneg_proof (n : name) : tactic unit := sorry
+meta def add_nonneg_proof (n : name) : tactic unit :=
+sorry
 
-run_cmd add_nonneg_proof `nat.add
-run_cmd add_nonneg_proof `list.length
+-- these test cases should succeed when you're done
 
-#check nat.add_nonneg
-#check list.length_nonneg
+-- run_cmd add_nonneg_proof `nat.add
+-- run_cmd add_nonneg_proof `list.length
+
+-- #check nat.add_nonneg
+-- #check list.length_nonneg
 
 
 /-!
@@ -111,23 +115,27 @@ or other operators in denominators. These all fail:
 
 example (q : ℚ) (h : q / (3 / 4) > 0) : false :=
 begin
-  cancel_denoms at h,
+  -- cancel_denoms at h,
+  sorry
 end
 
 example (p q : ℚ) (h : q / 2 / 3 < q) : false :=
 begin
-  cancel_denoms at h,
+  -- cancel_denoms at h,
+  sorry
 end
 
 example (p q : ℚ) (h : q / 2 < 3 / (4*q)) : false :=
 begin
-  cancel_denoms at h,
+  -- cancel_denoms at h,
+  sorry
 end
 
 -- this one succeeds but doesn't do what it should
 example (p q : ℚ) (h : q / (2*3) < q) : false :=
 begin
-  cancel_denoms at h,
+  -- cancel_denoms at h,
+  sorry
 end
 
 /-!

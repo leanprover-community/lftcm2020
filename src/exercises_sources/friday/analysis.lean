@@ -105,15 +105,14 @@ variables {α E : Type*} [measurable_space α] [normed_group E] [normed_space �
 
 #check integral_add
 
-#check integral_add_meas
+#check integral_add_measure
 
 lemma integral_union (f : α → E) (hfm : measurable f) {s t : set α}
   (hs : is_measurable s) (ht : is_measurable t) (hst : disjoint s t)
-  (hfi : integrable f $ μ.restrict (s ∪ t)) :
+  (hfis : integrable f $ μ.restrict s) (hfit : integrable f $ μ.restrict t) :
   ∫ x in s ∪ t, f x ∂μ = ∫ x in s, f x ∂μ + ∫ x in t, f x ∂μ :=
 begin
-  rw [measure.restrict_union, integral_add_meas]; try { assumption },
-  rwa [← measure.restrict_union]; assumption
+  rw [measure.restrict_union hst hs ht, integral_add_measure hfis hfit],
 end
 
 lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}
@@ -122,6 +121,7 @@ lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}
   ∫ x in t \ s, f x ∂μ = ∫ x in t, f x ∂μ - ∫ x in s, f x ∂μ :=
 begin
   -- hint: apply `integral_union` to `s` and `t \ s`
+  sorry
 end
 
 lemma integral_Icc_sub_Icc_of_le [linear_order α] [topological_space α] [order_topology α]
@@ -129,7 +129,7 @@ lemma integral_Icc_sub_Icc_of_le [linear_order α] [topological_space α] [order
   {f : α → ℝ} (hfm : measurable f) (hfi : integrable f (μ.restrict $ Icc x z)) :
   ∫ a in Icc x z, f a ∂μ - ∫ a in Icc x y, f a ∂μ = ∫ a in Ioc y z, f a ∂μ :=
 begin
-  rw [sub_eq_iff_eq_add', ← integral_union, Icc_union_Ioc_eq_Icc],
+  rw [sub_eq_iff_eq_add', ← integral_union, Icc_union_Ioc_eq_Icc];
   sorry
 end
 

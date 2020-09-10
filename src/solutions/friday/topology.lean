@@ -147,7 +147,7 @@ and a filter `G` on `Y` and returns a filter on `X`.
 #check @forall_sets_nonempty_iff_ne_bot
 
 example {α β : Type*} {f : filter β} {m : α → β} :
-  comap m f ≠ ⊥ ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
+  (comap m f).ne_bot ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
 begin
   -- sorry
   rw ← forall_sets_nonempty_iff_ne_bot,
@@ -245,7 +245,7 @@ example (f : X → Y) : continuous f ↔ ∀ x, tendsto f (𝓝 x) (𝓝 (f x)) 
 #check nonempty_inter_iff_exists_right
 
 example {A : set X} {x : X} :
-  x ∈ closure A ↔ comap (coe : A → X) (𝓝 x) ≠ ⊥ :=
+  x ∈ closure A ↔ (comap (coe : A → X) (𝓝 x)).ne_bot :=
 begin
   -- sorry
   simp_rw [mem_closure_iff_nhds, comap_ne_bot_iff, nonempty_inter_iff_exists_right],
@@ -263,7 +263,7 @@ We hence have the important
   {A : set X}, F ≠ ⊥ → tendsto f F (𝓝 a) → (∀ᶠ x in F, f x ∈ A) → a ∈ closure A
 
 If `A` is known to be closed then we can replace `closure A` by `A`, this is
-`mem_of_closed_of_tendsto`.
+`is_closed.mem_of_tendsto`.
 -/
 
 /-
@@ -375,13 +375,13 @@ begin
       from mem_sets_of_superset V_in this,
     intros y y_in,
     have hVx : V ∈ 𝓝 y := mem_nhds_sets V_op y_in,
-    apply mem_of_closed_of_tendsto _ (hφ y) V'_closed,
-    { exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
-    { simpa [mem_closure_iff_comap_ne_bot] using hA y } },
+    haveI : (comap (coe : A → X) (𝓝 y)).ne_bot := by simpa [mem_closure_iff_comap_ne_bot] using hA y,
+    apply is_closed.mem_of_tendsto V'_closed (hφ y),
+    exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
   { intros a,
     have lim : tendsto f (𝓝 a) (𝓝 $ φ a),
       by simpa [nhds_induced] using hφ a,
-    exact tendsto_nhds_unique nhds_ne_bot lim f_cont.continuous_at },
+    exact tendsto_nhds_unique lim f_cont.continuous_at },
   -- sorry
 end
 

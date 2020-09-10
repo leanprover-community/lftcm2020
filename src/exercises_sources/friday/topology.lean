@@ -99,7 +99,7 @@ and a filter `G` on `Y` and returns a filter on `X`.
 #check @forall_sets_nonempty_iff_ne_bot
 
 example {α β : Type*} {f : filter β} {m : α → β} :
-  comap m f ≠ ⊥ ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
+  (comap m f).ne_bot ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
 begin
   sorry
 end
@@ -177,7 +177,7 @@ example (f : X → Y) : continuous f ↔ ∀ x, tendsto f (𝓝 x) (𝓝 (f x)) 
 #check nonempty_inter_iff_exists_right
 
 example {A : set X} {x : X} :
-  x ∈ closure A ↔ comap (coe : A → X) (𝓝 x) ≠ ⊥ :=
+  x ∈ closure A ↔ (comap (coe : A → X) (𝓝 x)).ne_bot :=
 begin
   sorry
 end
@@ -193,7 +193,7 @@ We hence have the important
   {A : set X}, F ≠ ⊥ → tendsto f F (𝓝 a) → (∀ᶠ x in F, f x ∈ A) → a ∈ closure A
 
 If `A` is known to be closed then we can replace `closure A` by `A`, this is
-`mem_of_closed_of_tendsto`.
+`is_closed.mem_of_tendsto`.
 -/
 
 /-

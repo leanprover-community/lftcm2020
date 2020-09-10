@@ -1,4 +1,4 @@
-import for_mathlib.manifolds
+import ...for_mathlib.manifolds
 
 noncomputable theory
 
@@ -97,10 +97,10 @@ definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n
 instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
 
 instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) :=
-{ atlas := begin sorry end,
-  chart_at := begin sorry end,
+{ atlas            := begin sorry end,
+  chart_at         := begin sorry end,
   mem_chart_source := begin sorry end,
-  chart_mem_atlas := begin sorry end }
+  chart_mem_atlas  := begin sorry end }
 
 instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) :=
 { compatible := begin
@@ -234,7 +234,7 @@ define derivatives, you should already think of manifolds with boundaries! That'
 in mathlib.
 
 Difficulty: if a domain `s` is too small (think `s = ℝ ⊆ ℝ^2`), the values of `f` on `s` do not
-prescribe uniquely a derivative, so `fderiv_within_at ℝ f s x` may behave badly: derivative of
+prescribe uniquely a derivative, so `fderiv_within_at ℝ f s x` may behave badly: the derivative of
 a sum might be different from sum of derivatives, as there is an arbitrary choice to be made.
 This does not happen with the half-space, as it is large enough: derivatives within domains only
 work well if the tangent directions span the whole space. Predicate `unique_diff_on` for sets
@@ -511,7 +511,7 @@ be a smooth manifold. -/
 
 /- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
-example : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0)
+example : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩
 
 /- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
 and this instance is not really needed. -/
@@ -555,7 +555,7 @@ construct a homeomorphism with `model_prod ℝ ℝ`.
 def my_homeo : tangent_bundle 𝓡1 myℝ ≃ₜ (ℝ × ℝ) :=
 begin
   -- sorry
-  let p : tangent_bundle 𝓡1 myℝ := ((4 : ℝ), 0),
+  let p : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩,
   let F := chart_at (model_prod ℝ ℝ) p,
   have A : ¬ ((4 : ℝ) < 1), by norm_num,
   have S : F.source = univ, by simp [F, chart_at, A, @local_homeomorph.refl_source ℝ _],
@@ -578,45 +578,45 @@ to use the library
 section you_should_probably_skip_this
 
 /- If `M` is a manifold modelled on a vector space `E`, then the underlying type for the tangent
-bundle is just `M × E` -/
+bundle is just `Σ (x : M), tangent_space x M` (i.e., the disjoint union of the tangent spaces,
+indexed by `x` -- this is a basic object in dependent type theory). And `tangent_space x M`
+is just (a copy of) `E` by definition. -/
 
-lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = (myℝ × ℝ) :=
+lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = Σ (x : myℝ), ℝ :=
 /- inline sorry -/rfl/- inline sorry -/
 
-/- This means that you can specify a point in the tangent bundle as a pair `(x, y)`.
+/- This means that you can specify a point in the tangent bundle as a pair `⟨x, v⟩`.
 However, in general, a tangent bundle is not trivial: the topology on `tangent_bundle 𝓡1 myℝ` is *not*
 the product topology. Instead, the tangent space at a point `x` is identified with `ℝ` through some
 preferred chart at `x`, called `chart_at ℝ x`, but the way they are glued together depends on the
 manifold and the charts.
 
 In vector spaces, the tangent space is canonically the product space, with the same topology, as
-there is only one chart so there is no strange gluing at play. The equality of the topologies
-is given in `tangent_bundle_model_space_topology_eq_prod`, but they are not definitionally equal
-so one can get strange behavior if abusing identifications.
+there is only one chart so there is no strange gluing at play. The fact that the canonical map
+from the sigma type to the product type (called `equiv.sigma_equiv_prod`) is a homeomorphism is
+given in the library by `tangent_bundle_model_space_homeomorph` (note that this is a definition,
+constructing the homeomorphism, instead of a proposition asserting that `equiv.sigma_equiv_prod`
+is a homeomorphism, because we use bundled homeomorphisms in mathlib).
 
-Let us register the identification explicitly, as a homeomorphism:
+Let us register the identification explicitly, as a homeomorphism. You can use the relevant fields
+of `tangent_bundle_model_space_homeomorph` to fill the nontrivial fields here.
 -/
 
 def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
   tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
-{ to_fun := id,
-  inv_fun := id,
-  left_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
-  right_inv := /- inline sorry -/λ x, rfl/- inline sorry -/,
+{ to_fun := λ p, (p.1, p.2),
+  inv_fun := λ p, ⟨p.1, p.2⟩,
+  left_inv := /- inline sorry -/begin rintro ⟨x, v⟩, refl end/- inline sorry -/,
+  right_inv := /- inline sorry -/begin rintro ⟨x, v⟩, refl end/- inline sorry -/,
   continuous_to_fun := begin
-    -- if you think that `continuous_id` should work but `exact continuous_id` fails, you
-    -- can try `convert continuous_id`: it might show you what doesn't match and let you
-    -- fix it afterwards.
     -- sorry
-    convert continuous_id,
-    exact (tangent_bundle_model_space_topology_eq_prod _ _).symm
+    exact (tangent_bundle_model_space_homeomorph E (model_with_corners_self ℝ E)).continuous,
     -- sorry
   end,
   continuous_inv_fun :=
   begin
     -- sorry
-    convert continuous_id,
-    exact (tangent_bundle_model_space_topology_eq_prod _ _)
+    exact (tangent_bundle_model_space_homeomorph E (model_with_corners_self ℝ E)).continuous_inv_fun,
     -- sorry
   end }
 
@@ -627,8 +627,8 @@ It is not a reasonable exercise, in the sense that one should never ever do this
 with a manifold! -/
 
 lemma crazy_formula_after_identifications (x : ℝ) (v : ℝ) :
-  let p : tangent_bundle 𝓡1 myℝ := ((3 : ℝ), 0) in
-  chart_at (model_prod ℝ ℝ) p (x, v) = if x ∈ Ioo (-1 : ℝ) 1 then (x, -v) else (x, v) :=
+  let p : tangent_bundle 𝓡1 myℝ := ⟨(3 : ℝ), 0⟩ in
+  chart_at (model_prod ℝ ℝ) p ⟨x, v⟩ = if x ∈ Ioo (-1 : ℝ) 1 then (x, -v) else (x, v) :=
 begin
   -- this exercise is not easy (and shouldn't be: you are not supposed to use the library like this!)
   -- if you really want to do this, you should unfold as much as you can using simp and dsimp, until you
@@ -690,7 +690,7 @@ theorem diffeomorph_of_one_dim_compact_connected
   -- sorry
   nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M M')
   -- sorry
-:=  sorry
+:= sorry
 
 /- You will definitely need to require smoothness and separation in this case, as it is wrong otherwise.
 Note that Lean won't complain if you don't put these assumptions, as the theorem would still make
@@ -775,6 +775,8 @@ has been introduced above, so don't hesitate to browse the file if you are stuck
 need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
 spaces and `times_cont_mdiff_on` for functions between manifolds.
 
+Try to formulate the next math statements in Lean, and prove them (but see below for hints):
+
 Lemma times_cont_mdiff_g : the inclusion `g` of `[0, 1]` in `ℝ` is smooth.
 
 Lemma msmooth_of_smooth : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
@@ -784,7 +786,7 @@ Definition : construct a function `f` from `ℝ` to `[0,1]` which is the identit
 
 Theorem : the tangent bundle to `[0, 1]` is homeomorphic to `[0, 1] × ℝ`
 
-Hint for Theorem 4: don't try to unfold the definition of the tangent bundle, it will only get you
+Hint for the last theorem: don't try to unfold the definition of the tangent bundle, it will only get you
 into trouble. Instead, use the derivatives of the maps `f` and `g`, and rely on functoriality
 to check that they are inverse to each other. (This advice is slightly misleading as these derivatives
 do not go between the right spaces, so you will need to massage them a little bit).
@@ -942,22 +944,18 @@ begin
 end
 
 def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × ℝ :=
-λ p, (p.1, (tangent_map (𝓡∂ 1) 𝓡1 g p).2)
+λ p, (p.1, ((tangent_bundle_vector_space_triv ℝ) (tangent_map (𝓡∂ 1) 𝓡1 g p)).2)
 
 lemma continuous_G : continuous G :=
 begin
   -- sorry
   apply continuous.prod_mk (tangent_bundle_proj_continuous _ _),
   refine continuous_snd.comp _,
-  have Z := times_cont_mdiff_g.continuous_tangent_map le_top,
-  convert Z,
-  exact (tangent_bundle_model_space_topology_eq_prod ℝ 𝓡1).symm
+  apply continuous.comp (homeomorph.continuous _),
+  apply times_cont_mdiff.continuous_tangent_map times_cont_mdiff_g le_top,
   -- sorry
 end
 
-/- in the definition of `F`, we use the map `tangent_bundle_vector_space_triv`
-(which is just the identity pointwise) to make sure that Lean is not lost
-between the different topologies. -/
 def F : (Icc (0 : ℝ) 1) × ℝ → tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) :=
 λ p, tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1)
   ((tangent_bundle_vector_space_triv ℝ).symm (p.1, p.2))
@@ -980,15 +978,14 @@ end
 lemma FoG : F ∘ G = id :=
 begin
   -- sorry
-  ext1 p,
-  rcases p with ⟨x, v⟩,
+  ext1 ⟨x, v⟩,
   simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
   dsimp,
   split,
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { change (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) 𝓡1 g (x, v))).snd = v,
+  { change (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (tangent_map (𝓡∂ 1) 𝓡1 g ⟨x, v⟩)).snd = v,
     rw [← tangent_map_within_univ, ← tangent_map_within_comp_at, fog, tangent_map_within_univ, tangent_map_id],
     { refl },
     { apply times_cont_mdiff_on_f.mdifferentiable_on le_top,
@@ -1003,26 +1000,24 @@ end
 lemma GoF : G ∘ F = id :=
 begin
   -- sorry
-  ext1 p,
-  rcases p with ⟨x, v⟩,
+  ext1 ⟨x, v⟩,
   simp [F, G, tangent_map_within, tangent_bundle_vector_space_triv, f],
   dsimp,
   split,
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) ((x : ℝ), v).fst,
+  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).fst,
     { rw unique_mdiff_within_at_iff_unique_diff_within_at,
       apply unique_diff_on_Icc_zero_one _ x.2 },
-    change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) (x, v))).snd = v,
-    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ _ A],
-    { have : tangent_map_within 𝓡1 𝓡1 (g ∘ f) (Icc 0 1) (x, v)
-             = tangent_map_within 𝓡1 𝓡1 id (Icc 0 1) (x, v) :=
+    change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) ⟨x, v⟩)).snd = v,
+    rw [← tangent_map_within_univ, ← tangent_map_within_comp_at _ _ _ subset_preimage_univ A],
+    { have : tangent_map_within 𝓡1 𝓡1 (g ∘ f) (Icc 0 1) ⟨x, v⟩
+             = tangent_map_within 𝓡1 𝓡1 id (Icc 0 1) ⟨x, v⟩ :=
         tangent_map_within_congr gof _ x.2 A,
-      rw [this, tangent_map_within_id A] },
+      rw [this, tangent_map_within_id _ A] },
     { apply times_cont_mdiff_g.times_cont_mdiff_on.mdifferentiable_on le_top _ (mem_univ _) },
-    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top _ x.2 },
-    { simp only [preimage_univ, subset_univ], } }
+    { apply times_cont_mdiff_on_f.mdifferentiable_on le_top _ x.2 } }
   -- sorry
 end
 
