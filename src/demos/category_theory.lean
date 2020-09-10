@@ -1,20 +1,19 @@
 import category_theory.category
 import category_theory.functor
 import category_theory.functor_category
+
 import algebra.category.CommRing
 import algebra.category.Group.images
 import algebra.category.Group.colimits
-import algebra.homology.homology
-import topology.category.Top
-import topology.instances.real
-import category_theory.limits.shapes.finite_limits
-import data.int.parity
-import data.zmod.basic
-import category_theory.abelian.basic
 import algebra.category.Group.abelian
 import algebra.category.Module.monoidal
+
+import category_theory.abelian.basic
+import category_theory.limits.shapes.finite_limits
+
+import topology.instances.real
+import topology.category.Top
 import topology.category.UniformSpace
--- import ..for_mathlib.algebra.category.Group.kernels
 
 
 /-!
@@ -358,6 +357,6 @@ Built on top of the category theory library we have things like
 example : abelian AddCommGroup.{0} := by apply_instance
 example (R : Ring) : abelian (Module R) := by apply_instance
 
-example (R : CommRing) : monoidal_category (Module R) := by apply_instance
+example (R : CommRing.{u}) : monoidal_category (Module.{u} R) := by apply_instance
 
 example : reflective (forget₂ CpltSepUniformSpace UniformSpace) := by apply_instance
