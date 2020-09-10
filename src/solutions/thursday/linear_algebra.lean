@@ -194,11 +194,11 @@ def your_bilin_form : bilin_form R (fin 2 → R) :=
   bilin_smul_right := by { intros, simp, ring } }
 -- sorry
 
-/- Check your definition here: -/
+/- Check your definition here, by uncommenting the #eval lines: -/
 def v : fin 2 → ℤ := ![1, 3]
 def w : fin 2 → ℤ := ![2, 4]
-#eval matrix_to_bilin_form A v w
-#eval your_bilin_form v w
+-- #eval matrix_to_bilin_form A v w
+-- #eval your_bilin_form v w
 
 end matrix
 

@@ -105,15 +105,14 @@ variables {α E : Type*} [measurable_space α] [normed_group E] [normed_space �
 
 #check integral_add
 
-#check integral_add_meas
+#check integral_add_measure
 
 lemma integral_union (f : α → E) (hfm : measurable f) {s t : set α}
   (hs : is_measurable s) (ht : is_measurable t) (hst : disjoint s t)
-  (hfi : integrable f $ μ.restrict (s ∪ t)) :
+  (hfis : integrable f $ μ.restrict s) (hfit : integrable f $ μ.restrict t) :
   ∫ x in s ∪ t, f x ∂μ = ∫ x in s, f x ∂μ + ∫ x in t, f x ∂μ :=
 begin
-  rw [measure.restrict_union, integral_add_meas]; try { assumption },
-  rwa [← measure.restrict_union]; assumption
+  rw [measure.restrict_union hst hs ht, integral_add_measure hfis hfit],
 end
 
 lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}

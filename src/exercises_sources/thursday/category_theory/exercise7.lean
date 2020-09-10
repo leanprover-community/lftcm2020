@@ -16,6 +16,7 @@ structure Mon_ :=
 -- There are three missing axioms here!
 -- Use `λ_ X`, `ρ_ X` and `α_ X Y Z` for unitors and associators.
 
+
 namespace Mon_
 
 variables {C}
@@ -25,15 +26,17 @@ structure hom (M N : Mon_ C) :=
 (hom : M.X ⟶ N.X)
 -- What are the axioms?
 
+
+
+
 instance : category (Mon_ C) :=
 sorry
 
 end Mon_
 
 /-!
-(Note: since LFTCM2020, this goal of this exercise has been PR'd to mathlib,
+(Note: since LFTCM2020, the goal of this exercise has been PR'd to mathlib,
 under `category_theory.monoidal.internal`, along with several of the projects listed below.)
-
 Bonus projects (all but the first will be non-trivial with today's mathlib):
 * ✓ Construct the category of module objects for a fixed monoid object.
 * ✓ Check that `Mon_ Type ≌ Mon`.
@@ -49,3 +52,4 @@ Bonus projects (all but the first will be non-trivial with today's mathlib):
 * Can you transport this monoidal structure to `Ring` or `Algebra R`?
   How does it compare to the "native" one?
 -/
+
