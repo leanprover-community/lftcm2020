@@ -8,6 +8,8 @@ This result is not in mathlib, so full marks for the exercise are only achievabl
 contribute to a pull request! :-)
 -/
 
+noncomputable theory
+
 open category_theory
 open category_theory.limits
 
