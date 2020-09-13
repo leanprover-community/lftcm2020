@@ -8,6 +8,8 @@ This is a more advanced exercise, for which I've indicated a suggested structure
 but not written a full solution. I hope this structure will work out!
 -/
 
+noncomputable theory
+
 universes v u
 
 variables (C : Type u)
@@ -65,7 +67,7 @@ open category_theory.limits
 instance : has_finite_biproducts (additive_envelope.{v} C) :=
 { has_biproducts_of_shape := λ J _ _,
   by exactI -- this makes the `fintype` and `decidable_eq` instances on `J` available
-  { has_biproduct := λ F,
+  { has_biproduct := λ F, has_biproduct.mk
     { bicone :=
       { X :=
         { ι := Σ (j : J), (F j).ι,
