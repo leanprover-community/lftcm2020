@@ -1,5 +1,5 @@
 import algebra.module
-import analysis.normed_space.real_inner_product
+import analysis.normed_space.inner_product
 import data.matrix.notation
 import linear_algebra.basic
 import linear_algebra.bilinear_form
@@ -290,9 +290,9 @@ end matrix
 section odds_and_ends
 
 /- Other useful parts of the library: -/
--- import analysis.normed_space.real_inner_product
+-- import analysis.normed_space.inner_product
 #print normed_space -- semimodule with a norm
-#print inner_product_space -- normed space with an inner product in ℝ
+#print inner_product_space -- normed space with an inner product in ℝ or ℂ
 
 #print finite_dimensional.findim -- the dimension of a space, as a natural number (infinity -> 0)
 #print vector_space.dim -- the dimension of a space, as a cardinal
