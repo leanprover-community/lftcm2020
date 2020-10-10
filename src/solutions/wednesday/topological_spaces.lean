@@ -293,7 +293,7 @@ The previous lemma isn't true! It requires a separation axiom. Define a `class`
 that posits that the topology on a type `X` satisfies this axiom. Mathlib uses
 `T_i` naming scheme for these axioms. -/
 class t2_space (X : Type) [topological_space X] :=
-(t2 : /- inline sorry -/ ∀ x y : X, ∃ (Ux Uy : set X) (hUx : is_open Ux) (hUy : is_open Uy) (hx : x ∈ Ux) (hy : y ∈ Uy), Ux ∩ Uy = ∅ /- inline sorry -/)
+(t2 : /- inline sorry -/ ∀ (x y : X) (h : x ≠ y), ∃ (Ux Uy : set X) (hUx : is_open Ux) (hUy : is_open Uy) (hx : x ∈ Ux) (hy : y ∈ Uy), Ux ∩ Uy = ∅ /- inline sorry -/)
 
 /- (Bonus exercises [medium], the world is your oyster: prove the correct
 version of the above lemma `diag_closed`, prove that the discrete topology is t2,
@@ -303,7 +303,7 @@ example (X : Type) [topological_space X] [t2_space X] : is_open {xy : X × X | x
 begin
   rw is_open_prod_iff X X,
   intros x y h,
-  obtain  ⟨Ux, Uy, hUx, hUy, hx, hy, hxy⟩ := t2_space.t2 x y,
+  obtain ⟨Ux, Uy, hUx, hUy, hx, hy, hxy⟩ := t2_space.t2 x y h,
   use [Ux, Uy, hUx, hUy, hx, hy],
   rintros ⟨tx, ty⟩ ⟨ht1, ht2⟩,
   dsimp,
