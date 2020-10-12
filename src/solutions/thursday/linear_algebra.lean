@@ -299,7 +299,7 @@ Hint: search the library for appropriate lemmas.
 -/
 lemma finite_dimensional : finite_dimensional K (n → K) :=
 -- sorry
-finite_dimensional.of_finite_basis (std_basis_is_basis K n)
+finite_dimensional.of_fintype_basis (std_basis_is_basis K n)
 -- sorry
 lemma findim_eq : finite_dimensional.findim K (n → K) = fintype.card n :=
 -- sorry
