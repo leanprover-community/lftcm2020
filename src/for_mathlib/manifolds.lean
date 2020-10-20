@@ -1,7 +1,7 @@
 /- Missing bits that should be added to mathlib after the workshop and after cleaning them up -/
 
 import geometry.manifold.times_cont_mdiff
-import geometry.manifold.real_instances
+import geometry.manifold.instances.real
 
 open set
 

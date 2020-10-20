@@ -1,4 +1,4 @@
-import analysis.normed_space.real_inner_product
+import analysis.normed_space.inner_product
 import data.matrix.notation
 import linear_algebra.bilinear_form
 import linear_algebra.matrix
@@ -157,7 +157,7 @@ Hints:
 * Try the lemmas `finset.sum_nonneg`, `finset.sum_eq_zero_iff_of_nonneg`,
 `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
-noncomputable instance : inner_product_space (n → ℝ) :=
+noncomputable instance : inner_product_space ℝ (n → ℝ) :=
 inner_product_space.of_core
 sorry
 

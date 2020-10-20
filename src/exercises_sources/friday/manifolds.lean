@@ -92,11 +92,11 @@ Manifold in Lean:
 -- (we don't have submanifolds yet, but it's coming in the near future)
 
 @[derive topological_space]
-definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space (fin (n+1))) 1
+definition sphere (n : ℕ) : Type := metric.sphere (0 : euclidean_space ℝ (fin (n+1))) 1
 
-instance (n : ℕ) : has_coe (sphere n) (euclidean_space (fin (n+1))) := ⟨subtype.val⟩
+instance (n : ℕ) : has_coe (sphere n) (euclidean_space ℝ (fin (n+1))) := ⟨subtype.val⟩
 
-instance (n : ℕ) : charted_space (euclidean_space (fin n)) (sphere n) :=
+instance (n : ℕ) : charted_space (euclidean_space ℝ (fin n)) (sphere n) :=
 { atlas            := begin sorry end,
   chart_at         := begin sorry end,
   mem_chart_source := begin sorry end,
@@ -110,8 +110,8 @@ instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) :=
 
 -- smooth functions
 
-def inc (n : ℕ) : sphere n → euclidean_space (fin (n+1)) :=
-λ p : sphere n, (p : euclidean_space (fin (n+1)))
+def inc (n : ℕ) : sphere n → euclidean_space ℝ (fin (n+1)) :=
+λ p : sphere n, (p : euclidean_space ℝ (fin (n+1)))
 
 lemma inc_smooth (n : ℕ) : times_cont_mdiff (𝓡 n) (𝓡 (n+1)) ∞ (inc n) :=
 begin
@@ -158,7 +158,7 @@ Don't forget to require the global smoothness of the map! You may need to know t
 where the corresponding model with corners is called `𝓡∂ 1`.
 -/
 theorem sphere_eversion :
-  ∃ f : (Icc (0 : ℝ) 1) × sphere 2 → euclidean_space (fin 3),
+  ∃ f : (Icc (0 : ℝ) 1) × sphere 2 → euclidean_space ℝ (fin 3),
   times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
   ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
     function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
@@ -409,7 +409,7 @@ end
 
 /- The statement of the previous instance is not very readable. There is a shortcut notation: -/
 
-instance : smooth_manifold_with_corners 𝓡1 myℝ := {}
+instance : smooth_manifold_with_corners 𝓡1 myℝ := { .. smooth_myℝ }
 
 /- We will now study a very simple map from `myℝ` to `ℝ`, the identity. -/
 
@@ -584,7 +584,7 @@ Don't try to fill the sorried proof! -/
 /-- Two zero-dimensional connected manifolds are diffeomorphic. -/
 theorem diffeomorph_of_zero_dim_connected
   (M M' : Type*) [topological_space M] [topological_space M']
-  [charted_space (euclidean_space (fin 0)) M] [charted_space (euclidean_space (fin 0)) M']
+  [charted_space (euclidean_space ℝ (fin 0)) M] [charted_space (euclidean_space ℝ (fin 0)) M']
   [connected_space M] [connected_space M'] :
   nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 0)) M M') :=
 sorry
@@ -636,7 +636,7 @@ end
 the circle. Here, you should fill the `sorry` (but luckily you may use
 `diffeomorph_of_one_dim_compact_connected`). -/
 theorem diffeomorph_circle_of_one_dim_compact_connected
-  (M : Type*) [topological_space M] [charted_space (euclidean_space (fin 1)) M]
+  (M : Type*) [topological_space M] [charted_space (euclidean_space ℝ (fin 1)) M]
   [connected_space M] [compact_space M] [t2_space M] [smooth_manifold_with_corners (𝓡 1) M] :
   nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
 sorry

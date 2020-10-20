@@ -1,4 +1,4 @@
-import analysis.normed_space.real_inner_product
+import analysis.normed_space.inner_product
 import data.matrix.notation
 import linear_algebra.bilinear_form
 import linear_algebra.matrix
@@ -222,14 +222,15 @@ Hints:
 * Try the lemmas `finset.sum_nonneg`, `finset.sum_eq_zero_iff_of_nonneg`,
 `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
-noncomputable instance : inner_product_space (n → ℝ) :=
+noncomputable instance : inner_product_space ℝ (n → ℝ) :=
 inner_product_space.of_core
 -- sorry
 { inner := dot_product,
-  nonneg := λ x, finset.sum_nonneg (λ i _, mul_self_nonneg _),
+  nonneg_re := λ x, finset.sum_nonneg (λ i _, mul_self_nonneg _),
+  nonneg_im := λ x, by simp,
   definite := λ x hx, funext (λ i, mul_self_eq_zero.mp
     ((finset.sum_eq_zero_iff_of_nonneg (λ i _, mul_self_nonneg (x i))).mp hx i (finset.mem_univ i))),
-  comm := λ x y, dot_product_comm _ _,
+  conj_sym := λ x y, dot_product_comm _ _,
   add_left := λ x y z, add_dot_product _ _ _,
   smul_left := λ s x y, smul_dot_product _ _ _ }
 -- sorry
@@ -298,7 +299,7 @@ Hint: search the library for appropriate lemmas.
 -/
 lemma finite_dimensional : finite_dimensional K (n → K) :=
 -- sorry
-finite_dimensional.of_finite_basis (std_basis_is_basis K n)
+finite_dimensional.of_fintype_basis (std_basis_is_basis K n)
 -- sorry
 lemma findim_eq : finite_dimensional.findim K (n → K) = fintype.card n :=
 -- sorry

@@ -225,10 +225,10 @@ by simp
 When writing `√n`, Lean will use a simple search algorithm to find a proof that `n` is a square, by
 repeatedly applying previously declared instances, and arguments in the local context. -/
 instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
-⟨√n * √m, by simp [nat.mul_pow]⟩
+⟨√n * √m, by simp [mul_pow]⟩
 
-/-! Hint: use `nat.mul_pow` -/
-#check nat.mul_pow
+/-! Hint: use `mul_pow` -/
+#check mul_pow
 lemma sqrt_mul (n m : ℕ) [is_square n] [is_square m] : √(n * m) = √n * √m :=
 begin
   sorry
@@ -242,9 +242,9 @@ begin
 end
 
 
-/-! Hint: use `nat.le_mul_self` and `nat.pow_two` -/
+/-! Hint: use `nat.le_mul_self` and `pow_two` -/
 #check nat.le_mul_self
-#check nat.pow_two
+#check pow_two
 lemma sqrt_le (n : ℕ) [is_square n] : √n ≤ n :=
 begin
   sorry
