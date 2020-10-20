@@ -20,12 +20,12 @@ variables (C : Type) [category.{0} C] [has_zero_morphisms C]
 
 @[derive category]
 def complex : Type :=
-{ F : ℤ ⥤ C // ∀ i : ℤ, F.map (by tidy : i ⟶ i+2) = 0 }
+{ F : ℤ ⥤ C // ∀ i : ℤ, F.map (hom_of_le (by tidy) : i ⟶ i+2) = 0 }
 
 def functor : complex C ⥤ cochain_complex C :=
 { obj := λ P,
   { X := P.1.obj,
-    d := λ i, P.1.map (by tidy : i ⟶ i+1),
+    d := λ i, P.1.map (hom_of_le (by tidy) : i ⟶ i+1),
     d_squared' := sorry, },
   map := λ P Q α,
   { f := λ i, α.app i,
