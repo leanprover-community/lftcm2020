@@ -89,8 +89,8 @@ def homothety : submodule R (End R M) :=
 -- or:
 def smulₗ (s : R) : End R M :=
 { to_fun := λ x, s • x,
-  map_smul' := by simp [smul_comm],
-  map_add' := by simp [smul_add] }
+  map_smul' := smul_comm s,
+  map_add' := smul_add s }
 
 def to_homothety : R →ₗ[R] End R M :=
 { to_fun := smulₗ,
