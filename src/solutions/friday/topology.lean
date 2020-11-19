@@ -212,7 +212,7 @@ like `compact_space X` or `connected_space X`
 
 
 /-- We can talk about continuous functions from `X` to `Y` -/
-example (f : X → Y) : continuous f ↔ ∀ V, is_open V → is_open (f ⁻¹' V) := iff.rfl
+example (f : X → Y) : continuous f ↔ ∀ V, is_open V → is_open (f ⁻¹' V) := continuous_def
 
 /- Each point `x` of a topological space has a neighborhood filter `𝓝 x`
    made of sets containing an open set containing `x`.
