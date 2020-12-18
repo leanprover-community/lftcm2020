@@ -38,7 +38,7 @@ Don’t forget to copy the updated files to `src/my_exercises`.
 /-!
 ## An overview of manifolds in Lean, discussing design decisions
 
-Warning: there are sorries in this section, they are not supposed to be filled! The exercises section
+Warning: there are sorries in this section, they are not supposed to be filled! The exercises sections
 start later, and there you will have plenty of sorries to fill.
 
 What is a manifold?
@@ -641,9 +641,8 @@ begin
     topological_fiber_bundle_core.index_at,
     basic_smooth_bundle_core.to_topological_fiber_bundle_core],
   split_ifs,
-  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, prod.mk.inj_iff, mem_Ioo,
-      fderiv_neg differentiable_at_id', fderiv_id', id.def, continuous_linear_map.coe_id',
-      continuous_linear_map.neg_apply] with mfld_simps },
+  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, mem_Ioo, fderiv_id',
+      continuous_linear_map.coe_id', continuous_linear_map.neg_apply, fderiv_neg] with mfld_simps },
   { simp only [chart_at, h, fderiv_within_univ, mem_Ioo, if_false, @local_homeomorph.refl_symm ℝ,
       fderiv_id, continuous_linear_map.coe_id'] with mfld_simps }
   -- sorry
