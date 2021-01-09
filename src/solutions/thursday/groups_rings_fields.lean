@@ -291,7 +291,7 @@ begin
     convert mul_zero _,
     rw char_p.cast_eq_zero_iff K p,
     apply nat.prime.dvd_choose_self _ _ (by assumption),
-    { rwa pos_iff_ne_zero  },
+    { rwa pos_iff_ne_zero },
     { simpa using hi } },
   { intro h,
     simp only [nat.le_zero_iff, mem_range, not_lt] at h,
