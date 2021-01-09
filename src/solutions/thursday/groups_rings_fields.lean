@@ -291,10 +291,10 @@ begin
     convert mul_zero _,
     rw char_p.cast_eq_zero_iff K p,
     apply nat.prime.dvd_choose_self _ _ (by assumption),
-    { rwa nat.pos_iff_ne_zero, },
+    { rwa pos_iff_ne_zero  },
     { simpa using hi } },
   { intro h,
-    simp only [le_zero_iff_eq, mem_range, not_lt] at h,
+    simp only [nat.le_zero_iff, mem_range, not_lt] at h,
     exfalso,
     apply nat.prime.ne_zero _ h, assumption },
   -- sorry
