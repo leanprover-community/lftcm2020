@@ -107,13 +107,7 @@ variables {α E : Type*} [measurable_space α] [normed_group E] [normed_space �
 
 #check integral_add_measure
 
-lemma integral_union (f : α → E) (hfm : measurable f) {s t : set α}
-  (hs : is_measurable s) (ht : is_measurable t) (hst : disjoint s t)
-  (hfis : integrable f $ μ.restrict s) (hfit : integrable f $ μ.restrict t) :
-  ∫ x in s ∪ t, f x ∂μ = ∫ x in s, f x ∂μ + ∫ x in t, f x ∂μ :=
-begin
-  rw [measure.restrict_union hst hs ht, integral_add_measure hfis hfit],
-end
+#check integral_union
 
 lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}
   (hs : is_measurable s) (ht : is_measurable t) (hst : s ⊆ t)
@@ -133,9 +127,7 @@ begin
   sorry
 end
 
-lemma set_integral_const (c : E) {s : set α} (hs : is_measurable s) :
-  ∫ a in s, c ∂μ = (μ s).to_real • c :=
-by simp
+#check set_integral_const
 
 end measure_theory
 

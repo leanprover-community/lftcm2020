@@ -476,7 +476,7 @@ topological_space X := {
         have := hB bᶜ ((mem_compl_image b B).mp hb),
         rw mem_compl_image at this,
         simpa, },
-      exact compl_compl',
+      { exact compl_compl (⋃₀ B) }
     end
     -- sorry
   ,
