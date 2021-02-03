@@ -110,7 +110,7 @@ variables {α E : Type*} [measurable_space α] [normed_group E] [normed_space �
 #check integral_union
 
 lemma integral_sdiff (f : α → E) (hfm : measurable f) {s t : set α}
-  (hs : is_measurable s) (ht : is_measurable t) (hst : s ⊆ t)
+  (hs : measurable_set s) (ht : measurable_set t) (hst : s ⊆ t)
   (hfi : integrable f $ μ.restrict t) :
   ∫ x in t \ s, f x ∂μ = ∫ x in t, f x ∂μ - ∫ x in s, f x ∂μ :=
 begin
