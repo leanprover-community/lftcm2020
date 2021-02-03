@@ -227,7 +227,6 @@ inner_product_space.of_core
 -- sorry
 { inner := dot_product,
   nonneg_re := λ x, finset.sum_nonneg (λ i _, mul_self_nonneg _),
-  nonneg_im := λ x, by simp,
   definite := λ x hx, funext (λ i, mul_self_eq_zero.mp
     ((finset.sum_eq_zero_iff_of_nonneg (λ i _, mul_self_nonneg (x i))).mp hx i (finset.mem_univ i))),
   conj_sym := λ x y, dot_product_comm _ _,
