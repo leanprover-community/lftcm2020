@@ -13,7 +13,7 @@ namespace lftcm
 noncomputable theory
 
 open real
-open_locale topological_space filter classical
+open_locale topological_space filter classical real
 
 /-!
 # Derivatives
@@ -25,7 +25,7 @@ example : deriv (λ x : ℝ, x^5) 6 = 5 * 6^4 := sorry
 
 example (x₀ : ℝ) (h₀ : x₀ ≠ 0) : deriv (λ x:ℝ, 1 / x) x₀ = -1 / x₀^2 := sorry
 
-example : deriv sin pi = -1 := sorry
+example : deriv sin π = -1 := sorry
 
 -- Sometimes you need `ring` and/or `field_simp` after `simp`
 example (x₀ : ℝ) (h : x₀ ≠ 0) :
