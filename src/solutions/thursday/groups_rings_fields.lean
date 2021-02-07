@@ -410,7 +410,7 @@ begin
     { apply is_unit_of_mul_is_unit_right aux, },
     rw Hf at h_irr,
     simp at h_irr,
-    have key_fact := h_irr.2 _ _ rfl,
+    have key_fact := h_irr.is_unit_or_is_unit rfl,
     cases key_fact with Hg Hh,
     { left,
       apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ g lc_g_unit Hg, },
