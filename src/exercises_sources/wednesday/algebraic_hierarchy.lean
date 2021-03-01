@@ -1,5 +1,5 @@
 /-
-This is a sorry-free file covering the material on Wednesday afternoon
+This is a file covering the material on Wednesday afternoon
 at LFTCM2020. It's how to build some algebraic structures in Lean
 -/
 
