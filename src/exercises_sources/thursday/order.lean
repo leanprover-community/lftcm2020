@@ -92,15 +92,7 @@ end
 -- We also want the `iff` version of this.
 theorem ext_iff {H J : subgp G} : H = J ↔ ∀ (x : G), x ∈ H.carrier ↔ x ∈ J.carrier :=
 begin
-  split,
-  { -- one way is just a rewrite!
-    intro h,
-    rw h,
-    simp,
-  },
-  { -- the other way we just did
-    exact subgp.ext,
-  }
+  sorry
 end
 
 /-
@@ -163,15 +155,13 @@ The useful piece of interface for `univ` you'll need is `mem_univ g : g ∈ univ
 def top : subgp G :=
 { carrier := set.univ,
   mul_mem := begin
-    intros,
-    apply mem_univ,
+    sorry
   end,
   one_mem := begin
-    apply mem_univ,
+    sorry
   end,
   inv_mem := begin
-    intros,
-    apply mem_univ,
+    sorry
   end }
 
 -- Add the `⊤` notation (typed with `\top`) for this subgroup:
@@ -196,19 +186,13 @@ instance : has_top (subgp G) := ⟨top⟩
 definition inf (H K : subgp G) : subgp G :=
 { carrier := H.carrier ∩ K.carrier,
   mul_mem := begin
-    rintros a b ⟨haH, haK⟩ ⟨hbH, hbK⟩,
-    split,
-    { apply H.mul_mem haH hbH },
-    { apply K.mul_mem haK hbK },
+    sorry
   end,
   one_mem := begin
-    split,
-    { apply one_mem },
-    { apply one_mem },
+    sorry
   end,
   inv_mem := begin
-    rintros a ⟨haH, haK⟩,
-    exact ⟨H.inv_mem haH, K.inv_mem haK⟩,
+    sorry
   end }
 
 -- Add the `⊓` notation (type with `\inf`) for the intersection (inf) of two subgroups:
@@ -221,8 +205,7 @@ instance : has_inf (subgp G) := ⟨inf⟩
 
 lemma le_top (H : subgp G) : H ≤ ⊤ :=
 begin
-  intros x hx,
-  apply mem_univ,
+  sorry
 end
 
 lemma inf_le_left (H K : subgp G) : H ⊓ K ≤ H :=
@@ -234,13 +217,15 @@ begin
 end
 
 lemma inf_le_right (H K : subgp G) : H ⊓ K ≤ K :=
-inter_subset_right _ _
+begin
+  sorry
+end
 
 -- Can you use `library_search`, or other methods, to find the name of the
 -- statement that if `A B C : set G` then `A ⊆ B → A ⊆ C → A ⊆ (B ∩ C)`?
 lemma le_inf (H J K : subgp G) (h1 : H ≤ J) (h2 : H ≤ K) : H ≤ J ⊓ K :=
 begin
-  exact subset_inter h1 h2,
+  sorry
 end
 
 -- Now we're ready to make the instance.
@@ -275,25 +260,13 @@ to work with it you'll need to know
 def Inf (S : set (subgp G)) : subgp G :=
 { carrier := Inf (subgp.carrier '' S),
   mul_mem :=  begin
-    intros x y hx hy,
-    rw mem_sInter at hx hy ⊢,
-    rintro t ⟨H, hH, rfl⟩,
-    apply H.mul_mem,
-    apply hx, use H, tauto,
-    apply hy, use H, tauto,
+    sorry
   end,
   one_mem := begin
-    rw mem_sInter,
-    rintro t ⟨H, hH, rfl⟩,
-    apply subgp.one_mem,
+    sorry
   end,
   inv_mem := begin
-    intros x hx,
-    rw mem_sInter at hx ⊢,
-    rintro t ⟨H, Hh, rfl⟩,
-    apply H.inv_mem,
-    apply hx,
-    use [H, Hh],
+    sorry
   end }
 
 -- We now equip `subgp G` with an Inf. I think the notation is `⨅`, or `\Inf`,
@@ -315,10 +288,7 @@ instance : complete_lattice (subgp G) := complete_lattice_of_Inf _ begin
 -- ⊢ ∀ (s : set (subgp G)), is_glb s (has_Inf.Inf s)
 --  See if you can figure out what this says, and how to prove it.
 -- You might find the function `is_glb.of_image` useful.
-  intro S,
-    apply @is_glb.of_image _ _ _ _ subgp.carrier,
-  intros, refl,
-  apply is_glb_Inf,
+  sorry
 end
 
 /- Now let me show you another way to do this.
@@ -378,30 +348,23 @@ def span (S : set G) : subgp G := Inf {H : subgp G | S ⊆ H.carrier}
 
 -- Here are some theorems about it.
 lemma monotone_carrier : monotone (subgp.carrier : subgp G → set G) :=
-λ H J, id
+begin
+  sorry
+end
 
 lemma monotone_span : monotone (span : set G → subgp G) :=
-λ S T h, Inf_le_Inf $ λ H hH x hx, hH $ h hx
+begin
+  sorry
+end
 
 lemma subset_span (S : set G) : S ≤ (span S).carrier :=
 begin
-  rintro x hx _ ⟨H, hH, rfl⟩,
-  exact hH hx,
+  sorry
 end
 
 lemma span_subgp (H : subgp G) : span H.carrier = H :=
 begin
-  ext,
-  split,
-  { intro hx,
-    unfold span at hx,
-    replace hx := mem_sInter.1 hx,
-    apply hx,
-    use H,
-    simp },
-  { intro h,
-    apply subset_span,
-    exact h},
+  sorry
 end
 
 -- We have proved all the things we need to show that `span` and `carrier`
@@ -478,49 +441,25 @@ end
 lemma monotone_is_open {X : Type} :
   monotone (forget : topological_space X → set (set X)) :=
 begin
-  intros τ₁ τ₂,
-  intro h,
-  intros U hU,
-  exact h hU,
+  sorry
 end
 
 lemma monotone_span {X : Type} :
   monotone (generate_from : set (set X) → topological_space X) :=
 begin
-  intros C₁ C₂,
-  intro h,
-  intros U hU,
-  induction hU with V hV V W _ _ hV2 hW2 C _ hC,
-  { apply generated_open.basic,
-    apply h, assumption },
-  { apply generated_open.univ },
-  { apply generated_open.inter, exact hV2, exact hW2},
-  { apply generated_open.sUnion, exact hC },
+  sorry
 end
 
 lemma subset_forget {X : Type} (Us : set (set X)) :
   Us ≤ forget (generate_from Us) :=
 begin
-  intros U hU,
-  apply generated_open.basic,
-  assumption,
+  sorry
 end
 
 lemma generate_forget {X : Type} (τ : topological_space X) :
   generate_from (forget τ) = τ :=
 begin
-  ext U,
-  split,
-  { intro hU,
-    induction hU with V hV V W _ _ hV2 hW2 C _ hC,
-  { exact hV },
-  { apply univ_mem },
-  { apply inter _ _ hV2 hW2 },
-  { apply union _ hC }},
-  { -- easy way
-    intro hU,
-    apply generated_open.basic,
-    exact hU }
+  sorry
 end
 
 def gi_top (X : Type) :
@@ -540,4 +479,3 @@ example (X : Type) : complete_lattice (topological_space X) :=
   galois_insertion.lift_complete_lattice (gi_top X)
 
 end topological_space
-
