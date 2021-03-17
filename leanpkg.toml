@@ -1,8 +1,8 @@
 [package]
 name = "lftcm2020"
 version = "0.1"
-lean_version = "leanprover-community/lean:3.27.0"
+lean_version = "leanprover-community/lean:3.28.0"
 path = "src"
 
 [dependencies]
-mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "f1b69a1250a30aff931e1e5c50c2470bd05a8d26"}
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "40a0ac77b704cef7896ed28d37e05f8ebd2555b2"}
