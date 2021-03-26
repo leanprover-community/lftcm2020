@@ -3,6 +3,12 @@
 import regex
 from pathlib import Path
 
+# In the source files, blocks of lines enclosed between two lines
+# `-- sorry`
+# will be replaced by a single sorry in the solutions
+# Also, on a single line, `/- inline sorry -/Ioo (-1) 1/- inline sorry -/`
+# will be replaced with `sorry`
+
 inline_sorry_regex = regex.compile(r'/- inline sorry -/.*/- inline sorry -/')
 sorry_regex = regex.compile(r'(.*)-- sorry.*')
 omit_regex = regex.compile(r'(.*)-- omit.*')

@@ -107,12 +107,12 @@ get them. Here is a route:
 
 lemma mul_left_cancel (a b c : G) (Habac : a * b = a * c) : b = c :=
  calc b = 1 * b         : by rw one_mul
-    ... = (a⁻¹ * a) * b : by rw mul_left_inv
-    ... = a⁻¹ * (a * b) : by rw mul_assoc
-    ... = a⁻¹ * (a * c) : by rw Habac
-    ... = (a⁻¹ * a) * c : by rw mul_assoc
-    ... = 1 * c         : by rw mul_left_inv
-    ... = c             : by rw one_mul
+    ... = (a⁻¹ * a) * b : /- inline sorry -/by rw mul_left_inv/- inline sorry -/
+    ... = a⁻¹ * (a * b) : /- inline sorry -/by rw mul_assoc/- inline sorry -/
+    ... = a⁻¹ * (a * c) : /- inline sorry -/by rw Habac/- inline sorry -/
+    ... = (a⁻¹ * a) * c : /- inline sorry -/by rw mul_assoc/- inline sorry -/
+    ... = 1 * c         : /- inline sorry -/by rw mul_left_inv/- inline sorry -/
+    ... = c             : /- inline sorry -/by rw one_mul/- inline sorry -/
 
 -- more mathlib-ish proof:
 lemma mul_left_cancel' (a b c : G) (Habac : a * b = a * c) : b = c :=
@@ -124,6 +124,7 @@ lemma mul_eq_of_eq_inv_mul {a x y : G} (h : x = a⁻¹ * y) : a * x = y :=
 begin
   apply mul_left_cancel a⁻¹,
   -- ⊢ a⁻¹ * (a * x) = a⁻¹ * y
+  -- sorry
   rw ←mul_assoc,
   -- ⊢ a⁻¹ * a * x = a⁻¹ * y (remember this means (a⁻¹ * a) * x = ...)
   rw mul_left_inv,
@@ -131,6 +132,7 @@ begin
   rw one_mul,
   -- ⊢ x = a⁻¹ * y
   exact h
+  -- sorry
 end
 
 -- The same proof
@@ -183,9 +185,11 @@ mul_eq_of_eq_inv_mul $ by simp
 -- see if you can get the simplifier to do this one too
 @[simp] theorem mul_right_inv (a : G) : a * a⁻¹ = 1 :=
 begin
+  -- sorry
   apply mul_eq_of_eq_inv_mul,
   -- ⊢ a⁻¹ = a⁻¹ * 1
   simp
+  -- sorry
 end
 
 -- Now here's a question. Can we train the simplifier to solve the following problem:
@@ -200,14 +204,18 @@ end
 
 @[simp] lemma one_inv : (1 : G)⁻¹ = 1 :=
 begin
+  -- sorry
   apply mul_left_cancel (1 : G),
   simp,
+  -- sorry
 end
 
 @[simp] lemma inv_inv (a : G) : a⁻¹⁻¹ = a :=
 begin
+  -- sorry
   apply mul_left_cancel a⁻¹,
   simp,
+  -- sorry
 end
 
 -- Here is a riskier looking `[simp]` lemma.
@@ -220,23 +228,29 @@ attribute [simp] mul_assoc -- recall this says (a * b) * c = a * (b * c)
 
 @[simp] lemma inv_mul_cancel_left (a b : G) : a⁻¹ * (a * b) = b :=
 begin
+  -- sorry
   rw ←mul_assoc,
   simp,
+  -- sorry
 end
 
 @[simp] lemma mul_inv_cancel_left (a b : G) : a * (a⁻¹ * b) = b :=
 begin
+  -- sorry
   rw ←mul_assoc,
   simp
+  -- sorry
 end
 
 -- Finally, let's make a `simp` lemma which enables us to
 -- reduce all inverses to inverses of variables
 @[simp] lemma mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ :=
 begin
+  -- sorry
   apply mul_left_cancel (a * b),
   rw mul_right_inv,
   simp,
+  -- sorry
 end
 
 /-
@@ -269,16 +283,20 @@ instance (G : Type) [group G] (H : Type) [group H] : group (G × H) :=
     simp,
   end,
   one_mul := begin
+    -- sorry
     intro a,
     cases a,
     ext;
     simp,
+    -- sorry
   end,
   mul_left_inv := begin
+    -- sorry
     intro a,
     cases a,
     ext;
     simp
+    -- sorry
   end }
 
 -- the type class inference system now knows that products of groups are groups
@@ -505,27 +523,33 @@ end
 
 lemma ring.mul_neg (a b : R) : a * -b = -(a * b) :=
 begin
+  -- sorry
   symmetry,
   apply add_comm_group.neg_eq_of_add_eq_zero,
   rw ←ring.mul_add,
   rw add_comm_group.add_right_neg,
   rw ring.mul_zero
+  -- sorry
 end
 
 lemma ring.mul_sub (R : Type) [comm_ring R] (r a b : R) : r * (a - b) = r * a - r * b :=
 begin
+  -- sorry
   rw add_comm_group.sub_eq_add_neg,
   rw ring.mul_add,
   rw ring.mul_neg,
   refl,
+  -- sorry
 end
 
 lemma comm_ring.sub_mul (R : Type) [comm_ring R] (r a b : R) : (a - b) * r = a * r - b * r :=
 begin
+  -- sorry
   rw comm_ring.mul_comm (a - b),
   rw comm_ring.mul_comm a,
   rw comm_ring.mul_comm b,
   apply ring.mul_sub
+  -- sorry
 end
 
 
