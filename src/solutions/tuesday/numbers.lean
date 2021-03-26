@@ -84,7 +84,7 @@ We've done some work to get you started. You might look for the lemmas:
 open padic_val_rat
 
 #check fpow_le_of_le
-#check fpow_nonneg_of_nonneg
+#check fpow_nonneg
 #check padic_val_rat_of_int
 
 
@@ -100,7 +100,7 @@ begin
     assumption_mod_cast },
 
   unfold padic_norm, split_ifs with hz hz,
-  { apply fpow_nonneg_of_nonneg,
+  { apply fpow_nonneg,
     exact_mod_cast le_of_lt hp.pos },
   { apply fpow_le_of_le,
     exact_mod_cast le_of_lt hp.one_lt,

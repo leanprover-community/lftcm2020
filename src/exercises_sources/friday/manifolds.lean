@@ -38,7 +38,7 @@ Don’t forget to copy the updated files to `src/my_exercises`.
 /-!
 ## An overview of manifolds in Lean, discussing design decisions
 
-Warning: there are sorries in this section, they are not supposed to be filled! The exercises section
+Warning: there are sorries in this section, they are not supposed to be filled! The exercises sections
 start later, and there you will have plenty of sorries to fill.
 
 What is a manifold?

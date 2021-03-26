@@ -280,6 +280,7 @@ begin
   * `nat.prime.ne_zero`
   * `char_p.cast_eq_zero_iff`
   * `nat.prime.dvd_choose_self`
+  * `fact.out p.prime` obtains the primality of `p` from the typeclass assumption `[fact p.prime]`
   -/
   -- sorry
   rw add_pow,
@@ -290,13 +291,14 @@ begin
   { intros i hi hi0,
     convert mul_zero _,
     rw char_p.cast_eq_zero_iff K p,
-    apply nat.prime.dvd_choose_self _ _ (by assumption),
+    apply nat.prime.dvd_choose_self _ _ (fact.out p.prime),
     { rwa pos_iff_ne_zero },
     { simpa using hi } },
   { intro h,
     simp only [nat.le_zero_iff, mem_range, not_lt] at h,
     exfalso,
-    apply nat.prime.ne_zero _ h, assumption },
+    apply nat.prime.ne_zero _ h,
+    exact fact.out p.prime },
   -- sorry
 end
 
@@ -308,7 +310,7 @@ def frobenius_hom : K →+* K :=
     -- sorry
       rw zero_pow,
       apply nat.prime.pos,
-      assumption,
+      exact fact.out p.prime
     -- sorry
   end,
   map_one' :=

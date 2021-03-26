@@ -271,6 +271,7 @@ begin
   * `nat.prime.ne_zero`
   * `char_p.cast_eq_zero_iff`
   * `nat.prime.dvd_choose_self`
+  * `fact.out p.prime` obtains the primality of `p` from the typeclass assumption `[fact p.prime]`
   -/
   sorry
 end
