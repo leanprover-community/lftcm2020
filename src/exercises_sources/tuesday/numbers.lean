@@ -81,7 +81,7 @@ We've done some work to get you started. You might look for the lemmas:
 open padic_val_rat
 
 #check fpow_le_of_le
-#check fpow_nonneg_of_nonneg
+#check fpow_nonneg
 #check padic_val_rat_of_int
 
 
