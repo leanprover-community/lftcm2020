@@ -871,18 +871,22 @@ begin
   { simp only [g, chart_at, h, Icc_left_chart, function.comp, model_with_corners_euclidean_half_space,
       add_zero, dif_pos, if_true, max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype,
       subtype.coe_mk, subtype.val_eq_coe] with mfld_simps,
-    refine (pi_Lp.times_cont_diff_coord 0).times_cont_diff_on.congr (λ x hx, _),
-    simp only [mem_inter_eq, mem_set_of_eq] at hx,
-    simp only [hx, le_of_lt hx.right.left, min_eq_left, max_eq_left] },
+    refine (pi_Lp.times_cont_diff_coord 0).times_cont_diff_on.congr (λ f hf, _),
+    obtain ⟨hf₀, hf₁⟩ : 0 ≤ f 0 ∧ f 0 < 1,
+    { simp at hf,
+      exact ⟨hf.1, hf.2.1⟩ },
+    simp [min_eq_left hf₁.le, max_eq_left hf₀] },
   { simp only [chart_at, h, Icc_right_chart, function.comp, model_with_corners_euclidean_half_space, dif_pos,
       max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype, if_false, subtype.coe_mk,
       subtype.val_eq_coe, g] with mfld_simps,
     have : times_cont_diff ℝ ⊤ (λ (x : euclidean_space ℝ (fin 1)), 1 - x 0) :=
       times_cont_diff_const.sub (pi_Lp.times_cont_diff_coord 0),
-    apply this.times_cont_diff_on.congr (λ x hx, _),
-    simp only [mem_inter_eq, mem_set_of_eq] at hx,
-    have : 0 ≤ 1 - x 0, by linarith,
-    simp only [hx, this, max_eq_left] }
+    apply this.times_cont_diff_on.congr (λ f hf, _),
+    obtain ⟨hf₀, hf₁⟩ : 0 ≤ f 0 ∧ f 0 < 1,
+    { simp at hf,
+      exact ⟨hf.1, hf.2.1⟩ },
+    have : 0 ≤ 1 - f 0, by linarith,
+    simp [hf₀, this, max_eq_left], }
   -- sorry
 end
 
