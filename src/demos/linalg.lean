@@ -11,35 +11,18 @@ import tactic
 According to Wikipedia, everyone's favourite reliable source of knowledge,
 linear algebra studies linear equations and linear maps, representing them
 in vector spaces and through matrices.
-So let us start with printing the representation of vector spaces in mathlib:
--/
--- import algebra.module
 
-#print vector_space
--- abbreviation vector_space (R : Type u) (M : Type v) [field R] [add_comm_group M] := semimodule R M
-
-/-
-So vector spaces are represented by putting a `vector_space` typeclass
-on a type `R` and `M`, where `R` has a field structure and `M` an additive commutative group.
-And the comment helpfully explains that a `vector_space` is just a `module`,
-except the scalar ring is a field.
+Vector spaces are special cases of modules where scalars live any semiring,
+not necessarily a field.
 -/
 
 #print module
--- abbreviation module (R : Type u) (M : Type v) [ring R] [add_comm_group M] := semimodule R M
-
-/-
-When we print the definition of `module`, we see it is a special case of a `semimodule``.
-Finally, we print the definition of `semimodule`:
--/
-
-#print semimodule
--- class semimodule (R : Type u) (M : Type v) [semiring R] [add_comm_monoid M]
+-- class module (R : Type u) (M : Type v) [semiring R] [add_comm_monoid M]
 -- extends distrib_mul_action R M := ...
 
 /-
 In other words: let `R` be a semiring and `M` have `0` and a commutative operator `+`,
-then a semimodule structure over `R` on `M` has a scalar multiplication `•` (`has_scalar.smul`),
+then a module structure over `R` on `M` has a scalar multiplication `•` (`has_scalar.smul`),
 which satisfies the following identities:
 -/
 #check add_smul -- ∀ (r s : R) (x : M), (r + s) • x = r • x + s • x
@@ -49,31 +32,29 @@ which satisfies the following identities:
 #check zero_smul -- ∀ (x : M), 0 • x = 0
 #check smul_zero -- ∀ (r : R), r • 0 = 0
 /-
-These equations define semimodules, modules and vector spaces. To save typing,
-and because semimodules were introduced later, mathlib tends to use the word "module"
-to refer to all three as long as this is not ambiguous.
+These equations define modules (and vector spaces).
 -/
 
 /-
 The last two identities follow automatically from the previous if `M` has a negation operator,
-turning it into an additive group, so the function `semimodule.of_core` does the proofs for you:
+turning it into an additive group, so the function `module.of_core` does the proofs for you:
 -/
-#check semimodule.of_core
+#check module.of_core
 
 section module
 
 /-
-Typical examples of semimodules, modules and vector spaces:
+Typical examples of modules (and vector spaces):
 -/
 -- import algebra.pi_instances
 variables {n : Type} [fintype n]
-example : semimodule ℕ (n → ℕ) := infer_instance -- Or as mathematicians commonly know it: `ℕ^n`.
+example : module ℕ (n → ℕ) := infer_instance -- Or as mathematicians commonly know it: `ℕ^n`.
 example : module ℤ (n → ℤ) := infer_instance
-example : vector_space ℚ (n → ℚ) := infer_instance
-example : semimodule ℚ (n → ℚ) := infer_instance -- A vector space is automatically a semimodule.
+example : module ℚ (n → ℚ) := infer_instance
+
 
 /- If you want a specifically `k`-dimensional module, use `fin k` as the `fintype`. -/
-example {k : ℕ} : semimodule ℤ (fin k → ℤ) := infer_instance
+example {k : ℕ} : module ℤ (fin k → ℤ) := infer_instance
 
 variables {R M N : Type} [ring R] [add_comm_group M] [add_comm_group N] [module R M] [module R N]
 example : module R R := infer_instance
@@ -81,7 +62,7 @@ example : module ℤ R := infer_instance
 example : module R (M × N) := infer_instance
 example : module R (M × N) := infer_instance
 
-example {R' : Type} [comm_ring R'] (f : R →+* R') : module R R' := ring_hom.to_semimodule f
+example {R' : Type} [comm_ring R'] (f : R →+* R') : module R R' := ring_hom.to_module f
 
 /- To explicitly construct elements of `fin k → R`, use the following notation: -/
 -- import data.matrix.notation
@@ -94,7 +75,7 @@ section linear_map
 variables {R M : Type} [comm_ring R] [add_comm_group M] [module R M]
 
 /-
-Maps between semimodules that respect `+` and `•` are called `linear_map`,
+Maps between modules that respect `+` and `•` are called `linear_map`,
 and an `R`-linear map from `M` to `N` has notation `M →ₗ[R] N`:
 -/
 #print linear_map
@@ -131,9 +112,8 @@ section submodule
 variables {R M : Type} [comm_ring R] [add_comm_group M] [module R M]
 
 /-
-The submodules of a semimodule `M` are subsets of `M` (i.e. elements of `set M`)
+The submodules of a module `M` are subsets of `M` (i.e. elements of `set M`)
 that are closed under the module operations `0`, `+` and `•`.
-Just like `vector_space` is defined to be a special case of `semimodule`,
 `subspace` is defined to be a special case of `submodule`.
 -/
 #print submodule
@@ -291,10 +271,10 @@ section odds_and_ends
 
 /- Other useful parts of the library: -/
 -- import analysis.normed_space.inner_product
-#print normed_space -- semimodule with a norm
+#print normed_space -- module with a norm
 #print inner_product_space -- normed space with an inner product in ℝ or ℂ
 
-#print finite_dimensional.findim -- the dimension of a space, as a natural number (infinity -> 0)
-#print vector_space.dim -- the dimension of a space, as a cardinal
+#print finite_dimensional.finrank -- the rank (or dimension) of a space, as a natural number (infinity -> 0)
+#print module.rank -- the rank (or dimension) of a module (or vector space), as a cardinal
 
 end odds_and_ends

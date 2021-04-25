@@ -8,16 +8,18 @@ universes u v
 
 section exercise1
 
-namespace semimodule
+namespace module
 
-variables (R M : Type*) [comm_semiring R] [add_comm_monoid M] [semimodule R M]
+variables (R M : Type*) [comm_semiring R] [add_comm_monoid M] [module R M]
 
 /- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Exercise 1: defining modules and submodules
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -/
 
-/-- The endomorphisms of an `R`-semimodule `M` are the `R`-linear maps from `M` to `M`. -/
-def End := M →ₗ[R] M
+/- The endomorphisms of an `R`-module `M` are the `R`-linear maps from `M` to `M` are defined as:
+`def End := M →ₗ[R] M`
+-/
+
 /-- The following line tells Lean we can apply `f : End R M` as if it was a function. -/
 instance : has_coe_to_fun (End R M) := { F := λ _, M → M, coe := linear_map.to_fun }
 
@@ -29,19 +31,19 @@ def End.id : End R M :=
 sorry
 
 /-
-Show that the endomorphisms of `M` form a semimodule over `R`.
+Show that the endomorphisms of `M` form a module over `R`.
 
 Hint: we can re-use the scalar multiplication of linear maps using the `refine` tactic:
 ```
 refine { smul := linear_map.has_scalar.smul, .. },
 ```
-This will fill in the `smul` field of the `semimodule` structure with the given value.
+This will fill in the `smul` field of the `module` structure with the given value.
 The remaining fields become goals that you can fill in yourself.
 
-Hint: Prove the equalities using the semimodule structure on `M`.
+Hint: Prove the equalities using the module structure on `M`.
 If `f` and `g` are linear maps, the `ext` tactic turns the goal `f = g` into `∀ x, f x = g x`.
 -/
-instance : semimodule R (End R M) :=
+instance : module R (End R M) :=
 begin
   sorry
 end
@@ -58,7 +60,7 @@ Hints:
 def homothety : submodule R (End R M) :=
 sorry
 
-end semimodule
+end module
 
 end exercise1
 
@@ -208,7 +210,7 @@ Hint: search the library for appropriate lemmas.
 -/
 lemma finite_dimensional : finite_dimensional K (n → K) :=
 sorry
-lemma findim_eq : finite_dimensional.findim K (n → K) = fintype.card n :=
+lemma finrank_eq : finite_dimensional.finrank K (n → K) = fintype.card n :=
 sorry
 
 end pi
