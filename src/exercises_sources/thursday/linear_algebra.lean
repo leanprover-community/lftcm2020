@@ -6,9 +6,13 @@ import tactic
 
 universes u v
 
+namespace lftcm
+
 section exercise1
 
 namespace module
+
+open module
 
 variables (R M : Type*) [comm_semiring R] [add_comm_monoid M] [module R M]
 
@@ -69,6 +73,8 @@ section exercise2
 
 namespace matrix
 
+open matrix
+
 variables {m n R M : Type} [fintype m] [fintype n] [comm_ring R] [add_comm_group M] [module R M]
 
 /- The following line allows us to write `⬝` (`\cdot`) and `ᵀ` (`\^T`) for
@@ -79,7 +85,7 @@ open_locale matrix
   Exercise 2: working with matrices
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -/
 
-/-- Prove the following four lemmas, that were missing from `mathlib`.
+/-- Prove the following four lemmas, that used to be missing from `mathlib`.
 
 Hints:
   * Look up the definition of `vec_mul` and `mul_vec`.
@@ -157,7 +163,7 @@ Exercise 3: inner product spaces
 
 Hints:
 * Try the lemmas `finset.sum_nonneg`, `finset.sum_eq_zero_iff_of_nonneg`,
-`mul_self_nonneg` and `mul_self_eq_zero`.
+  `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
 noncomputable instance : inner_product_space ℝ (n → ℝ) :=
 inner_product_space.of_core
@@ -202,6 +208,16 @@ sorry
 variables {K : Type} [field K]
 
 /-
+Instead of the dimension of a vector space, `mathlib` chooses to use the more general
+notion of rank of a module.
+
+If you want the rank/dimension as a potentially infinite cardinal number, you
+can use `module.rank`. If you want the rank/dimension as a finite natural
+number, you can use `finite_dimensional.finrank`. (If `module.rank` is infinite,
+`finrank` is defined to be equal to `0`.)
+-/
+
+/-
 Conclude `n → K` is a finite dimensional vector space for each field `K`
 and the dimension of `n → K` over `K` is the cardinality of `n`.
 You don't need to complete `std_basis_is_basis` to prove these two lemmas.
@@ -216,4 +232,6 @@ sorry
 end pi
 
 end exercise4
+
+end lftcm
 
