@@ -5,6 +5,7 @@ import linear_algebra.matrix
 import tactic
 
 universes u v
+noncomputable theory
 
 namespace lftcm
 
@@ -188,7 +189,7 @@ open_locale big_operators
 
 /-- The `i`'th vector in the standard basis of `n → R` is `1` at the `i`th entry
 and `0` otherwise. -/
-def std_basis (i : n) : (n → R) := λ j, if i = j then 1 else 0
+def std_basis_fun (i : n) : (n → R) := λ j, if i = j then 1 else 0
 
 /- Bonus exercise: Show the standard basis of `n → R` is a basis.
 This is a difficult exercise, so feel free to skip some parts.
@@ -202,8 +203,20 @@ Hints for showing it spans the whole module:
   * To show equality of set-like terms, apply the `ext` tactic.
   * First show `x = ∑ i, x i • std_basis R n i`, then rewrite with this equality.
 -/
-lemma std_basis_is_basis : is_basis R (std_basis R n) :=
+lemma linear_independent_std_basis : linear_independent R (std_basis_fun R n) :=
 sorry
+
+lemma range_std_basis : submodule.span R (set.range (std_basis_fun R n)) = ⊤ :=
+sorry
+
+/- Bases in mathlib are bundled, i.e., the data of a basis is given as an isomorphism
+between the vector space and the space of finitely supported functions on the basis. This turns
+out to be a convenient way to work out most arguments using bases. Of course, one can construct
+such a bundled basis from the data that a family of vectors is linearly independent and spans
+the whole space, as follows. -/
+
+def std_basis : basis n R (n → R) :=
+basis.mk (linear_independent_std_basis R n) (range_std_basis R n)
 
 variables {K : Type} [field K]
 
@@ -226,6 +239,7 @@ Hint: search the library for appropriate lemmas.
 -/
 lemma finite_dimensional : finite_dimensional K (n → K) :=
 sorry
+
 lemma finrank_eq : finite_dimensional.finrank K (n → K) = fintype.card n :=
 sorry
 

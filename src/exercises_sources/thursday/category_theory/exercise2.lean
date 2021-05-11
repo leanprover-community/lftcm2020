@@ -12,26 +12,14 @@ noncomputable theory -- the default implementation of polynomials is noncomputab
 local attribute [irreducible] polynomial.eval₂
 
 /-!
-mathlib is undergoing a transition at the moment from using "unbundled" homomorphisms
-(e.g. we talk about a bare function `f : R → S`, along with a typeclass `[is_semiring_hom f]`)
-to using "bundled" homomorphisms
-(e.g. a structure `f : R →+* S`, which has a coercion to a bare function).
-
-The category `Ring` uses bundled homomorphisms (and in future all of mathlib will).
-However at present the polynomial library hasn't been updated.
-
-You may find the `ring_hom.of` useful -- this upgrades an unbundled homomorphism
-to a bundled homomorphism.
--/
-
-/-!
 Hints:
-* use `polynomial.map`
+* use `polynomial.map_ring_hom`
 -/
-
+@[simps]
 def Ring.polynomial : Ring ⥤ Ring :=
 sorry
 
+@[simps]
 def CommRing.polynomial : CommRing ⥤ CommRing :=
 sorry
 

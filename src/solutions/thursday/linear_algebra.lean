@@ -5,6 +5,7 @@ import linear_algebra.matrix
 import tactic
 
 universes u v
+noncomputable theory
 
 namespace lftcm
 
@@ -184,8 +185,8 @@ def matrix_to_bilin_form (A : matrix n n R) : bilin_form R (n → R) :=
 { bilin := λ v w, dot_product v (mul_vec A w),
   bilin_add_left := by { intros, rw [add_dot_product] },
   bilin_add_right := by { intros, rw [mul_vec_add, dot_product_add] },
-  bilin_smul_left := by { intros, rw [smul_dot_product] },
-  bilin_smul_right := by { intros, rw [mul_vec_smul, dot_product_smul] } }
+  bilin_smul_left := by { intros, rw [smul_dot_product], refl },
+  bilin_smul_right := by { intros, rw [mul_vec_smul, dot_product_smul], refl } }
 -- sorry
 
 /- Can you define a bilinear form directly that is equivalent to this matrix `A`?
@@ -265,7 +266,7 @@ open_locale big_operators
 
 /-- The `i`'th vector in the standard basis of `n → R` is `1` at the `i`th entry
 and `0` otherwise. -/
-def std_basis (i : n) : (n → R) := λ j, if i = j then 1 else 0
+def std_basis_fun (i : n) : (n → R) := λ j, if i = j then 1 else 0
 
 /- Bonus exercise: Show the standard basis of `n → R` is a basis.
 This is a difficult exercise, so feel free to skip some parts.
@@ -279,25 +280,39 @@ Hints for showing it spans the whole module:
   * To show equality of set-like terms, apply the `ext` tactic.
   * First show `x = ∑ i, x i • std_basis R n i`, then rewrite with this equality.
 -/
-lemma std_basis_is_basis : is_basis R (std_basis R n) :=
+lemma linear_independent_std_basis : linear_independent R (std_basis_fun R n) :=
 -- sorry
 begin
-  split,
-  { apply linear_independent_iff'.mpr,
-    intros s v hs i hi,
-    have hs : s.sum (λ (i : n), v i • std_basis R n i) i = 0 := congr_fun hs i,
-    unfold std_basis at hs,
-    rw [←finset.insert_erase hi, finset.sum_insert (finset.not_mem_erase i s)] at hs,
-    simpa using hs },
-  { ext,
-    simp only [submodule.mem_top, iff_true],
-    rw (show x = ∑ i, x i • std_basis R n i, by { ext, simp [std_basis] }),
-    refine submodule.sum_mem _ (λ i _, _),
-    refine submodule.smul_mem _ _ _,
-    apply submodule.subset_span,
-    apply set.mem_range_self }
+  apply linear_independent_iff'.mpr,
+  intros s v hs i hi,
+  have hs : s.sum (λ (i : n), v i • std_basis_fun R n i) i = 0 := congr_fun hs i,
+  unfold std_basis_fun at hs,
+  rw [←finset.insert_erase hi, finset.sum_insert (finset.not_mem_erase i s)] at hs,
+  simpa using hs
 end
 -- sorry
+
+lemma range_std_basis : submodule.span R (set.range (std_basis_fun R n)) = ⊤ :=
+-- sorry
+begin
+  ext,
+  simp only [submodule.mem_top, iff_true],
+  rw (show x = ∑ i, x i • std_basis_fun R n i, by { ext, simp [std_basis_fun] }),
+  refine submodule.sum_mem _ (λ i _, _),
+  refine submodule.smul_mem _ _ _,
+  apply submodule.subset_span,
+  apply set.mem_range_self
+end
+-- sorry
+
+/- Bases in mathlib are bundled, i.e., the data of a basis is given as an isomorphism
+between the vector space and the space of finitely supported functions on the basis. This turns
+out to be a convenient way to work out most arguments using bases. Of course, one can construct
+such a bundled basis from the data that a family of vectors is linearly independent and spans
+the whole space, as follows. -/
+
+def std_basis : basis n R (n → R) :=
+basis.mk (linear_independent_std_basis R n) (range_std_basis R n)
 
 variables {K : Type} [field K]
 
@@ -320,11 +335,12 @@ Hint: search the library for appropriate lemmas.
 -/
 lemma finite_dimensional : finite_dimensional K (n → K) :=
 -- sorry
-finite_dimensional.of_fintype_basis (std_basis_is_basis K n)
+finite_dimensional.of_fintype_basis (std_basis K n)
 -- sorry
+
 lemma finrank_eq : finite_dimensional.finrank K (n → K) = fintype.card n :=
 -- sorry
-finite_dimensional.finrank_eq_card_basis (std_basis_is_basis K n)
+finite_dimensional.finrank_eq_card_basis (std_basis K n)
 -- sorry
 
 end pi
