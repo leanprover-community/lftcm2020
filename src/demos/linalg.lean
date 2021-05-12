@@ -247,15 +247,15 @@ You have to explicitly specify whether vectors are multiplied on the left or on 
 
 /- You can convert a matrix to a linear map, which acts by right multiplication of vectors. -/
 variables {M N : Type} [add_comm_group M] [add_comm_group N] [module R M] [module R N]
-#check matrix.to_lin' -- matrix m n R → ((m → R) →ₗ[R] (n → R))
+#check matrix.to_lin' -- matrix m n R → ((n → R) →ₗ[R] (m → R))
 
 /-
 Going between linear maps and matrices is an isomorphism,
 as long as you have chosen a basis for each module.
 -/
 variables [decidable_eq m] [decidable_eq n]
-variables {v : m → M} (v_is_basis : is_basis R v) {w : n → N} (w_is_basis : is_basis R w)
-#check linear_map.to_matrix v_is_basis w_is_basis -- (M →ₗ[R] N) ≈ₗ[R] matrix m n R
+variables (v : basis m R M) (w : basis n R N)
+#check linear_map.to_matrix v w -- (M →ₗ[R] N) ≈ₗ[R] matrix n m R
 
 /-
 Invertible (i.e. nonsingular) matrices have an inverse operation `nonsing_inv`.
