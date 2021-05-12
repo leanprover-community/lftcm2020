@@ -15,11 +15,10 @@ local attribute [irreducible] polynomial.eval₂
 Hints:
 * use `polynomial.map_ring_hom`
 -/
-@[simps]
+
 def Ring.polynomial : Ring ⥤ Ring :=
 sorry
 
-@[simps]
 def CommRing.polynomial : CommRing ⥤ CommRing :=
 sorry
 

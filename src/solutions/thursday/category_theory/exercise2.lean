@@ -15,7 +15,7 @@ local attribute [irreducible] polynomial.eval₂
 Hints:
 * use `polynomial.map_ring_hom`
 -/
-@[simps]
+
 def Ring.polynomial : Ring ⥤ Ring :=
 -- sorry
 { obj := λ R, Ring.of (polynomial R),
@@ -24,7 +24,6 @@ def Ring.polynomial : Ring ⥤ Ring :=
   map_comp' := by { intros, ext; simp, }, }
 -- sorry
 
-@[simps]
 def CommRing.polynomial : CommRing ⥤ CommRing :=
 -- sorry
 { obj := λ R, CommRing.of (polynomial R),
