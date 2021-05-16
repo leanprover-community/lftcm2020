@@ -6,6 +6,7 @@ import analysis.calculus.mean_value
 import analysis.calculus.implicit
 import measure_theory.bochner_integration
 import measure_theory.lebesgue_measure
+import linear_algebra.matrix.trace
 
 
 namespace lftcm

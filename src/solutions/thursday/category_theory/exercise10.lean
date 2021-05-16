@@ -1,6 +1,6 @@
 import category_theory.limits.shapes.zero
 import category_theory.full_subcategory
-import algebra.homology.chain_complex
+import algebra.homology.homological_complex
 import data.int.basic
 
 /-!
