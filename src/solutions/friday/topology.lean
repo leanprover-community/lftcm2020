@@ -428,7 +428,7 @@ begin
   have φ_cont : continuous φ := continuous_dist.comp (hf.prod_map hf),
   let K := { p : X × X | ε ≤ φ p },
   have K_closed : is_closed K := is_closed_le continuous_const φ_cont,
-  have K_cpct : is_compact K := K_closed.compact,
+  have K_cpct : is_compact K := K_closed.is_compact,
   cases eq_empty_or_nonempty K with hK hK,
   { use [1, by norm_num],
     intros x y hxy,
