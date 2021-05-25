@@ -374,7 +374,7 @@ begin
     suffices : ∀ y ∈ V, φ y ∈ V',
       from mem_sets_of_superset V_in this,
     intros y y_in,
-    have hVx : V ∈ 𝓝 y := mem_nhds_sets V_op y_in,
+    have hVx : V ∈ 𝓝 y := is_open.mem_nhds V_op y_in,
     haveI : (comap (coe : A → X) (𝓝 y)).ne_bot := by simpa [mem_closure_iff_comap_ne_bot] using hA y,
     apply is_closed.mem_of_tendsto V'_closed (hφ y),
     exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
