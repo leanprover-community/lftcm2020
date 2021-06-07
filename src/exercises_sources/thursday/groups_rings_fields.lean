@@ -114,7 +114,8 @@ end
 
 `group_theory/`  ⎫
 `ring_theory/`   ⎬ “advanced” and “specialised” material
-`field_theory/`  ⎭
+`field_theory/`  |
+`number_theory`  ⎭
 
 `data/`            definitions and examples
 
@@ -127,7 +128,7 @@ To give an idea:
 
 * `field_theory/chevalley_warning.lean`
 
-* `data/nat/*.lean`, `data/real/*.lean`, `data/padics/*.lean`
+* `data/nat/*.lean`, `data/real/*.lean`, `number_theory/padics/*.lean`
 
 -/
 

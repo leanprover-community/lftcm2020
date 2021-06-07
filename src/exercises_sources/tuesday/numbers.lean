@@ -1,6 +1,6 @@
 import tactic
 import data.real.basic
-import data.padics
+import number_theory.padics
 import data.int.gcd
 
 /-!

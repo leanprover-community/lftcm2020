@@ -1,7 +1,7 @@
 import tactic
 import data.real.basic
 import data.int.gcd
-import data.padics
+import number_theory.padics
 
 /-!
 
