@@ -1,6 +1,6 @@
 import analysis.analytic.composition
 import analysis.normed_space.inner_product
-import topology.metric_space.pi_Lp
+import analysis.normed_space.pi_Lp
 import analysis.calculus.iterated_deriv
 import analysis.calculus.mean_value
 import analysis.calculus.implicit
