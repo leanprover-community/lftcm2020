@@ -637,7 +637,7 @@ begin
   have : ¬ ((3 : ℝ) < 1), by norm_num,
   simp only [chart_at, this, mem_Ioo, if_false, and_false],
   dsimp [tangent_bundle_core, basic_smooth_bundle_core.chart,
-    topological_fiber_bundle_core.local_triv, topological_fiber_bundle_core.local_triv',
+    topological_fiber_bundle_core.local_triv, topological_fiber_bundle_core.local_triv_as_local_equiv,
     topological_fiber_bundle_core.index_at,
     basic_smooth_bundle_core.to_topological_fiber_bundle_core],
   split_ifs,
