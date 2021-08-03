@@ -82,9 +82,6 @@ or `monoid_algebra K G`, or `ℤ_[p]`, or `zmod n`, or `localization R S`.
 
 /-! ## Morphisms
 
-We are in the middle of a transition to “bundled” morphisms.
-(Why? Long story... but they work better with `simp`)
-
 * `X → Y`   -- ordinary function
 * `X →+ Y`  -- function respects `0` and `+`
 * `X →* Y`  -- function respects `1` and `*`
@@ -95,11 +92,8 @@ We are in the middle of a transition to “bundled” morphisms.
 section
 variables {R S : Type*} [ring R] [ring S]
 
--- We used to write
-example (f : R → S) [is_ring_hom f] : true := trivial
-
 -- But now we write
-example (f : R →+* S) : true := trivial
+example (f : R →+* S) (r : R) : S := f r
 
 /-
 This heavily relies on the “coercion to function”
@@ -436,4 +430,3 @@ begin
 end
 
 end
-
