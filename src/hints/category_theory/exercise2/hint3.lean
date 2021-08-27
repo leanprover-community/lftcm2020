@@ -20,23 +20,13 @@ def Ring.polynomial : Ring ⥤ Ring :=
     -- The hint suggested looked at `polynomial.map`.
     -- If you type `#print polynomial.map` above, you'll see that it just provides a "bare function"
     -- `polynomial R → polynomial S`, rather than an actual `ring_hom`.
-    -- That's unfortunate, and will probably be fixed some as we refactor the polynomial library.
+    -- Looking further in the same file, you can find its morphism version, called
+    -- `polynomial.map_ring_hom`.
 
-    -- In the meantime, we can hope that someone has already provided a `is_ring_hom` instance
-    -- for this function, and so we can construct the `ring_hom` of `ring_hom.of`.
+    apply polynomial.map_ring_hom,
 
-    -- Unfortunately just typing
-    --   apply ring_hom.of
-    -- fails with `failed to synthesize type class instance`.
-
-    -- Instead we can use
-    apply @ring_hom.of _ _ _ _ _ _, -- I just kept typing underscores until the error went away!
-    -- to say that we want to provide all the arguments ourselves, even the typeclass arguments.
-
-    -- Now it's "downhill": for each goal, we just tell Lean what we want to use:
-    apply polynomial.map,
+    -- Now it's "downhill": we just tell Lean what we want to use:
     apply f,
-    apply_instance,
 
     -- With the goals completed, you should now try to "golf" this proof to a term mode proof.
     -- The next hint file walks you through doing this.

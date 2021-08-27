@@ -11,10 +11,8 @@ def Ring.polynomial : Ring ⥤ Ring :=
   map :=
   begin
     intros R S f,
-    apply @ring_hom.of _ _ _ _ _ _,
-    apply polynomial.map,
+    apply polynomial.map_ring_hom,
     apply f,
-    apply_instance,
   end, }
 
 -- In this file, I'll walk you through the process of condensing this into a term-mode proof.
@@ -27,17 +25,15 @@ def Ring.polynomial_2 : Ring ⥤ Ring :=
   map := λ R S f,
   begin
     apply @ring_hom.of _ _ _ _ _ _,
-    apply polynomial.map,
+    apply polynomial.map_ring_hom,
     apply f,
-    apply_instance,
   end, }
 
--- If you hover over `@ring_hom.of`, you'll see it has six arguments:
---    Π {α β : Type (max u_1 u_2)} [rα : semiring α] [rβ : semiring β] (f : α → β) [_inst_1 : is_semiring_hom f], α →+* β
--- corresponding to the six underscores above. It's the second last two that we've solved explicitly.
+-- If you hover over `polynomial.map_ring_hom`, you'll see it has just one arguments, so we can
+-- convert the proof to
 
 def Ring.polynomial_3 : Ring ⥤ Ring :=
 { obj := λ R, Ring.of (polynomial R),
-  map := λ R S f, ring_hom.of (polynomial.map f), }
+  map := λ R S f, polynomial.map_ring_hom f }
 
 -- 🎉

@@ -360,7 +360,7 @@ Useful library lemmas (in no particular order):
 - `is_unit.map'`
 - `leading_coeff_C`
 - `degree_map_eq_of_leading_coeff_ne_zero`
-- `is_unit.map'`
+- `ring_hom.is_unit_map`
 - `is_unit.ne_zero`
 -/
 
@@ -372,11 +372,11 @@ begin
   have key := degree_eq_zero_of_is_unit H,
   have hφ_lcf : φ (leading_coeff f) ≠ 0,
   { apply is_unit.ne_zero,
-    apply is_unit.map',
+    apply ring_hom.is_unit_map,
     assumption, },
   rw degree_map_eq_of_leading_coeff_ne_zero _ hφ_lcf at key,
   rw eq_C_of_degree_eq_zero key,
-  apply is_unit.map',
+  apply ring_hom.is_unit_map,
   rw [eq_C_of_degree_eq_zero key, leading_coeff_C] at hf,
   exact hf,
   -- sorry
@@ -385,11 +385,12 @@ end
 /-
 Useful library lemmas (in no particular order):
 
-- `is_unit.map'`
+- `ring_hom.is_unit_map`
 - `is_unit_of_mul_is_unit_left` (also `_right`)
 - `leading_coeff_mul`
 - `is_unit_of_is_unit_leading_coeff_of_is_unit_map` (the helper lemma we just proved)
 - `is_unit_one`
+- `coe_map_ring_hom`
 -/
 
 lemma irreducible_of_irreducible_mod_prime (f : polynomial ℤ) (p : ℕ) [fact p.prime]
@@ -400,7 +401,8 @@ begin
   split,
   { intro hf,
     apply h_irr.1,
-    apply is_unit.map',
+    rw ← coe_map_ring_hom,
+    apply ring_hom.is_unit_map,
     exact hf, },
   { intros g h Hf,
     have aux : is_unit (leading_coeff g * leading_coeff h),

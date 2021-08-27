@@ -7,11 +7,11 @@ local attribute [irreducible] polynomial.eval₂
 
 def Ring.polynomial : Ring ⥤ Ring :=
 { obj := λ R, Ring.of (polynomial R),
-  map := λ R S f, ring_hom.of (polynomial.map f), }
+  map := λ R S f, polynomial.map_ring_hom f }
 
 def CommRing.polynomial : CommRing ⥤ CommRing :=
 { obj := λ R, CommRing.of (polynomial R),
-  map := λ R S f, ring_hom.of (polynomial.map f), }
+  map := λ R S f, polynomial.map_ring_hom f }
 
 open category_theory
 
