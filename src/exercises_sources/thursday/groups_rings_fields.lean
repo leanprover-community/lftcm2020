@@ -90,10 +90,13 @@ or `monoid_algebra K G`, or `ℤ_[p]`, or `zmod n`, or `localization R S`.
 -/
 
 section
+
+-- let R and S be rings
 variables {R S : Type*} [ring R] [ring S]
 
--- But now we write
-example (f : R →+* S) (r : R) : S := f r
+-- let f be a ring homomorphism; now given an term of type R, construct
+-- a term of type S.
+example (f : R →+* S) (a : R) : S := f a
 
 /-
 This heavily relies on the “coercion to function”
@@ -430,3 +433,4 @@ begin
 end
 
 end
+

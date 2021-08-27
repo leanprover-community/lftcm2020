@@ -220,7 +220,7 @@ begin
   -- sorry
   split; intro h,
   { simp [← h] },
-  { exact pow_left_inj (nat.zero_le _) (nat.zero_le k) zero_lt_two (by simp [h]) }
+  { exact (pow_left_inj (nat.zero_le _) (nat.zero_le k) zero_lt_two).1 (by simp [h]) }
   -- sorry
 end
 

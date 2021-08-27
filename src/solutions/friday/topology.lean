@@ -95,10 +95,10 @@ The filter axiom are also available as standalone lemmas where the filter argume
 Compare
 -/
 #check @filter.sets_of_superset
-#check @mem_sets_of_superset
+#check @mem_of_superset
 
 -- And analogously:
-#check @inter_mem_sets
+#check @inter_mem
 
 
 /-!
@@ -138,19 +138,19 @@ Let's now focus on the pull-back operation `filter.comap` which takes `f : X →
 and a filter `G` on `Y` and returns a filter on `X`.
 -/
 
-#check @mem_comap_sets -- this is by definition, the proof is `iff.rfl`
+#check @mem_comap -- this is by definition, the proof is `iff.rfl`
 
 -- It also help to record a special case of one implication:
 #check @preimage_mem_comap
 
 -- The following exercise, which reproves `comap_ne_bot_iff` can start using
-#check @forall_sets_nonempty_iff_ne_bot
+#check @forall_mem_nonempty_iff_ne_bot
 
 example {α β : Type*} {f : filter β} {m : α → β} :
   (comap m f).ne_bot ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
 begin
   -- sorry
-  rw ← forall_sets_nonempty_iff_ne_bot,
+  rw ← forall_mem_nonempty_iff_ne_bot,
   split ; intro h,
   { intros t t_in,
     exact h (m ⁻¹' t) ⟨t, t_in, subset.refl _⟩, },
@@ -182,10 +182,10 @@ begin
   split,
   { intro h,
     split,
-    { apply mem_sets_of_superset h,
+    { apply mem_of_superset h,
       intros x x_in,
       exact x_in.1 },
-    { apply mem_sets_of_superset h,
+    { apply mem_of_superset h,
       intros x x_in,
       exact x_in.2 } },
   { intros h,
@@ -372,12 +372,12 @@ begin
     obtain ⟨V, V_in, V_op, hV⟩ : ∃ V ∈ 𝓝 x, is_open V ∧ coe ⁻¹' V ⊆ f ⁻¹' V',
     { exact aux (hφ x) V'_in },
     suffices : ∀ y ∈ V, φ y ∈ V',
-      from mem_sets_of_superset V_in this,
+      from mem_of_superset V_in this,
     intros y y_in,
     have hVx : V ∈ 𝓝 y := is_open.mem_nhds V_op y_in,
     haveI : (comap (coe : A → X) (𝓝 y)).ne_bot := by simpa [mem_closure_iff_comap_ne_bot] using hA y,
     apply is_closed.mem_of_tendsto V'_closed (hφ y),
-    exact mem_sets_of_superset (preimage_mem_comap hVx) hV },
+    exact mem_of_superset (preimage_mem_comap hVx) hV },
   { intros a,
     have lim : tendsto f (𝓝 a) (𝓝 $ φ a),
       by simpa [nhds_induced] using hφ a,

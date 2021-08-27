@@ -54,10 +54,10 @@ The filter axiom are also available as standalone lemmas where the filter argume
 Compare
 -/
 #check @filter.sets_of_superset
-#check @mem_sets_of_superset
+#check @mem_of_superset
 
 -- And analogously:
-#check @inter_mem_sets
+#check @inter_mem
 
 
 /-!
@@ -90,13 +90,13 @@ Let's now focus on the pull-back operation `filter.comap` which takes `f : X →
 and a filter `G` on `Y` and returns a filter on `X`.
 -/
 
-#check @mem_comap_sets -- this is by definition, the proof is `iff.rfl`
+#check @mem_comap -- this is by definition, the proof is `iff.rfl`
 
 -- It also help to record a special case of one implication:
 #check @preimage_mem_comap
 
 -- The following exercise, which reproves `comap_ne_bot_iff` can start using
-#check @forall_sets_nonempty_iff_ne_bot
+#check @forall_mem_nonempty_iff_ne_bot
 
 example {α β : Type*} {f : filter β} {m : α → β} :
   (comap m f).ne_bot ↔ ∀ t ∈ f, ∃ a, m a ∈ t :=
