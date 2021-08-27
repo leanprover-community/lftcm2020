@@ -254,7 +254,7 @@ to work with it you'll need to know
 -/
 
 def Inf (S : set (subgp G)) : subgp G :=
-{ carrier := Inf (subgp.carrier '' S),
+{ carrier := ⋂₀ (subgp.carrier '' S),
   mul_mem :=  begin
     sorry
   end,

@@ -24,7 +24,6 @@ def Ring.polynomial_2 : Ring ⥤ Ring :=
 { obj := λ R, Ring.of (polynomial R),
   map := λ R S f,
   begin
-    apply @ring_hom.of _ _ _ _ _ _,
     apply polynomial.map_ring_hom,
     apply f,
   end, }
