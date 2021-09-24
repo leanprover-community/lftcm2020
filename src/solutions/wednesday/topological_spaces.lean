@@ -257,7 +257,7 @@ metric_space_basic (X × Y) :=
     intros x y z,
     have hf := triangle x.fst y.fst z.fst,
     have hs := triangle x.snd y.snd z.snd,
-    simp only [max],
+    simp only [max, max_default],
     split_ifs; linarith,
   end
   -- sorry
