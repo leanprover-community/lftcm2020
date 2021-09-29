@@ -1,5 +1,5 @@
 import algebra.module
-import analysis.normed_space.inner_product
+import analysis.inner_product_space.basic
 import data.matrix.notation
 import linear_algebra.basic
 import linear_algebra.bilinear_form
@@ -270,7 +270,7 @@ end matrix
 section odds_and_ends
 
 /- Other useful parts of the library: -/
--- import analysis.normed_space.inner_product
+-- import analysis.inner_product_space.basic
 #print normed_space -- module with a norm
 #print inner_product_space -- normed space with an inner product in ℝ or ℂ
 
