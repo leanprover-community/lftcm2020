@@ -1,4 +1,4 @@
-import analysis.normed_space.inner_product
+import analysis.inner_product_space.basic
 import data.matrix.notation
 import linear_algebra.bilinear_form
 import linear_algebra.matrix

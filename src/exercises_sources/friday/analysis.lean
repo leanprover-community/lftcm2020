@@ -1,5 +1,5 @@
 import analysis.analytic.composition
-import analysis.normed_space.inner_product
+import analysis.inner_product_space.basic
 import analysis.normed_space.pi_Lp
 import analysis.calculus.iterated_deriv
 import analysis.calculus.mean_value
