@@ -1,4 +1,4 @@
-import category_theory.category
+import category_theory.category.basic
 import category_theory.functor
 import category_theory.functor_category
 
