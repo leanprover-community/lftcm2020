@@ -189,16 +189,16 @@ begin
   intros ε ε_pos,
   dsimp,
 
-  -- the witness to the existential must be a nat: use `nat_ceil` instead of `ceil`!
-  use nat_ceil (1/ε),
+  -- the witness to the existential must be a nat: use `nat.ceil` instead of `ceil`!
+  use nat.ceil (1/ε),
   intros n hn,
 
   -- this proof is used a few times below, so we separate it as an assumption
   have n_pos : 0 < n,
     -- I've written the proofs of the calc block separately, but you could inline them
-  { calc 0 < nat_ceil (1/ε) : _
+  { calc 0 < nat.ceil (1/ε) : _
        ... ≤ n : _,
-    { rw lt_nat_ceil, simp, assumption },
+    { rw nat.lt_ceil, simp, assumption },
     { assumption } },
 
   -- this chain of rewrites generates some side conditions that we get rid of below
@@ -207,10 +207,10 @@ begin
 
   -- this calc proof finishes the "main goal"
   { calc 1 = ε * (1/ε) : _
-       ... ≤ ε * nat_ceil (1/ε) : _
+       ... ≤ ε * nat.ceil (1/ε) : _
        ... ≤ ε * n : _,
     { symmetry, apply mul_one_div_cancel, linarith },
-    { rw mul_le_mul_left ε_pos, apply le_nat_ceil },
+    { rw mul_le_mul_left ε_pos, apply nat.le_ceil },
     { rw mul_le_mul_left ε_pos, exact_mod_cast hn } },
 
   -- we try to discharge the side conditions with as little work as possible
