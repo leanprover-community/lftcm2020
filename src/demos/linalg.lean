@@ -3,7 +3,7 @@ import analysis.inner_product_space.basic
 import data.matrix.notation
 import linear_algebra.basic
 import linear_algebra.bilinear_form
-import linear_algebra.quadratic_form
+import linear_algebra.quadratic_form.basic
 import linear_algebra.finsupp
 import tactic
 
