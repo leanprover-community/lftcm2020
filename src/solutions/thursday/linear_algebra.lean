@@ -13,7 +13,7 @@ section exercise1
 
 namespace module
 
-open module
+open _root_.module
 
 variables (R M : Type*) [comm_semiring R] [add_comm_monoid M] [module R M]
 
@@ -26,7 +26,7 @@ variables (R M : Type*) [comm_semiring R] [add_comm_monoid M] [module R M]
 -/
 
 /-- The following line tells Lean we can apply `f : End R M` as if it was a function. -/
-instance : has_coe_to_fun (End R M) := { F := λ _, M → M, coe := linear_map.to_fun }
+instance : has_coe_to_fun (End R M) (λ _, M → M) := ⟨linear_map.to_fun⟩
 
 /-- Endomorphisms inherit the pointwise addition operator from linear maps. -/
 instance : add_comm_monoid (End R M) := linear_map.add_comm_monoid
@@ -109,7 +109,7 @@ linear_map.range to_homothety
 
 -- or:
 def homothety'' : submodule R (End R M) :=
-linear_map.range (algebra.lsmul R M : R →ₐ[R] End R M).to_linear_map
+linear_map.range (algebra.lsmul R M : R →ₐ[R] module.End R M).to_linear_map
 -- sorry
 
 end module
@@ -120,8 +120,8 @@ end exercise1
 section exercise2
 
 namespace matrix
+open _root_.matrix
 
-open matrix
 
 variables {m n R M : Type} [fintype m] [fintype n] [comm_ring R] [add_comm_group M] [module R M]
 
@@ -223,7 +223,7 @@ namespace pi
 
 variables {n : Type*} [fintype n]
 
-open matrix
+open _root_.matrix
 
 /- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Exercise 3: inner product spaces
