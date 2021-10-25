@@ -283,8 +283,8 @@ structure bijection (α β : Type*) :=
   (surjective : surjective to_fun)
 
 /- We declare a *coercion*. This allows us to treat `f` as a function if `f : bijection α β`. -/
-instance : has_coe_to_fun (bijection α β) :=
-⟨_, λ f, f.to_fun⟩
+instance : has_coe_to_fun (bijection α β) (λ _, α → β) :=
+⟨λ f, f.to_fun⟩
 
 /-! To show that two bijections are equal, it is sufficient that the underlying functions are
   equal on all inputs. We mark it as `@[ext]` so that we can later use the tactic `ext` to show that
@@ -359,7 +359,7 @@ namespace Group
 variables {G : Group} /- Let `G` be a group -/
 
 /- The following line declares that if `G : Group`, then we can also view `G` as a type. -/
-instance : has_coe_to_sort Group := ⟨_, Group.G⟩
+instance : has_coe_to_sort Group (Type*) := ⟨Group.G⟩
 /- The following lines declare the notation `*`, `⁻¹` and `1` for the fields of `Group`. -/
 instance : has_mul G := ⟨G.op⟩
 instance : has_inv G := ⟨G.inv⟩
@@ -419,7 +419,7 @@ namespace pointed_type
 variables {A B : pointed_type}
 
 /- The following line declares that if `A : pointed_type`, then we can also view `A` as a type. -/
-instance : has_coe_to_sort pointed_type := ⟨_, pointed_type.type⟩
+instance : has_coe_to_sort pointed_type (Type* ):= ⟨pointed_type.type⟩
 
 /- The product of two pointed types is a pointed type.
   The `@[simps point]` is a hint to `simp` that it can unfold the point of this definition. -/
@@ -442,7 +442,7 @@ infix ` →. `:25 := pointed_map
 variables {A B C D : pointed_type}
 variables {h : C →. D} {g : B →. C} {f f₁ f₂ : A →. B}
 
-instance : has_coe_to_fun (A →. B) := ⟨λ _, A → B, pointed_map.to_fun⟩
+instance : has_coe_to_fun (A →. B) (λ _, A → B) := ⟨pointed_map.to_fun⟩
 
 @[simp] lemma coe_mk {f : A → B} {hf : f A.point = B.point} {x : A} :
   { pointed_map . to_fun := f, to_fun_point := hf } x = f x := rfl
