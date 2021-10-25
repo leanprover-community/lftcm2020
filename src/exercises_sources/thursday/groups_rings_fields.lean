@@ -311,7 +311,7 @@ Can you generalise `irreducible_of_irreducible_mod_prime`?
 -/
 
 namespace polynomial
-variables {R S : Type*} [semiring R] [comm_ring S] [integral_domain S] (φ : R →+* S)
+variables {R S : Type*} [semiring R] [comm_ring S] [is_domain S] (φ : R →+* S)
 
 /-
 Useful library lemmas (in no particular order):
