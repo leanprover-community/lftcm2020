@@ -1006,7 +1006,7 @@ begin
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { have A : unique_mdiff_within_at 𝓡1 (Icc 0 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).fst,
+  { have A : unique_mdiff_within_at 𝓡1 (Icc (0 : ℝ) 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).fst,
     { rw unique_mdiff_within_at_iff_unique_diff_within_at,
       apply unique_diff_on_Icc_zero_one _ x.2 },
     change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) ⟨x, v⟩)).snd = v,
