@@ -6,6 +6,7 @@ import linear_algebra.bilinear_form
 import linear_algebra.quadratic_form.basic
 import linear_algebra.finsupp
 import tactic
+import linear_algebra.matrix.nonsingular_inverse
 
 /-
 According to Wikipedia, everyone's favourite reliable source of knowledge,
@@ -258,12 +259,9 @@ variables (v : basis m R M) (w : basis n R N)
 #check linear_map.to_matrix v w -- (M →ₗ[R] N) ≈ₗ[R] matrix n m R
 
 /-
-Invertible (i.e. nonsingular) matrices have an inverse operation `nonsing_inv`.
-
-The notation `⁻¹` has been reserved for the more general pseudoinverse,
-which unfortunately has not yet been defined.
+Invertible (i.e. nonsingular) matrices have an inverse operation denoted by `⁻¹`.
 -/
-#check matrix.nonsing_inv
+#check matrix.inv_def
 
 end matrix
 
