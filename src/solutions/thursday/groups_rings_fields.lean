@@ -239,6 +239,7 @@ The following exercise will show the classical fact:
 Hints for proving this result:
   * Look up the definition of `finite_dimensional`.
   * Search the library for useful lemmas about `is_algebraic` and `is_integral`.
+  * You can have a look at `is_noetherian.iff_fg`.
 -/
 
 namespace algebra
@@ -250,6 +251,7 @@ begin
   intro x,
   rw is_algebraic_iff_is_integral,
   apply is_integral_of_noetherian,
+  refine is_noetherian.iff_fg.2 _,
   assumption,
   -- sorry
 end
