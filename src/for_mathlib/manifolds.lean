@@ -12,15 +12,17 @@ section pi_Lp_smooth
 variables
   {𝕜 : Type*} [nondiscrete_normed_field 𝕜]
   {ι : Type*} [fintype ι]
-  {p : ℝ} {hp : 1 ≤ p} {α : ι → Type*} {n : with_top ℕ} (i : ι)
+  {p : ℝ} [hp : fact (1 ≤ p)] {α : ι → Type*} {n : with_top ℕ} (i : ι)
   [∀i, normed_group (α i)] [∀i, normed_space 𝕜 (α i)]
-  {E : Type*} [normed_group E] [normed_space 𝕜 E] {f : E → pi_Lp p hp α} {s : set E} {x : E}
+  {E : Type*} [normed_group E] [normed_space 𝕜 E] {f : E → pi_Lp p α} {s : set E} {x : E}
 
-lemma pi_Lp.norm_coord_le_norm (x : pi_Lp p hp α) (i : ι) : ∥x i∥ ≤ ∥x∥ :=
+include hp
+
+lemma pi_Lp.norm_coord_le_norm (x : pi_Lp p α) (i : ι) : ∥x i∥ ≤ ∥x∥ :=
 calc
   ∥x i∥ ≤ (∥x i∥ ^ p) ^ (1/p) :
   begin
-    have : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp),
+    have : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp.out),
     rw [← real.rpow_mul (norm_nonneg _), mul_one_div_cancel this, real.rpow_one],
   end
   ... ≤ _ :
@@ -29,12 +31,12 @@ calc
     simp only [pi_Lp.norm_eq, one_mul, linear_map.coe_mk],
     apply real.rpow_le_rpow (A i),
     { exact finset.single_le_sum (λ j hj, A j) (finset.mem_univ _) },
-    { exact div_nonneg zero_le_one (le_trans zero_le_one hp) }
+    { exact div_nonneg zero_le_one (le_trans zero_le_one hp.out) }
   end
 
 lemma pi_Lp.times_cont_diff_coord :
-  times_cont_diff 𝕜 n (λ x : pi_Lp p hp α, x i) :=
-let F : pi_Lp p hp α →ₗ[𝕜] α i :=
+  times_cont_diff 𝕜 n (λ x : pi_Lp p α, x i) :=
+let F : pi_Lp p α →ₗ[𝕜] α i :=
 { to_fun := λ x, x i, map_add' := λ x y, rfl, map_smul' := λ x c, rfl } in
 (F.mk_continuous 1 (λ x, by simpa using pi_Lp.norm_coord_le_norm x i)).times_cont_diff
 
@@ -46,7 +48,7 @@ begin
   { assume h i,
    exact (pi_Lp.times_cont_diff_coord i).comp_times_cont_diff_within_at h, },
   { assume h,
-    let F : Π (i : ι), α i →ₗ[𝕜] pi_Lp p hp α := λ i,
+    let F : Π (i : ι), α i →ₗ[𝕜] pi_Lp p α := λ i,
     { to_fun := λ y, function.update 0 i y,
       map_add' := begin
         assume y y',
@@ -62,9 +64,9 @@ begin
         { rw h, simp },
         { simp [h], }
       end },
-    let G : Π (i : ι), α i →L[𝕜] pi_Lp p hp α := λ i,
+    let G : Π (i : ι), α i →L[𝕜] pi_Lp p α := λ i,
     begin
-      have p_ne_0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp),
+      have p_ne_0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp.out),
       refine (F i).mk_continuous 1 (λ x, _),
       have : (λ j, ∥function.update 0 i x j∥ ^ p) = (λ j, if j = i then ∥x∥ ^ p else 0),
       { ext j,
@@ -103,3 +105,5 @@ lemma pi_Lp.times_cont_diff_iff_coord :
 by simp [← times_cont_diff_on_univ, pi_Lp.times_cont_diff_on_iff_coord]
 
 end pi_Lp_smooth
+
+attribute [instance] fact_one_le_two_real
