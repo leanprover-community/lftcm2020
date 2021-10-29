@@ -83,8 +83,8 @@ We've done some work to get you started. You might look for the lemmas:
 
 open padic_val_rat
 
-#check fpow_le_of_le
-#check fpow_nonneg
+#check zpow_le_of_le
+#check zpow_nonneg
 #check padic_val_rat_of_int
 
 
@@ -100,9 +100,9 @@ begin
     assumption_mod_cast },
 
   unfold padic_norm, split_ifs with hz hz,
-  { apply fpow_nonneg,
+  { apply zpow_nonneg,
     exact_mod_cast le_of_lt hp.pos },
-  { apply fpow_le_of_le,
+  { apply zpow_le_of_le,
     exact_mod_cast le_of_lt hp.one_lt,
     apply neg_le_neg,
     rw padic_val_rat_of_int _ hp.ne_one _,
