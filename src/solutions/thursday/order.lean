@@ -146,14 +146,15 @@ example : partial_order (subgp G) := partial_order.lift subgp.carrier carrier_in
 
 # From partial orders to lattices.
 
-Let's now prove that `subgp G` is a `semilattice_inf_top`. This is a class
-which extends `partial_order` -- it is a partial order equipped with a top element,
-and a function `inf : subgp G → subgp G → subgp G` (called "inf" or "meet"
-  or "greatest lower bound", satisfying some axioms. In our case, `top`
-  will be the subgroup `G` of `G` (or more precisely `univ`), and `inf` will
-  just be intersection. The work we need to do is to check that these are
-  subgroups, and to prove the axioms for a `semilattice_inf_top`, which
-  we'll come to later.
+Let's now prove that `subgp G` is a `semilattice_inf` . This is a class
+which extends `partial_order` -- it is a partial order equipped with
+a function `inf : subgp G → subgp G → subgp G` (called "inf" or "meet"
+or "greatest lower bound", satisfying some axioms. In our case, `inf` will
+just be intersection. The work we need to do is to check that these are
+subgroups, and to prove the axioms for a `semilattice_inf`, which
+we'll come to later.
+
+We will also show that it is an `order_top`, i.e., it has a largest element.
 
 First let's define `top` -- the biggest subgroup. The underlying carrier
 is `univ : set G`, i.e. the subset `G` of `G`. I'll leave it to you to prove
@@ -257,22 +258,24 @@ lemma inf_le_right (H K : subgp G) : H ⊓ K ≤ K :=
 lemma le_inf (H J K : subgp G) (h1 : H ≤ J) (h2 : H ≤ K) : H ≤ J ⊓ K :=
 /- inline sorry -/subset_inter h1 h2/- inline sorry -/
 
--- Now we're ready to make the instance.
-instance : semilattice_inf_top (subgp G) :=
-{ top := top,
-  le_top := le_top,
-  inf := inf,
+-- Now we're ready to make the two instances.
+instance : semilattice_inf (subgp G) :=
+{ inf := inf,
   inf_le_left := inf_le_left,
   inf_le_right := inf_le_right,
   le_inf := le_inf,
   .. subgp.partial_order } -- don't forget to inlude the partial order
 
-/- The logic behind `semilattice_inf_top` is that it is the simplest class
+instance : order_top (subgp G) :=
+{ top := top,
+  le_top := le_top }
+
+/- The logic behind `semilattice_inf` and `order_top` is that this is the simplest class
 which is closed under all finite "meet"s. The meet of 0 subgroups
 is `top`, the meet of one subgroup is the subgroup, the meet of two
 subgroups is their inf, and for three or more you proceed by induction.
 
-We could now go on to make a `semilattice_sup_bot` structure, and then
+We could now go on to make a `semilattice_sup` structure, and then
 a lattice structure. But let's jump straight to the strongest type
 in the order hierarchy -- a `complete_lattice`. This has arbitrary `Inf` and `Sup`s.
 
@@ -322,7 +325,7 @@ instance : has_Inf (subgp G) := ⟨Inf⟩
 
 /- # Complete lattices
 
-Let's jump straight from `semilattice_inf_bot` to `complete_lattice`.
+Let's jump straight from `semilattice_inf` to `complete_lattice`.
 A complete lattice has arbitrary Infs and arbitrary Sups, and satisfies
 some other axioms which you can probably imagine. Our next goal
 is to make `subgp G` into a complete lattice. We will do it in two ways.

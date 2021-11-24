@@ -1,6 +1,7 @@
 import algebra.module
 import analysis.inner_product_space.basic
 import data.matrix.notation
+import data.matrix.dmatrix
 import linear_algebra.basic
 import linear_algebra.bilinear_form
 import linear_algebra.quadratic_form.basic
