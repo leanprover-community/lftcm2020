@@ -248,7 +248,7 @@ trivial
 -- We also recommend using the theorems
 -- ``prime.eq_two_or_odd`` and ``even_iff``.
 
-example : { n | prime n } ∩ { n | n > 2} ⊆ { n | ¬ even n } :=
+example : { n | nat.prime n } ∩ { n | n > 2} ⊆ { n | ¬ even n } :=
 -- sorry
 begin
   intro n,
