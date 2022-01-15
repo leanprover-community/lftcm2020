@@ -158,8 +158,11 @@ example {x : M} : x ∈ (⊤ : submodule R M) := submodule.mem_top
 /- The embedding of a submodule in the ambient space, is called `subtype`: -/
 #check submodule.subtype
 
-/- Finally, we can take the quotient modulo a submodule: -/
-#check ℤ ⧸ (submodule.span ℤ {(2 : ℤ)}) -- also known as ℤ / 2ℤ
+/- Finally, we can take the quotient modulo a submodule.
+Note the nonstandard ⧸, typed with \quot .
+ -/
+
+#check ℤ ⧸ submodule.span ℤ {(2 : ℤ)}
 
 end submodule
 
