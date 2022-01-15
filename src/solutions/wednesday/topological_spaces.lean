@@ -182,13 +182,13 @@ open topological_space
 instance prod.topological_space (X Y : Type) [topological_space X]
   [topological_space Y] : topological_space (X × Y) :=
 topological_space.generate_from (X × Y) {U | ∃ (Ux : set X) (Uy : set Y)
-  (hx : is_open Ux) (hy : is_open Uy), U = set.prod Ux Uy}
+  (hx : is_open Ux) (hy : is_open Uy), U = Ux ×ˢ Uy}
 
 -- the proof of this is bit long so I've left it out for the purpose of this file!
 lemma is_open_prod_iff (X Y : Type) [topological_space X] [topological_space Y]
   {s : set (X × Y)} :
-is_open s ↔ (∀a b, (a, b) ∈ s → ∃u v, is_open u ∧ is_open v ∧
-                                  a ∈ u ∧ b ∈ v ∧ set.prod u v ⊆ s) := sorry
+is_open s ↔ (∀a b, (a, b) ∈ s → ∃ (u : set X) (v : set Y), is_open u ∧ is_open v ∧
+                                  a ∈ u ∧ b ∈ v ∧ u ×ˢ v ⊆ s) := sorry
 
 /- # Metric spaces -/
 

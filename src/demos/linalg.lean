@@ -159,7 +159,7 @@ example {x : M} : x ∈ (⊤ : submodule R M) := submodule.mem_top
 #check submodule.subtype
 
 /- Finally, we can take the quotient modulo a submodule: -/
-#check (submodule.span ℤ {(2 : ℤ)}).quotient -- also known as ℤ / 2ℤ
+#check ℤ ⧸ (submodule.span ℤ {(2 : ℤ)}) -- also known as ℤ / 2ℤ
 
 end submodule
 
