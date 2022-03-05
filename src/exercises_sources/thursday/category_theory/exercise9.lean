@@ -75,8 +75,7 @@ instance : has_finite_biproducts (additive_envelope.{v} C) :=
         ι := sorry,
         π := sorry,
         ι_π := sorry, },
-      is_limit := sorry,
-      is_colimit := sorry, }}}
+      is_bilimit := sorry }}}
 
 variables {C}
 

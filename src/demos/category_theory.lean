@@ -1,6 +1,5 @@
 import category_theory.category.basic
 import category_theory.functor
-import category_theory.functor_category
 
 import algebra.category.CommRing
 import algebra.category.Group.images

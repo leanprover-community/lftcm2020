@@ -1,6 +1,6 @@
 /- Missing bits that should be added to mathlib after the workshop and after cleaning them up -/
 
-import geometry.manifold.times_cont_mdiff
+import geometry.manifold.cont_mdiff
 import geometry.manifold.instances.real
 
 open set
@@ -34,20 +34,20 @@ calc
     { exact div_nonneg zero_le_one (le_trans zero_le_one hp.out) }
   end
 
-lemma pi_Lp.times_cont_diff_coord :
-  times_cont_diff 𝕜 n (λ x : pi_Lp p α, x i) :=
+lemma pi_Lp.cont_diff_coord :
+  cont_diff 𝕜 n (λ x : pi_Lp p α, x i) :=
 let F : pi_Lp p α →ₗ[𝕜] α i :=
 { to_fun := λ x, x i, map_add' := λ x y, rfl, map_smul' := λ x c, rfl } in
-(F.mk_continuous 1 (λ x, by simpa using pi_Lp.norm_coord_le_norm x i)).times_cont_diff
+(F.mk_continuous 1 (λ x, by simpa using pi_Lp.norm_coord_le_norm x i)).cont_diff
 
-lemma pi_Lp.times_cont_diff_within_at_iff_coord :
-  times_cont_diff_within_at 𝕜 n f s x ↔ ∀ i, times_cont_diff_within_at 𝕜 n (λ x, (f x) i) s x:=
+lemma pi_Lp.cont_diff_within_at_iff_coord :
+  cont_diff_within_at 𝕜 n f s x ↔ ∀ i, cont_diff_within_at 𝕜 n (λ x, (f x) i) s x:=
 begin
   classical,
   split,
   { assume h i,
-    have : times_cont_diff 𝕜 n (λ (x : pi_Lp p α), x i) := pi_Lp.times_cont_diff_coord i,
-    exact this.comp_times_cont_diff_within_at h },
+    have : cont_diff 𝕜 n (λ (x : pi_Lp p α), x i) := pi_Lp.cont_diff_coord i,
+    exact this.comp_cont_diff_within_at h },
   { assume h,
     let F : Π (i : ι), α i →ₗ[𝕜] pi_Lp p α := λ i,
     { to_fun := λ y, function.update 0 i y,
@@ -77,9 +77,9 @@ begin
       simp only [pi_Lp.norm_eq, this, one_mul, finset.mem_univ, if_true, linear_map.coe_mk, finset.sum_ite_eq'],
       rw [← real.rpow_mul (norm_nonneg _), mul_one_div_cancel p_ne_0, real.rpow_one]
     end,
-    have : times_cont_diff_within_at 𝕜 n (λ x, (∑ (i : ι), G i ((f x) i))) s x,
-    { apply times_cont_diff_within_at.sum (λ i hi, _),
-      exact (G i).times_cont_diff.comp_times_cont_diff_within_at (h i) },
+    have : cont_diff_within_at 𝕜 n (λ x, (∑ (i : ι), G i ((f x) i))) s x,
+    { apply cont_diff_within_at.sum (λ i hi, _),
+      exact (G i).cont_diff.comp_cont_diff_within_at (h i) },
     convert this,
     ext x j,
     simp,
@@ -93,17 +93,17 @@ begin
     simp [this] }
 end
 
-lemma pi_Lp.times_cont_diff_at_iff_coord :
-  times_cont_diff_at 𝕜 n f x ↔ ∀ i, times_cont_diff_at 𝕜 n (λ x, (f x) i) x :=
-by simp [← times_cont_diff_within_at_univ, pi_Lp.times_cont_diff_within_at_iff_coord]
+lemma pi_Lp.cont_diff_at_iff_coord :
+  cont_diff_at 𝕜 n f x ↔ ∀ i, cont_diff_at 𝕜 n (λ x, (f x) i) x :=
+by simp [← cont_diff_within_at_univ, pi_Lp.cont_diff_within_at_iff_coord]
 
-lemma pi_Lp.times_cont_diff_on_iff_coord :
-  times_cont_diff_on 𝕜 n f s ↔ ∀ i, times_cont_diff_on 𝕜 n (λ x, (f x) i) s :=
-by { simp_rw [times_cont_diff_on, pi_Lp.times_cont_diff_within_at_iff_coord], tauto }
+lemma pi_Lp.cont_diff_on_iff_coord :
+  cont_diff_on 𝕜 n f s ↔ ∀ i, cont_diff_on 𝕜 n (λ x, (f x) i) s :=
+by { simp_rw [cont_diff_on, pi_Lp.cont_diff_within_at_iff_coord], tauto }
 
-lemma pi_Lp.times_cont_diff_iff_coord :
-  times_cont_diff 𝕜 n f ↔ ∀ i, times_cont_diff 𝕜 n (λ x, (f x) i) :=
-by simp [← times_cont_diff_on_univ, pi_Lp.times_cont_diff_on_iff_coord]
+lemma pi_Lp.cont_diff_iff_coord :
+  cont_diff 𝕜 n f ↔ ∀ i, cont_diff 𝕜 n (λ x, (f x) i) :=
+by simp [← cont_diff_on_univ, pi_Lp.cont_diff_on_iff_coord]
 
 end pi_Lp_smooth
 

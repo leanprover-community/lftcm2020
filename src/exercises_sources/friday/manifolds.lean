@@ -81,12 +81,12 @@ Manifold in Lean:
 -/
 
 #check charted_space (euclidean_half_space 1) (Icc (0 : ℝ) 1)
-#check has_groupoid (Icc (0 : ℝ) 1) (times_cont_diff_groupoid ∞ (𝓡∂ 1))
+#check has_groupoid (Icc (0 : ℝ) 1) (cont_diff_groupoid ∞ (𝓡∂ 1))
 #check smooth_manifold_with_corners (𝓡∂ 1) (Icc (0 : ℝ) 1)
 
 -- atlases are not maximal in general
 
-#check (times_cont_diff_groupoid ∞ (𝓡∂ 1)).maximal_atlas (Icc (0 : ℝ) 1)
+#check (cont_diff_groupoid ∞ (𝓡∂ 1)).maximal_atlas (Icc (0 : ℝ) 1)
 
 -- let's try to put a smooth manifold structure on the sphere
 -- (we don't have submanifolds yet, but it's coming in the near future)
@@ -113,9 +113,9 @@ instance (n : ℕ) : smooth_manifold_with_corners (𝓡 n) (sphere n) :=
 def inc (n : ℕ) : sphere n → euclidean_space ℝ (fin (n+1)) :=
 λ p : sphere n, (p : euclidean_space ℝ (fin (n+1)))
 
-lemma inc_smooth (n : ℕ) : times_cont_mdiff (𝓡 n) (𝓡 (n+1)) ∞ (inc n) :=
+lemma inc_smooth (n : ℕ) : cont_mdiff (𝓡 n) (𝓡 (n+1)) ∞ (inc n) :=
 begin
-  rw times_cont_mdiff_iff,
+  rw cont_mdiff_iff,
   split,
   { exact continuous_subtype_coe, },
   { assume x y,
@@ -136,9 +136,9 @@ example (n : ℕ) (p : sphere n) (v : tangent_space (𝓡 n) p) :
 
 -- tangent map, derivatives
 
-example (n : ℕ) : times_cont_mdiff ((𝓡 n).prod (𝓡 n)) ((𝓡 (n+1)).prod (𝓡 (n+1))) ∞
+example (n : ℕ) : cont_mdiff ((𝓡 n).prod (𝓡 n)) ((𝓡 (n+1)).prod (𝓡 (n+1))) ∞
   (tangent_map (𝓡 n) (𝓡 (n+1)) (inc n)) :=
-(inc_smooth n).times_cont_mdiff_tangent_map le_top
+(inc_smooth n).cont_mdiff_tangent_map le_top
 
 example (n : ℕ) (f : sphere n → sphere (n^2)) (p : sphere n) (v : tangent_space (𝓡 n) p) :
   mfderiv (𝓡 n) (𝓡 (n^2)) f p v = (tangent_map (𝓡 n) (𝓡 (n^2)) f ⟨p, v⟩).2 :=
@@ -159,7 +159,7 @@ where the corresponding model with corners is called `𝓡∂ 1`.
 -/
 theorem sphere_eversion :
   ∃ f : (Icc (0 : ℝ) 1) × sphere 2 → euclidean_space ℝ (fin 3),
-  times_cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
+  cont_mdiff ((𝓡∂ 1).prod (𝓡 2)) (𝓡 3) ∞ f
   ∧ ∀ (t : (Icc (0 : ℝ) 1)), ∀ (p : sphere 2),
     function.injective (mfderiv (𝓡 2) (𝓡 3) (f ∘ λ y, (t, y)) p)
   ∧ ∀ (p : sphere 2), f (0, p) = p
@@ -377,7 +377,7 @@ coordinates belong to the groupoid.
 
 There is a difficulty that the definitions are set up to be able to also speak of smooth manifolds
 with boundary or with corners, so the name of the smooth groupoid on `ℝ` has the slightly strange
-name `times_cont_diff_groupoid ∞ (model_with_corners_self ℝ ℝ)`. To avoid typing again and again
+name `cont_diff_groupoid ∞ (model_with_corners_self ℝ ℝ)`. To avoid typing again and again
 `model_with_corners_self ℝ ℝ`, let us introduce a shortcut
 -/
 
@@ -388,7 +388,7 @@ but for `n = 1` this does not coincide with the above one, as `ℝ^1` (a.k.a. `f
 the same as `ℝ`! Still, since they are of the same nature, the notation we have just introduced
 is very close, compare `𝓡1` with `𝓡 1` (and try not to get confused): -/
 
-instance smooth_myℝ : has_groupoid myℝ (times_cont_diff_groupoid ∞ 𝓡1) :=
+instance smooth_myℝ : has_groupoid myℝ (cont_diff_groupoid ∞ 𝓡1) :=
 begin
   -- in theory, we should prove that all compositions of charts are diffeos, i.e., they are smooth
   -- and their inverse are smooth. For symmetry reasons, it suffices to check one direction
@@ -401,7 +401,7 @@ begin
   dsimp,
   -- to continue, some hints:
   -- (1) don't hesitate to use the fact that the restriction of a smooth function to a
-  -- subset is still smooth there (`times_cont_diff.times_cont_diff_on`)
+  -- subset is still smooth there (`cont_diff.cont_diff_on`)
   -- (2) hopefully, there is a theorem saying that the negation function is smooth.
   -- you can either try to guess its name, or hope that `suggest` will help you there.
   sorry
@@ -430,7 +430,7 @@ on `myℝ` has two elements, while the atlas on `ℝ` has one single element.
 Note that `myℝ` is not a vector space, nor a normed space, so one can not ask whether `my_map`
 is smooth in the usual sense (as a map between vector spaces): -/
 
--- lemma times_cont_diff_my_map : times_cont_diff ℝ ∞ my_map := sorry
+-- lemma cont_diff_my_map : cont_diff ℝ ∞ my_map := sorry
 
 /- does not make sense (try uncommenting it!) However, we can ask whether `my_map` is a smooth
 map between manifolds, i.e., whether it is smooth when read in the charts. When we mention the
@@ -438,11 +438,11 @@ smoothness of a map, we should always specify explicitly the model with corners 
 because there might be several around (think of a complex manifold that you may want to consider
 as a real manifold, to talk about functions which are real-smooth but not holomorphic) -/
 
-lemma times_cont_mdiff_my_map : times_cont_mdiff 𝓡1 𝓡1 ∞ my_map :=
+lemma cont_mdiff_my_map : cont_mdiff 𝓡1 𝓡1 ∞ my_map :=
 begin
   -- put things in a nicer form. The simpset `mfld_simps` registers many simplification rules for
   -- manifolds. `simp` is used heavily in manifold files to bring everything into manageable form.
-  rw times_cont_mdiff_iff,
+  rw cont_mdiff_iff,
   simp only [continuous_my_map] with mfld_simps,
   -- simp has erased the chart in the target, as it knows that the only chart in the manifold `ℝ`
   -- is the identity.
@@ -476,8 +476,8 @@ equal. And this would be bad.
 /- A smooth map between manifolds induces a map between their tangent bundles. In `mathlib` this is
 called the `tangent_map` (you might instead know it as the "differential" or "pushforward" of the
 map).  Let us check that the `tangent_map` of `my_map` is smooth. -/
-lemma times_cont_mdiff_tangent_map_my_map :
-  times_cont_mdiff (𝓡1.prod 𝓡1) (𝓡1.prod 𝓡1) ∞ (tangent_map 𝓡1 𝓡1 my_map) :=
+lemma cont_mdiff_tangent_map_my_map :
+  cont_mdiff (𝓡1.prod 𝓡1) (𝓡1.prod 𝓡1) ∞ (tangent_map 𝓡1 𝓡1 my_map) :=
 begin
   -- hopefully, there is a theorem providing the general result, i.e. the tangent map to a smooth
   -- map is smooth.
@@ -586,7 +586,7 @@ theorem diffeomorph_of_zero_dim_connected
   (M M' : Type*) [topological_space M] [topological_space M']
   [charted_space (euclidean_space ℝ (fin 0)) M] [charted_space (euclidean_space ℝ (fin 0)) M']
   [connected_space M] [connected_space M'] :
-  nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 0)) M M') :=
+  nonempty (structomorph (cont_diff_groupoid ∞ (𝓡 0)) M M') :=
 sorry
 
 /- Do you think that this statement is correct? (note that we have not assumed that our manifolds
@@ -638,7 +638,7 @@ the circle. Here, you should fill the `sorry` (but luckily you may use
 theorem diffeomorph_circle_of_one_dim_compact_connected
   (M : Type*) [topological_space M] [charted_space (euclidean_space ℝ (fin 1)) M]
   [connected_space M] [compact_space M] [t2_space M] [smooth_manifold_with_corners (𝓡 1) M] :
-  nonempty (structomorph (times_cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
+  nonempty (structomorph (cont_diff_groupoid ∞ (𝓡 1)) M (sphere 1)) :=
 sorry
 
 
@@ -664,12 +664,12 @@ nothing in this direction for now in the library.
 
 The goal is as much to be able to write the statements as to prove them. Most of the necessary vocabulary
 has been introduced above, so don't hesitate to browse the file if you are stuck. Additionally, you will
-need the notion of a smooth function on a subset: it is `times_cont_diff_on` for functions between vector
-spaces and `times_cont_mdiff_on` for functions between manifolds.
+need the notion of a smooth function on a subset: it is `cont_diff_on` for functions between vector
+spaces and `cont_mdiff_on` for functions between manifolds.
 
 Try to formulate the next math statements in Lean, and prove them (but see below for hints):
 
-Lemma times_cont_mdiff_g : the inclusion `g` of `[0, 1]` in `ℝ` is smooth.
+Lemma cont_mdiff_g : the inclusion `g` of `[0, 1]` in `ℝ` is smooth.
 
 Lemma msmooth_of_smooth : Consider a function `f : ℝ → [0, 1]`, which is smooth in the usual sense as a function
 from `ℝ` to `ℝ` on a set `s`. Then it is manifold-smooth on `s`.
@@ -752,16 +752,16 @@ def g : Icc (0 : ℝ) 1 → ℝ := subtype.val
 
 -- smoothness results for `euclidean_space` are expressed for general `L^p` spaces
 -- (as `euclidean_space` has the `L^2` norm), in:
-#check pi_Lp.times_cont_diff_coord
-#check pi_Lp.times_cont_diff_on_iff_coord
+#check pi_Lp.cont_diff_coord
+#check pi_Lp.cont_diff_on_iff_coord
 
-lemma times_cont_mdiff_g : times_cont_mdiff (𝓡∂ 1) 𝓡1 ∞ g :=
+lemma cont_mdiff_g : cont_mdiff (𝓡∂ 1) 𝓡1 ∞ g :=
 begin
   sorry
 end
 
-lemma msmooth_of_smooth {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : times_cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
-  times_cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f s :=
+lemma msmooth_of_smooth {f : ℝ → Icc (0 : ℝ) 1} {s : set ℝ} (h : cont_diff_on ℝ ∞ (λ x, (f x : ℝ)) s) :
+  cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f s :=
 begin
   sorry
 end
@@ -770,7 +770,7 @@ end
 def f : ℝ → Icc (0 : ℝ) 1 :=
 λ x, ⟨max (min x 1) 0, by simp [le_refl, zero_le_one]⟩
 
-lemma times_cont_mdiff_on_f : times_cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f (Icc 0 1) :=
+lemma cont_mdiff_on_f : cont_mdiff_on 𝓡1 (𝓡∂ 1) ∞ f (Icc 0 1) :=
 begin
   sorry
 end
