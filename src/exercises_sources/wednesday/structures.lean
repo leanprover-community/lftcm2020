@@ -177,16 +177,16 @@ You can declare a class by giving it the `@[class]` attribute.
 
 As an example, in this section, we will implement square root on natural numbers, that can only be
 applied to natural numbers that are squares. -/
-@[class] def is_square (n : ℕ) : Prop := ∃k : ℕ, k^2 = n
+@[class] def is_nat_square (n : ℕ) : Prop := ∃k : ℕ, k^2 = n
 
-namespace is_square
+namespace is_nat_square
 
 /-! Hypotheses with a class as type should be written in square brackets `[...]`.
 This tells Lean that they are implicit, and Lean will try to fill them in automatically.
 
 We define the square root as the (unique) number `k` such that `k^2 = n`. Such `k` exists by the
-`is_square n` hypothesis. -/
-def sqrt (n : ℕ) [hn : is_square n] : ℕ := classical.some hn
+`is_nat_square n` hypothesis. -/
+def sqrt (n : ℕ) [hn : is_nat_square n] : ℕ := classical.some hn
 
 prefix `√`:(max+1) := sqrt -- notation for `sqrt`
 
@@ -194,7 +194,7 @@ prefix `√`:(max+1) := sqrt -- notation for `sqrt`
 Lean will automatically insert the implicit argument `hn` it found it the context.
 This is called *type-class inference*.
 We mark this lemma with the `@[simp]` attribute to tell `simp` to simplify using this lemma. -/
-@[simp] lemma square_sqrt (n : ℕ) [hn : is_square n] : (√n) ^ 2 = n :=
+@[simp] lemma square_sqrt (n : ℕ) [hn : is_nat_square n] : (√n) ^ 2 = n :=
 classical.some_spec hn
 
 /-! ### Exercise:
@@ -205,7 +205,7 @@ classical.some_spec hn
   equalities involving `√`. Also, hypotheses in square brackets do not need a name.
 
   Hint: use `pow_left_inj` -/
-@[simp] lemma sqrt_eq_iff (n k : ℕ) [is_square n] : √n = k ↔ n = k^2 :=
+@[simp] lemma sqrt_eq_iff (n k : ℕ) [is_nat_square n] : √n = k ↔ n = k^2 :=
 begin
   sorry
 end
@@ -213,7 +213,7 @@ end
 /-! To help type-class inference, we have to tell it that some numbers are always squares.
   Here we show that `n^2` is always a square. We mark it as `instance`, which is like
   `lemma` or `def`, except that it is automatically used by type-class inference. -/
-instance square_square (n : ℕ) : is_square (n^2) :=
+instance square_square (n : ℕ) : is_nat_square (n^2) :=
 ⟨n, rfl⟩
 
 lemma sqrt_square (n : ℕ) : √(n ^ 2) = n :=
@@ -224,19 +224,19 @@ by simp
 
 When writing `√n`, Lean will use a simple search algorithm to find a proof that `n` is a square, by
 repeatedly applying previously declared instances, and arguments in the local context. -/
-instance square_mul (n m : ℕ) [is_square n] [is_square m] : is_square (n*m) :=
+instance square_mul (n m : ℕ) [is_nat_square n] [is_nat_square m] : is_nat_square (n*m) :=
 ⟨√n * √m, by simp [mul_pow]⟩
 
 /-! Hint: use `mul_pow` -/
 #check mul_pow
-lemma sqrt_mul (n m : ℕ) [is_square n] [is_square m] : √(n * m) = √n * √m :=
+lemma sqrt_mul (n m : ℕ) [is_nat_square n] [is_nat_square m] : √(n * m) = √n * √m :=
 begin
   sorry
 end
 
 /-! Note that Lean automatically inserts the proof that `n * m ^ 2` is a square,
   using the previously declared instances. -/
-example (n m : ℕ) [is_square n] : √(n * m ^ 2) = √n * m :=
+example (n m : ℕ) [is_nat_square n] : √(n * m ^ 2) = √n * m :=
 begin
   sorry
 end
@@ -245,12 +245,12 @@ end
 /-! Hint: use `nat.le_mul_self` and `pow_two` -/
 #check nat.le_mul_self
 #check pow_two
-lemma sqrt_le (n : ℕ) [is_square n] : √n ≤ n :=
+lemma sqrt_le (n : ℕ) [is_nat_square n] : √n ≤ n :=
 begin
   sorry
 end
 
-end is_square
+end is_nat_square
 
 /- At this point, feel free do the remaining exercises in any order. -/
 
