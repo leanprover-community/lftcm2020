@@ -82,7 +82,7 @@ open padic_val_rat
 
 #check zpow_le_of_le
 #check zpow_nonneg
-#check padic_val_rat_of_int
+#check of_int_multiplicity
 
 
 example {p n : ℕ} (hp : p.prime) {z : ℤ} (hd : ↑(p^n) ∣ z) : padic_norm p z ≤ ↑p ^ (-n : ℤ) :=
