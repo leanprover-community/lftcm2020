@@ -85,7 +85,7 @@ open padic_val_rat
 
 #check zpow_le_of_le
 #check zpow_nonneg
-#check padic_val_rat_of_int
+#check of_int_multiplicity
 
 
 example {p n : ℕ} (hp : p.prime) {z : ℤ} (hd : ↑(p^n) ∣ z) : padic_norm p z ≤ ↑p ^ (-n : ℤ) :=
@@ -105,7 +105,7 @@ begin
   { apply zpow_le_of_le,
     exact_mod_cast le_of_lt hp.one_lt,
     apply neg_le_neg,
-    rw padic_val_rat_of_int _ hp.ne_one _,
+    rw of_int_multiplicity _ hp.ne_one _,
     { apply aux_lemma },
     { assumption_mod_cast } }
 end
