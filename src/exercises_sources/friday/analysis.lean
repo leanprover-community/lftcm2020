@@ -55,7 +55,7 @@ instance : normed_space ℝ (matrix m n ℝ) := pi.normed_space
 
 /-- Trace of a matrix as a continuous linear map. -/
 def matrix.trace_clm : matrix n n ℝ →L[ℝ] ℝ :=
-(matrix.trace n ℝ ℝ).mk_continuous (fintype.card n)
+(matrix.trace_linear_map n ℝ ℝ).mk_continuous (fintype.card n)
 begin
   sorry
 end
