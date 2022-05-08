@@ -134,8 +134,8 @@ variable    h₁ : a ≤ b
 variables   h₂ : c ≤ d
 
 #check @add_le_add
-#check @add_le_add _ a b
-#check @add_le_add _ a b c d _ _ _ _ h₁
+#check @add_le_add _ _ _ _ _ a b
+#check @add_le_add _ _ _ _ _ a b c d h₁
 #check add_le_add h₁
 
 include h₁ h₂
