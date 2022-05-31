@@ -1,5 +1,5 @@
 import category_theory.monoidal.category
-import algebra.category.CommRing.basic
+import algebra.category.Ring.basic
 
 /-!
 Let's define the category of monoid objects in a monoidal category.

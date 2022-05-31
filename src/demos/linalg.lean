@@ -9,6 +9,8 @@ import linear_algebra.finsupp
 import tactic
 import linear_algebra.matrix.nonsingular_inverse
 
+noncomputable theory
+
 /-
 According to Wikipedia, everyone's favourite reliable source of knowledge,
 linear algebra studies linear equations and linear maps, representing them

@@ -1,7 +1,6 @@
 import category_theory.category.basic
 import category_theory.functor
 
-import algebra.category.CommRing
 import algebra.category.Group.images
 import algebra.category.Group.colimits
 import algebra.category.Group.abelian

@@ -1,4 +1,4 @@
-import algebra.category.CommRing.basic
+import algebra.category.Ring.basic
 import data.polynomial
 
 noncomputable theory -- the default implementation of polynomials is noncomputable
