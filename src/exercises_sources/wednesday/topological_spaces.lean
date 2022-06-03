@@ -47,7 +47,7 @@ class topological_space_wiki :=
   (empty_mem : ∅ ∈ τ)  -- empty set is open
   (univ_mem : univ ∈ τ)  -- whole space is open
   (union : ∀ B ⊆ τ, ⋃₀ B ∈ τ)  -- arbitrary unions (sUnions) of members of τ are open
-  (inter : ∀ (B ⊆ τ) (h : finite B), ⋂₀ B ∈ τ)  -- finite intersections of
+  (inter : ∀ (B ⊆ τ) (h : set.finite B), ⋂₀ B ∈ τ)  -- finite intersections of
                                                 -- members of τ are open
 
 /-
@@ -371,4 +371,3 @@ Define more separation axioms?
 -/
 
 end topological_space
-
