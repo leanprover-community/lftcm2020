@@ -99,3 +99,4 @@ to add your name to the list below (in alphabetical order).
 * Eric Wieser (University of Cambridge, UK)
 * Chris Wong
 * Tony Yue Yu (Université Paris-Saclay at Orsay, FR)
+* Dionysios Poukamisas (London Business School, UK)
