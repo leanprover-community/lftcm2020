@@ -3,7 +3,7 @@ This is a sorry-free file covering the material on Wednesday afternoon
 at LFTCM2020. It's how to build some algebraic structures in Lean
 -/
 
-import data.rat.basic -- we'll need the rationals at the end of this file
+import data.rat.defs -- we'll need the rationals at the end of this file
 
 /-
 As a mathematician I essentially always start my Lean files with the following line:
