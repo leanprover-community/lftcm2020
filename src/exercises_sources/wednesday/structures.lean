@@ -1,4 +1,4 @@
-import data.rat.basic
+import data.rat.defs
 import data.nat.parity
 import tactic.basic
 
@@ -556,4 +556,3 @@ begin
 end
 
 end pointed_map
-
