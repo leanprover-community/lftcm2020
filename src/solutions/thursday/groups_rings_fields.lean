@@ -418,9 +418,9 @@ begin
     have key_fact := h_irr.is_unit_or_is_unit rfl,
     cases key_fact with Hg Hh,
     { left,
-      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ g lc_g_unit Hg, },
+      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ lc_g_unit Hg },
     { right,
-      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ h lc_h_unit Hh, } }
+      apply is_unit_of_is_unit_leading_coeff_of_is_unit_map _ lc_h_unit Hh, } }
   -- sorry
 end
 
