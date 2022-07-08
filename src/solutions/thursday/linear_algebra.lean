@@ -55,7 +55,7 @@ If `f` and `g` are linear maps, the `ext` tactic turns the goal `f = g` into `âˆ
 instance : module R (End R M) :=
 begin
 -- sorry
-  refine { smul := linear_map.has_scalar.smul, ..},
+  refine { smul := linear_map.has_smul.smul, ..},
   { intros f, ext x, apply one_smul },
   { intros a b f, ext x, apply mul_smul },
   { intros a f g, ext x, apply smul_add },

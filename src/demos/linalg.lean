@@ -26,7 +26,7 @@ not necessarily a field.
 
 /-
 In other words: let `R` be a semiring and `M` have `0` and a commutative operator `+`,
-then a module structure over `R` on `M` has a scalar multiplication `•` (`has_scalar.smul`),
+then a module structure over `R` on `M` has a scalar multiplication `•` (`has_smul.smul`),
 which satisfies the following identities:
 -/
 #check add_smul -- ∀ (r s : R) (x : M), (r + s) • x = r • x + s • x
@@ -98,7 +98,7 @@ def twice : M →ₗ[R] M :=
 #check linear_map.comp -- composition
 #check linear_map.has_zero -- 0
 #check linear_map.has_add -- (+)
-#check linear_map.has_scalar -- (•)
+#check linear_map.has_smul -- (•)
 
 /-
 A linear equivalence is an invertible linear map.
@@ -188,7 +188,7 @@ def dot_product : bilin_form R (n → R) :=
 /- Some other constructions on forms: -/
 #check bilin_form.to_quadratic_form
 #check quadratic_form.associated
-#check quadratic_form.has_scalar
+#check quadratic_form.has_smul
 #check quadratic_form.proj
 
 end forms

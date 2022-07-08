@@ -40,7 +40,7 @@ Show that the endomorphisms of `M` form a module over `R`.
 
 Hint: we can re-use the scalar multiplication of linear maps using the `refine` tactic:
 ```
-refine { smul := linear_map.has_scalar.smul, .. },
+refine { smul := linear_map.has_smul.smul, .. },
 ```
 This will fill in the `smul` field of the `module` structure with the given value.
 The remaining fields become goals that you can fill in yourself.
@@ -248,4 +248,3 @@ end pi
 end exercise4
 
 end lftcm
-
