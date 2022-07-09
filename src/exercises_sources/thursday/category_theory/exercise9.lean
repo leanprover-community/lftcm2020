@@ -15,7 +15,7 @@ universes v u
 variables (C : Type u)
 
 structure additive_envelope :=
-(ι : Type v)
+(ι : Type)
 [fintype : fintype ι]
 [decidable_eq : decidable_eq ι]
 (val : ι → C)
@@ -31,7 +31,7 @@ def dmatrix {X Y : additive_envelope C} (Z : X.ι → Y.ι → Type*) := Π (i :
 
 open category_theory
 
-variables [category.{v} C] [preadditive C]
+variables [category C] [preadditive C]
 
 namespace family
 
@@ -39,7 +39,7 @@ def hom (X Y : additive_envelope C) := dmatrix (λ i j, X.val i ⟶ Y.val j)
 
 open_locale big_operators
 
-instance : category.{v (max u (v+1))} (additive_envelope.{v} C) :=
+instance : category (additive_envelope C) :=
 { hom := hom,
   id := λ X i j, if h : i = j then eq_to_hom (by subst h) else 0,
   comp := λ X Y Z f g i k, ∑ (j : Y.ι), f i j ≫ g j k,
@@ -50,8 +50,8 @@ instance : category.{v (max u (v+1))} (additive_envelope.{v} C) :=
 variables (C)
 
 @[simps]
-def embedding : C ⥤ additive_envelope.{v} C :=
-{ obj := λ X, ⟨punit.{v+1}, λ _, X⟩,
+def embedding : C ⥤ additive_envelope C :=
+{ obj := λ X, ⟨unit, λ _, X⟩,
   map := λ X Y f _ _, f,
   map_id' := sorry,
   map_comp' := sorry, }
@@ -59,12 +59,12 @@ def embedding : C ⥤ additive_envelope.{v} C :=
 lemma embedding.faithful : faithful (embedding C) :=
 sorry
 
-instance : preadditive (additive_envelope.{v} C) :=
+instance : preadditive (additive_envelope C) :=
 sorry -- probably best to go back and make `dmatrix` an `add_comm_group` first.
 
 open category_theory.limits
 
-instance : has_finite_biproducts (additive_envelope.{v} C) :=
+instance : has_finite_biproducts (additive_envelope C) :=
 { has_biproducts_of_shape := λ J _,
   by { classical, exactI -- this makes the `fintype` instance on `J` available as well as decidable equality
   { has_biproduct := λ F, has_biproduct.mk
@@ -80,13 +80,13 @@ instance : has_finite_biproducts (additive_envelope.{v} C) :=
 variables {C}
 
 def factor {D : Type u} [category.{v} D] [preadditive D] [has_finite_biproducts D]
-  (F : C ⥤ D) : additive_envelope.{v} C ⥤ D :=
+  (F : C ⥤ D) : additive_envelope C ⥤ D :=
 { obj := λ X, ⨁ (λ i, F.obj (X.val i)),
   map := sorry,
   map_id' := sorry,
   map_comp' := sorry, }
 
-def factor_factorisation {D : Type u} [category.{v} D] [preadditive D] [has_finite_biproducts D]
+def factor_factorisation {D : Type u} [category D] [preadditive D] [has_finite_biproducts D]
   (F : C ⥤ D) : F ≅ embedding C ⋙ factor F :=
 sorry
 
