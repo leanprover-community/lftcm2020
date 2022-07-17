@@ -283,7 +283,7 @@ Because we know `tendsto f (comap coe $ 𝓝 y) (𝓝 (φ y))` this implies
 It remains to prove that `φ` extends `f`. This is were continuity of `f` enters the discussion,
 together with the fact that `Y` is Hausdorff.
 -/
-example [regular_space Y] {A : set X} (hA : ∀ x, x ∈ closure A)
+example [t3_space Y] {A : set X} (hA : ∀ x, x ∈ closure A)
   {f : A → Y} (f_cont : continuous f)
   (hf : ∀ x : X, ∃ c : Y, tendsto f (comap coe $ 𝓝 x) $ 𝓝 c) :
   ∃ φ : X → Y, continuous φ ∧ ∀ a : A, φ a = f a :=

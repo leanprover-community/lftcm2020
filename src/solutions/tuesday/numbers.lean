@@ -95,7 +95,7 @@ begin
   have aux_lemma : ∀ inst, (n : ℤ) ≤ (multiplicity ↑p z).get inst,
   { intro,
     norm_cast,
-    rw [← enat.coe_le_coe, enat.coe_get],
+    rw [← part_enat.coe_le_coe, part_enat.coe_get],
     apply multiplicity.le_multiplicity_of_pow_dvd,
     assumption_mod_cast },
 
