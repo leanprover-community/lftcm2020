@@ -602,7 +602,7 @@ Let us register the identification explicitly, as a homeomorphism. You can use t
 of `tangent_bundle_model_space_homeomorph` to fill the nontrivial fields here.
 -/
 
-def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
+def tangent_bundle_vector_space_triv (E : Type u) [normed_add_comm_group E] [normed_space ℝ E] :
   tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
 { to_fun := λ p, (p.1, p.2),
   inv_fun := λ p, ⟨p.1, p.2⟩,

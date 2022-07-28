@@ -50,7 +50,7 @@ example : iterated_deriv 7 (λ x, sin (tan x) - tan (sin x)) 0 = -168 := sorry
 variables (m n : Type) [fintype m] [fintype n]
 
 -- Generalizations of the next two instances should go to `analysis/normed_space/basic`
-instance : normed_group (matrix m n ℝ) := pi.normed_group
+instance : normed_add_comm_group (matrix m n ℝ) := pi.normed_add_comm_group
 instance : normed_space ℝ (matrix m n ℝ) := pi.normed_space
 
 /-- Trace of a matrix as a continuous linear map. -/
@@ -92,7 +92,7 @@ open set topological_space
 
 namespace measure_theory
 
-variables {α E : Type*} [measurable_space α] [normed_group E] [normed_space ℝ E]
+variables {α E : Type*} [measurable_space α] [normed_add_comm_group E] [normed_space ℝ E]
   [measurable_space E] [borel_space E] [complete_space E] [second_countable_topology E]
   {μ : measure α} {f : α → E}
 

@@ -10,11 +10,11 @@ open_locale big_operators
 section pi_Lp_smooth
 
 variables
-  {𝕜 : Type*} [nondiscrete_normed_field 𝕜]
+  {𝕜 : Type*} [nontrivially_normed_field 𝕜]
   {ι : Type*} [fintype ι]
   {p : ℝ} [hp : fact (1 ≤ p)] {α : ι → Type*} {n : with_top ℕ} (i : ι)
-  [∀i, normed_group (α i)] [∀i, normed_space 𝕜 (α i)]
-  {E : Type*} [normed_group E] [normed_space 𝕜 E] {f : E → pi_Lp p α} {s : set E} {x : E}
+  [∀i, normed_add_comm_group (α i)] [∀i, normed_space 𝕜 (α i)]
+  {E : Type*} [normed_add_comm_group E] [normed_space 𝕜 E] {f : E → pi_Lp p α} {s : set E} {x : E}
 
 include hp
 

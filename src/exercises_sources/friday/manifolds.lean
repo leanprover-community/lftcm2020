@@ -538,7 +538,7 @@ Let us register the identification explicitly, as a homeomorphism. You can use t
 of `tangent_bundle_model_space_homeomorph` to fill the nontrivial fields here.
 -/
 
-def tangent_bundle_vector_space_triv (E : Type u) [normed_group E] [normed_space ℝ E] :
+def tangent_bundle_vector_space_triv (E : Type u) [normed_add_comm_group E] [normed_space ℝ E] :
   tangent_bundle (model_with_corners_self ℝ E) E ≃ₜ E × E :=
 { to_fun := λ p, (p.1, p.2),
   inv_fun := λ p, ⟨p.1, p.2⟩,
@@ -598,7 +598,7 @@ Don't try to fill the sorried proof! -/
 
 /-- Two one-dimensional smooth compact connected manifolds are diffeomorphic. -/
 theorem diffeomorph_of_one_dim_compact_connected
-  
+
   :
   sorry
 := sorry
@@ -834,4 +834,3 @@ If you manage to do it, you should absolutely PR it!)
 https://leanprover-community.github.io/sphere-eversion/ to learn more about this project
 by Patrick Massot.
 -/
-
