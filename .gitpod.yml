@@ -1,0 +1,11 @@
+image: leanprovercommunity/mathlib:gitpod
+
+vscode:
+  extensions:
+    - jroesch.lean
+
+tasks:
+  - before: . /home/gitpod/.profile
+  - init: |
+      leanproject get-mathlib-cache
+      lean --make src
