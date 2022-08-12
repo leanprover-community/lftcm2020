@@ -35,3 +35,8 @@ code lftcm2020
 We recommend the second line which copies the exercises to a new directory.
 Otherwise, if you try to update this project, your exercise solutions
 could be overwritten or create merge conflicts.
+
+Alternatively, the examples can be executed in browser with the following link:
+
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/leanprover-community/lftcm2020)
+
