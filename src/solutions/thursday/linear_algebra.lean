@@ -312,7 +312,7 @@ such a bundled basis from the data that a family of vectors is linearly independ
 the whole space, as follows. -/
 
 def std_basis : basis n R (n → R) :=
-basis.mk (linear_independent_std_basis R n) (range_std_basis R n)
+basis.mk (linear_independent_std_basis R n) (range_std_basis R n).ge
 
 variables {K : Type} [field K]
 
