@@ -14,13 +14,13 @@ open category_theory
 abbreviation Vec := Module 𝕜
 
 @[derive category]
-def fdVec := { V : Vec 𝕜 // finite_dimensional 𝕜 V }
+def fdVec := full_subcategory (λ V : Vec 𝕜, finite_dimensional 𝕜 V)
 
 /--
 We set up a `has_coe_to_sort` for `fdVec 𝕜`, sending an object directly to the underlying type.
 -/
 instance : has_coe_to_sort (fdVec 𝕜) (Type*) :=
-{ coe := λ V, V.val }
+{ coe := λ V, V.obj }
 
 /--
 Lean can already work out that this underlying type has the `module 𝕜` typeclass.
