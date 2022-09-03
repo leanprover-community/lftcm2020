@@ -250,7 +250,7 @@ where `n` is a `fintype`. The operations between matrices and vectors are define
 You have to explicitly specify whether vectors are multiplied on the left or on the right:
 -/
 #check example_matrix.mul_vec -- (fin 3 → ℤ) → (fin 2 → ℤ), right multiplication
-#check example_matrix.vec_mul -- (fin 2 → ℤ) → (fin 3 → ℤ), left multiplication
+#check matrix.vec_mul _ example_matrix -- (fin 2 → ℤ) → (fin 3 → ℤ), left multiplication
 
 /- You can convert a matrix to a linear map, which acts by right multiplication of vectors. -/
 variables {M N : Type} [add_comm_group M] [add_comm_group N] [module R M] [module R N]

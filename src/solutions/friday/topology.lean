@@ -242,13 +242,14 @@ example (f : X → Y) : continuous f ↔ ∀ x, tendsto f (𝓝 x) (𝓝 (f x)) 
    In the next exercise, you can use `simp_rw` instead of `rw` to rewrite inside a quantifier
 -/
 
-#check nonempty_inter_iff_exists_right
+#check inter_nonempty_iff_exists_right
 
 example {A : set X} {x : X} :
   x ∈ closure A ↔ (comap (coe : A → X) (𝓝 x)).ne_bot :=
 begin
   -- sorry
-  simp_rw [mem_closure_iff_nhds, comap_ne_bot_iff, nonempty_inter_iff_exists_right],
+  simp_rw [mem_closure_iff_nhds, comap_ne_bot_iff, inter_nonempty_iff_exists_right],
+  simp only [set_coe.exists, subtype.coe_mk],
   -- sorry
 end
 

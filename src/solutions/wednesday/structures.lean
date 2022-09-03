@@ -355,19 +355,19 @@ end bijections
 structure Group :=
   (G : Type*)
   (op : G → G → G)
-  (infix * := op) -- temporary notation `*` for `op`, just inside this structure declaration
+  (infix (name := my_mul) * := op) -- temporary notation `*` for `op`, just inside this structure declaration
   (op_assoc' : ∀ (x y z : G), (x * y) * z = x * (y * z))
   (id : G)
   (notation 1 := id) -- temporary notation `1` for `id`, just inside this structure declaration
   (id_op' : ∀ (x : G), 1 * x = x)
   (inv : G → G)
-  (postfix ⁻¹ := inv) -- temporary notation `⁻¹` for `inv`, just inside this structure declaration
+  (postfix (name := my_inv) ⁻¹ := inv) -- temporary notation `⁻¹` for `inv`, just inside this structure declaration
   (op_left_inv' : ∀ (x : G), x⁻¹ * x = 1)
 
 /-! You can use the `extend` command to define a structure that adds fields
   to one or more existing structures. -/
 structure CommGroup extends Group :=
-  (infix * := op)
+  (infix (name := my_mul) * := op)
   (op_comm : ∀ (x y : G), x * y = y * x)
 
 /- Here is an example: the rationals form a group under addition. -/

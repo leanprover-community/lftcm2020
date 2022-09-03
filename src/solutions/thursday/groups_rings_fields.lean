@@ -296,7 +296,7 @@ begin
     { rwa pos_iff_ne_zero },
     { simpa using hi } },
   { intro h,
-    simp only [nat.le_zero_iff, mem_range, not_lt] at h,
+    simp only [le_zero_iff, mem_range, not_lt] at h,
     exfalso,
     apply nat.prime.ne_zero _ h,
     exact fact.out p.prime },

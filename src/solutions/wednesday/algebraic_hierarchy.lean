@@ -392,7 +392,7 @@ class comm_ring (R : Type) extends ring R :=
 /-- Typeclass for types with a scalar multiplication operation, denoted `•` (`\bu`) -/
 class has_scalar (R : Type) (M : Type) := (smul : R → M → M)
 
-infixr ` • `:73 := has_scalar.smul
+infixr (name:=lftcm_smul) ` • `:73 := has_scalar.smul
 
 -- modules for a ring
 class module (R : Type) [ring R] (M : Type) [add_comm_group M]

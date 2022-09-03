@@ -598,7 +598,7 @@ Don't try to fill the sorried proof! -/
 
 /-- Two one-dimensional smooth compact connected manifolds are diffeomorphic. -/
 theorem diffeomorph_of_one_dim_compact_connected
-
+  
   :
   sorry
 := sorry
@@ -834,3 +834,4 @@ If you manage to do it, you should absolutely PR it!)
 https://leanprover-community.github.io/sphere-eversion/ to learn more about this project
 by Patrick Massot.
 -/
+
