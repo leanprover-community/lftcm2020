@@ -105,7 +105,7 @@ def to_homothety : R →ₗ[R] End R M :=
   map_add' := by { intros, ext, simp [smulₗ, add_smul] } }
 
 def homothety' : submodule R (End R M) :=
-linear_map.range to_homothety
+linear_map.range (to_homothety : R →ₗ[R] End R M)
 
 -- or:
 def homothety'' : submodule R (End R M) :=
