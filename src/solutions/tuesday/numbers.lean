@@ -105,7 +105,7 @@ begin
   { apply zpow_le_of_le,
     exact_mod_cast le_of_lt hp.one_lt,
     apply neg_le_neg,
-    rw of_int_multiplicity _ hp.ne_one _,
+    rw of_int_multiplicity hp.ne_one _,
     { apply aux_lemma },
     { assumption_mod_cast } }
 end
