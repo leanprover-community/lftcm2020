@@ -868,9 +868,8 @@ begin
   rw cont_mdiff_iff,
   refine ⟨continuous_subtype_val, λ x y, _⟩,
   by_cases h : (x : ℝ) < 1,
-  { simp only [g, chart_at, h, Icc_left_chart, function.comp, model_with_corners_euclidean_half_space,
-      add_zero, dif_pos, if_true, max_lt_iff, preimage_set_of_eq, sub_zero, subtype.range_coe_subtype,
-      subtype.coe_mk, subtype.val_eq_coe] with mfld_simps,
+  { simp only [g, chart_at, model_with_corners_euclidean_half_space, add_zero, if_true, h, Icc_left_chart,
+      subtype.val_eq_coe, tsub_zero, preimage_set_of_eq, function.update_same, max_lt_iff, zero_lt_one] with mfld_simps,
     have : cont_diff ℝ ⊤ (λ (x : euclidean_space ℝ (fin 1)), x 0) := pi_Lp.cont_diff_coord 0,
     apply this.cont_diff_on.congr (λ f hf, _),
     obtain ⟨hf₀, hf₁⟩ : 0 ≤ f 0 ∧ f 0 < 1, by simpa using hf,
@@ -883,7 +882,7 @@ begin
     apply this.cont_diff_on.congr (λ f hf, _),
     obtain ⟨hf₀, hf₁⟩ : 0 ≤ f 0 ∧ f 0 < 1, by simpa using hf,
     have : 0 ≤ 1 - f 0, by linarith,
-    simp [hf₀, this, max_eq_left], }
+    simp [hf₀, this] }
   -- sorry
 end
 
