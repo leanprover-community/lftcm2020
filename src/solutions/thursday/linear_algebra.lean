@@ -58,8 +58,8 @@ begin
   refine { smul := linear_map.has_smul.smul, ..},
   { intros f, ext x, apply one_smul },
   { intros a b f, ext x, apply mul_smul },
-  { intros a f g, ext x, apply smul_add },
   { intros a, ext x, apply smul_zero },
+  { intros a f g, ext x, apply smul_add },
   { intros a b f, ext x, apply add_smul },
   { intros f, ext x, apply zero_smul }
   -- or:

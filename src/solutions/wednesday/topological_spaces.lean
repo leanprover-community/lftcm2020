@@ -233,7 +233,7 @@ open metric_space_basic
 ## Exercise 4 [medium]:
 Fill in the proofs here.
 Hint: the computer can do boring casework you would never dream of in real life.
-`max` is defined as `if x < y then y else x` and the `split_ifs` tactic will
+`max` is equal to `if x < y then y else x` by `max_def` and the `split_ifs` tactic will
 break apart if statements. -/
 instance prod.metric_space_basic (X Y : Type) [metric_space_basic X] [metric_space_basic Y] :
 metric_space_basic (X × Y) :=
@@ -257,7 +257,7 @@ metric_space_basic (X × Y) :=
     intros x y z,
     have hf := triangle x.fst y.fst z.fst,
     have hs := triangle x.snd y.snd z.snd,
-    simp only [max, max_default],
+    simp only [max_def, max_default],
     split_ifs; linarith,
   end
   -- sorry
