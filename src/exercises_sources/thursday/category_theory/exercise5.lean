@@ -4,8 +4,8 @@ import category_theory.limits.shapes.biproducts
 /-!
 We prove that biproducts (direct sums) are preserved by any preadditive functor.
 
-This result is not in mathlib, so full marks for the exercise are only achievable if you
-contribute to a pull request! :-)
+This result is not in mathlib, so full marks for the exercise are only
+achievable if you contribute to a pull request! :-)
 -/
 
 noncomputable theory
@@ -29,9 +29,26 @@ structure functor.preadditive (F : C ⥤ D) : Prop :=
 
 variables [has_binary_biproducts C] [has_binary_biproducts D]
 
-def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (X Y : C) :
-  F.obj (X ⊞ Y) ≅ F.obj X ⊞ F.obj Y :=
-sorry
+def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive)
+  (X Y : C) : F.obj (X ⊞ Y) ≅ F.obj X ⊞ F.obj Y :=
+-- sorry
+{ hom := biprod.lift (F.map biprod.fst) (F.map biprod.snd),
+  inv := biprod.desc (F.map biprod.inl) (F.map biprod.inr),
+  hom_inv_id' := begin
+    simp only [category_theory.limits.biprod.lift_desc],
+    simp_rw [←F.map_comp, ←P.map_add'],
+    simp,
+  end,
+  inv_hom_id' := begin
+    ext;
+    { simp only [category.comp_id, category.assoc,
+        biprod.inl_desc_assoc, biprod.inr_desc_assoc,
+        biprod.inl_fst, biprod.inl_snd, biprod.inr_fst, biprod.inr_snd,
+        biprod.lift_fst, biprod.lift_snd],
+      simp_rw [←F.map_comp],
+      simp [P.map_zero'], },
+  end, }
+-- sorry
 
 /-!
 There are some further hints in
@@ -41,8 +58,7 @@ There are some further hints in
 -- Challenge problem:
 -- In fact one could prove a better result,
 -- not requiring chosen biproducts in D,
--- just asserting that `F.obj (X ⊞ Y)` is a biproduct of `F.obj X` and `F.obj Y`.
+-- asserting that `F.obj (X ⊞ Y)` is a biproduct of `F.obj X` and `F.obj Y`.
 
 
 end category_theory
-
