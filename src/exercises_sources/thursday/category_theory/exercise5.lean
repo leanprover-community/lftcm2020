@@ -5,8 +5,8 @@ import category_theory.preadditive.biproducts
 /-!
 We prove that biproducts (direct sums) are preserved by any preadditive functor.
 
-This result is not in mathlib, so full marks for the exercise are only achievable if you
-contribute to a pull request! :-)
+This result is not in mathlib, so full marks for the exercise are only
+achievable if you contribute to a pull request! :-)
 -/
 
 noncomputable theory
@@ -42,7 +42,7 @@ There are some further hints in
 -- Challenge problem:
 -- In fact one could prove a better result,
 -- not requiring chosen biproducts in D,
--- just asserting that `F.obj (X ⊞ Y)` is a biproduct of `F.obj X` and `F.obj Y`.
+-- asserting that `F.obj (X ⊞ Y)` is a biproduct of `F.obj X` and `F.obj Y`.
 
 
 end category_theory
