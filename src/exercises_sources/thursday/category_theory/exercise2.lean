@@ -7,10 +7,6 @@ Let's show that taking polynomials over a ring is functor `Ring ⥤ Ring`.
 
 noncomputable theory -- the default implementation of polynomials is noncomputable
 
--- Just ignore this for now: it's a hack that prevents an annoying problem,
--- and a cleaner fix is on its way to mathlib.
-local attribute [irreducible] polynomial.eval₂
-
 /-!
 Hints:
 * use `polynomial.map_ring_hom`
@@ -34,12 +30,4 @@ sorry
 There are some further hints in
 `hints/category_theory/exercise2/`
 -/
-
-/-!
-Bonus problem:
-
-Why did we set `local attribute [irreducible] polynomial.eval₂`?
-What goes wrong without it? Why?
--/
-
 

@@ -1,5 +1,6 @@
 import category_theory.preadditive
 import category_theory.limits.shapes.biproducts
+import category_theory.preadditive.biproducts
 
 /-!
 We prove that biproducts (direct sums) are preserved by any preadditive functor.
@@ -34,10 +35,20 @@ def functor.preadditive.preserves_biproducts (F : C ⥤ D) (P : F.preadditive) (
 -- sorry
 { hom := biprod.lift (F.map biprod.fst) (F.map biprod.snd),
   inv := biprod.desc (F.map biprod.inl) (F.map biprod.inr),
-  hom_inv_id' := begin simp, simp_rw [←F.map_comp, ←P.map_add'], simp, end,
-  inv_hom_id' := begin ext; simp; simp_rw [←F.map_comp]; simp [P.map_zero'], end, }
--- This proof is not yet "mathlib-ready", because it uses "nonterminal" `simp`s.
--- Can you fix it?
+  hom_inv_id' := begin
+    simp only [category_theory.limits.biprod.lift_desc],
+    simp_rw [←F.map_comp, ←P.map_add'],
+    simp,
+  end,
+  inv_hom_id' := begin
+    ext;
+    { simp only [category.comp_id, category.assoc,
+        biprod.inl_desc_assoc, biprod.inr_desc_assoc,
+        biprod.inl_fst, biprod.inl_snd, biprod.inr_fst, biprod.inr_snd,
+        biprod.lift_fst, biprod.lift_snd],
+      simp_rw [←F.map_comp],
+      simp [P.map_zero'], },
+  end, }
 -- sorry
 
 /-!
