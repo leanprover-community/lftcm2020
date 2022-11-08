@@ -1,4 +1,5 @@
 import ...for_mathlib.manifolds
+import geometry.manifold.cont_mdiff_mfderiv
 
 noncomputable theory
 

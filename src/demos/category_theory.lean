@@ -5,6 +5,7 @@ import algebra.category.Group.images
 import algebra.category.Group.colimits
 import algebra.category.Group.abelian
 import algebra.category.Module.monoidal
+import algebra.category.Ring.basic
 
 import category_theory.abelian.basic
 import category_theory.limits.shapes.finite_limits
