@@ -709,7 +709,7 @@ instance connected_sphere (n : ℕ) : connected_space (sphere (n+1)) := sorry
 /- The next two instances are easier to prove, you can prove them or leave them sorried
 as you like. For the second one, you may need to use facts of the library such as -/
 #check is_compact_iff_compact_space
-#check metric.compact_iff_closed_bounded
+#check metric.is_compact_iff_is_closed_bounded
 
 instance (n : ℕ) : t2_space (sphere n) :=
 begin
@@ -724,7 +724,7 @@ begin
   -- sorry
   dunfold sphere,
   apply is_compact_iff_compact_space.1,
-  rw metric.compact_iff_closed_bounded,
+  rw metric.is_compact_iff_is_closed_bounded,
   split,
   { exact metric.is_closed_sphere },
   { rw metric.bounded_iff_subset_ball (0 : euclidean_space ℝ (fin (n+1))),
