@@ -637,10 +637,7 @@ begin
   -- sorry
   have : ¬ ((3 : ℝ) < 1), by norm_num,
   simp only [chart_at, this, mem_Ioo, if_false, and_false],
-  dsimp [tangent_bundle_core, basic_smooth_vector_bundle_core.chart,
-    topological_fiber_bundle_core.local_triv, topological_fiber_bundle_core.local_triv_as_local_equiv,
-    topological_fiber_bundle_core.index_at,
-    basic_smooth_vector_bundle_core.to_topological_vector_bundle_core],
+  dsimp [tangent_bundle_core, basic_smooth_vector_bundle_core.chart, bundle.total_space.proj],
   split_ifs,
   { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, mem_Ioo, fderiv_id',
       continuous_linear_map.coe_id', continuous_linear_map.neg_apply, fderiv_neg] with mfld_simps },

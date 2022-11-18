@@ -1,4 +1,7 @@
 import category_theory.limits.shapes.biproducts
+import category_theory.preadditive.default
+import category_theory.preadditive.biproducts
+import data.fintype.sigma
 
 /-!
 Let's show that every preadditive category embeds into a preadditive category with biproducts,

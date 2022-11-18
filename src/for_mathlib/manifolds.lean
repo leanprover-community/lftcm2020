@@ -18,18 +18,18 @@ variables
 
 include hp
 
-lemma pi_Lp.norm_coord_le_norm (x : pi_Lp p α) (i : ι) : ∥x i∥ ≤ ∥x∥ :=
+lemma pi_Lp.norm_coord_le_norm (x : pi_Lp p α) (i : ι) : ‖x i‖ ≤ ‖x‖ :=
 begin
   unfreezingI { rcases p.trichotomy with (rfl | rfl | h) },
   { exact false.elim (lt_irrefl _ (ennreal.zero_lt_one.trans_le hp.out)) },
   { rw pi_Lp.norm_eq_csupr,
     exact le_cSup (finite_range _).bdd_above (mem_range_self _) },
   { calc
-    ∥x i∥ ≤ (∥x i∥ ^ p.to_real) ^ (1/p.to_real) :
+    ‖x i‖ ≤ (‖x i‖ ^ p.to_real) ^ (1/p.to_real) :
       by rw [← real.rpow_mul (norm_nonneg _), mul_one_div_cancel h.ne', real.rpow_one]
     ... ≤ _ :
     begin
-      have A : ∀ j, 0 ≤ ∥x j∥ ^ p.to_real := λ j, real.rpow_nonneg_of_nonneg (norm_nonneg _) _,
+      have A : ∀ j, 0 ≤ ‖x j‖ ^ p.to_real := λ j, real.rpow_nonneg_of_nonneg (norm_nonneg _) _,
       simp only [pi_Lp.norm_eq_sum h, one_mul, linear_map.coe_mk],
       apply real.rpow_le_rpow (A i),
       { exact finset.single_le_sum (λ j hj, A j) (finset.mem_univ _) },
@@ -83,7 +83,7 @@ begin
         by_cases hji : j = i,
         { rw hji, simp only [function.update_same] },
         { simp only [hji, function.update_noteq, ne.def, not_false_iff, pi.zero_apply, norm_zero, norm_nonneg] } },
-      { have : (λ j, ∥function.update 0 i x j∥ ^ p.to_real) = (λ j, if j = i then ∥x∥ ^ p.to_real else 0),
+      { have : (λ j, ‖function.update 0 i x j‖ ^ p.to_real) = (λ j, if j = i then ‖x‖ ^ p.to_real else 0),
         { ext j,
           by_cases hji : j = i,
           { rw hji, simp },
