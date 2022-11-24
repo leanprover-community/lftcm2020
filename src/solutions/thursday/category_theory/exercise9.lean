@@ -68,17 +68,16 @@ sorry -- probably best to go back and make `dmatrix` an `add_comm_group` first.
 open category_theory.limits
 
 instance : has_finite_biproducts (additive_envelope C) :=
-{ has_biproducts_of_shape := λ J _,
-  by { classical, exactI -- this makes the `fintype` instance on `J` available as well as decidable equality
+{ out := λ n,
   { has_biproduct := λ F, has_biproduct.mk
     { bicone :=
       { X :=
-        { ι := Σ (j : J), (F j).ι,
+        { ι := Σ (j : fin n), (F j).ι,
           val := λ p, (F p.1).val p.2 },
         ι := sorry,
         π := sorry,
         ι_π := sorry, },
-      is_bilimit := sorry }}} }
+      is_bilimit := sorry }}}
 
 variables {C}
 
