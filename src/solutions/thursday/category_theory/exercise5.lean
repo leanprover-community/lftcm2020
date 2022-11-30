@@ -1,4 +1,4 @@
-import category_theory.preadditive
+import category_theory.preadditive.basic
 import category_theory.limits.shapes.biproducts
 import category_theory.preadditive.biproducts
 

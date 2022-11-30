@@ -1,5 +1,5 @@
 import category_theory.limits.shapes.biproducts
-import category_theory.preadditive.default
+import category_theory.preadditive.basic
 import category_theory.preadditive.biproducts
 import data.fintype.sigma
 
@@ -93,3 +93,4 @@ def factor_factorisation {D : Type u} [category D] [preadditive D] [has_finite_b
 sorry
 
 end family
+

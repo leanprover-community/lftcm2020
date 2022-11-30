@@ -1,5 +1,5 @@
 import category_theory.limits.shapes.biproducts
-import category_theory.preadditive.default
+import category_theory.preadditive.basic
 import category_theory.preadditive.biproducts
 import data.fintype.sigma
 
