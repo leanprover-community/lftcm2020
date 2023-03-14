@@ -19,7 +19,8 @@ If you have a natural isomorphism `α : F ≅ G`, you can access
 -/
 
 def iso_of_hom_iso (X Y : C) (h : yoneda.obj X ≅ yoneda.obj Y) : X ≅ Y :=
-sorry
+-- confused ... 
+⟨ h.hom X X.id , h.inv Y ⟩
 
 /-!
 There are some further hints in
