@@ -1,4 +1,4 @@
-import algebra.module
+import algebra.module.basic
 import analysis.inner_product_space.basic
 import data.matrix.notation
 import data.matrix.dmatrix
@@ -213,14 +213,14 @@ are `fintype`s, and there is no restriction on the type `α` of the entries.
 Like vectors in `n → R`, matrices are typically indexed over `fin k`.
 To define a matrix, you map the indexes to the entry:
 -/
-def example_matrix : matrix (fin 2) (fin 3) ℤ := λ i j, i + j
+def example_matrix : matrix (fin 2) (fin 3) ℤ := matrix.of (λ i j, (↑i + ↑j : ℤ))
 #eval example_matrix 1 2
 
-/- Like vectors, we can use `![...]` notation to define matrices: -/
+/- Simiilarly to vectors, we can use `!![...]` notation to define matrices: -/
 def other_example_matrix : matrix (fin 3) (fin 2) ℤ :=
-![![0, 1],
-  ![1, 2],
-  ![2, 3]]
+!![0, 1;
+   1, 2;
+   2, 3]
 
 /- We have the 0 matrix and the sum of two matrices: -/
 example (i j) : (0 : matrix m n R) i j = 0 := dmatrix.zero_apply i j
@@ -262,7 +262,7 @@ as long as you have chosen a basis for each module.
 -/
 variables [decidable_eq m] [decidable_eq n]
 variables (v : basis m R M) (w : basis n R N)
-#check linear_map.to_matrix v w -- (M →ₗ[R] N) ≈ₗ[R] matrix n m R
+#check linear_map.to_matrix v w -- (M →ₗ[R] N) ≃ₗ[R] matrix n m R
 
 /-
 Invertible (i.e. nonsingular) matrices have an inverse operation denoted by `⁻¹`.

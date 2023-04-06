@@ -2,6 +2,7 @@ import linear_algebra.finite_dimensional
 import ring_theory.algebraic
 import data.zmod.basic
 import data.real.basic
+import data.nat.choose.dvd
 import tactic
 
 /-!
@@ -292,8 +293,7 @@ begin
   { intros i hi hi0,
     convert mul_zero _,
     rw char_p.cast_eq_zero_iff K p,
-    apply nat.prime.dvd_choose_self _ _ (fact.out p.prime),
-    { rwa pos_iff_ne_zero },
+    apply nat.prime.dvd_choose_self (fact.out p.prime) hi0 _,
     { simpa using hi } },
   { intro h,
     simp only [le_zero_iff, mem_range, not_lt] at h,

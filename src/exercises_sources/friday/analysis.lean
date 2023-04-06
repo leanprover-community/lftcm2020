@@ -14,7 +14,7 @@ namespace lftcm
 noncomputable theory
 
 open real
-open_locale topological_space filter classical real
+open_locale topology filter classical real
 
 /-!
 # Derivatives

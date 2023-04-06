@@ -1,7 +1,6 @@
 import analysis.inner_product_space.basic
 import data.matrix.notation
 import linear_algebra.bilinear_form
-import linear_algebra.matrix
 import tactic
 
 universes u v
@@ -166,9 +165,12 @@ Hints:
 * Try the lemmas `finset.sum_nonneg`, `finset.sum_eq_zero_iff_of_nonneg`,
   `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
-noncomputable instance : inner_product_space ℝ (n → ℝ) :=
-inner_product_space.of_core
+noncomputable instance : normed_add_comm_group (n → ℝ):=
+@inner_product_space.of_core.to_normed_add_comm_group ℝ (n → ℝ) _ _ _
 sorry
+
+noncomputable instance : inner_product_space ℝ (n → ℝ) :=
+inner_product_space.of_core _
 
 end pi
 
