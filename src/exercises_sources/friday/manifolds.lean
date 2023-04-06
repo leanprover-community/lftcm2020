@@ -462,8 +462,7 @@ be a smooth manifold. -/
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
 example : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩
 
-/- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
-and this instance is not really needed. -/
+/- Type-class inference can construct the smooth manifold structure on the tangent bundle. -/
 example : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
 sorry
 
@@ -475,6 +474,7 @@ equal. And this would be bad.
 -/
 example : charted_space (model_prod ℝ ℝ) (tangent_bundle 𝓡1 myℝ) :=
 sorry
+
 /-
 The charts of any smooth vector bundle are characterized by `fiber_bundle.charted_space_chart_at`
 -/
