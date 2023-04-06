@@ -196,7 +196,7 @@ Hints:
   * Use the `simp` tactic to simplify `(x + y) i` to `x i + y i` and `(s • x) i` to `s * x i`.
   * To deal with equalities containing many `+` and `*` symbols, use the `ring` tactic.
 -/
-def A : matrix (fin 2) (fin 2) R := ![![1, 0], ![-2, 1]]
+def A : matrix (fin 2) (fin 2) R := !![1, 0; -2, 1]
 def your_bilin_form : bilin_form R (fin 2 → R) :=
 -- sorry
 { bilin := λ v w, v 0 * w 0 + v 1 * w 1 - 2 * v 1 * w 0,
