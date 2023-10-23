@@ -4,11 +4,11 @@ on:
 jobs:
   update_lean_xyz_branch_and_build:
     runs-on: ubuntu-latest
-    name: Update lean-x.y.z branch and build project
+    name: Build project
     steps:
 
     - name: checkout project
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -16,5 +16,44 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: leanprover-contrib/update-versions-action@master
 
-    - name: build project
-      uses: leanprover-contrib/lean-build-action@master
+    - name: Install elan
+      run: |
+        set -o pipefail
+        curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- --default-toolchain none -y
+        ~/.elan/bin/lean --version
+        echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+    - name: install Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Install leanproject
+      run: |
+        python3 -m pip install --user pipx
+        python3 -m pipx ensurepath
+        source ~/.profile
+        pipx install mathlibtools
+
+    - name: Set up olean cache
+      uses: actions/cache@v3
+      with:
+        path: _cache
+        key: oleans
+
+    - name: Configure
+      run: |
+        leanpkg configure
+        leanproject get-mathlib-cache
+        leanproject get-cache --fallback=download-first || true
+
+    - name: Build
+      run: |
+        # hack: remove the `sys.exit` for noisy files
+        head -n -1 _target/deps/mathlib/scripts/detect_errors.py > detect_errors.py
+
+        lean --json --make src | python3 detect_errors.py
+
+    - name: Save olean cache
+      run: |
+        leanproject mk-cache
