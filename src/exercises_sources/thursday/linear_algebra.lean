@@ -166,7 +166,7 @@ Hints:
   `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
 noncomputable instance : normed_add_comm_group (n → ℝ):=
-@inner_product_space.of_core.to_normed_add_comm_group ℝ (n → ℝ) _ _ _
+@inner_product_space.core.to_normed_add_comm_group ℝ (n → ℝ) _ _ _
 sorry
 
 noncomputable instance : inner_product_space ℝ (n → ℝ) :=
