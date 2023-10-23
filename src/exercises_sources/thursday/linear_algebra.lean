@@ -1,7 +1,6 @@
 import analysis.inner_product_space.basic
 import data.matrix.notation
 import linear_algebra.bilinear_form
-import linear_algebra.matrix
 import tactic
 
 universes u v
@@ -134,7 +133,7 @@ Hints:
   * Use the `simp` tactic to simplify `(x + y) i` to `x i + y i` and `(s • x) i` to `s * x i`.
   * To deal with equalities containing many `+` and `*` symbols, use the `ring` tactic.
 -/
-def A : matrix (fin 2) (fin 2) R := ![![1, 0], ![-2, 1]]
+def A : matrix (fin 2) (fin 2) R := !![1, 0; -2, 1]
 def your_bilin_form : bilin_form R (fin 2 → R) :=
 sorry
 
@@ -166,9 +165,12 @@ Hints:
 * Try the lemmas `finset.sum_nonneg`, `finset.sum_eq_zero_iff_of_nonneg`,
   `mul_self_nonneg` and `mul_self_eq_zero`.
 -/
-noncomputable instance : inner_product_space ℝ (n → ℝ) :=
-inner_product_space.of_core
+noncomputable instance : normed_add_comm_group (n → ℝ):=
+@inner_product_space.of_core.to_normed_add_comm_group ℝ (n → ℝ) _ _ _
 sorry
+
+noncomputable instance : inner_product_space ℝ (n → ℝ) :=
+inner_product_space.of_core _
 
 end pi
 

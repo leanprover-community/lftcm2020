@@ -1,5 +1,5 @@
 import category_theory.category.basic
-import category_theory.functor
+import category_theory.functor.basic
 
 import algebra.category.Group.images
 import algebra.category.Group.colimits
@@ -11,7 +11,7 @@ import category_theory.abelian.basic
 import category_theory.limits.shapes.finite_limits
 
 import topology.instances.real
-import topology.category.Top
+import topology.category.Top.limits
 import topology.category.UniformSpace
 
 

@@ -2,6 +2,7 @@ import linear_algebra.finite_dimensional
 import ring_theory.algebraic
 import data.zmod.basic
 import data.real.basic
+import data.nat.choose.dvd
 import tactic
 
 /-!

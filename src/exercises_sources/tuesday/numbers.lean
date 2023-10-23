@@ -1,7 +1,7 @@
 import tactic
 import data.real.basic
 import data.int.gcd
-import number_theory.padics
+import number_theory.padics.padic_numbers
 import data.nat.prime_norm_num
 
 /-!

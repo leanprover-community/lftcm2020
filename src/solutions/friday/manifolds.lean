@@ -510,13 +510,13 @@ be a smooth manifold. -/
 -- the type `tangent_bundle 𝓡1 myℝ` makes sense
 #check tangent_bundle 𝓡1 myℝ
 
-/- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
+/- The tangent space above a point of `myℝ` is just a one-dimensional vector space
+(identified with `ℝ`).
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
 example : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩
 
-/- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
-and this instance is not really needed. -/
-instance tangent_bundle_myℝ : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
+/- Type-class inference can construct the smooth manifold structure on the tangent bundle. -/
+example : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
 -- sorry
 by apply_instance
 -- sorry
@@ -527,7 +527,15 @@ NB: the model space for the tangent bundle to a product manifold or a tangent sp
 structures with model `ℝ × ℝ`, the identity one and the product one, which are not definitionally
 equal. And this would be bad.
 -/
-#check tangent_bundle.charted_space 𝓡1 myℝ
+example : charted_space (model_prod ℝ ℝ) (tangent_bundle 𝓡1 myℝ) :=
+-- sorry
+by apply_instance
+-- sorry
+
+/-
+The charts of any smooth vector bundle are characterized by `fiber_bundle.charted_space_chart_at`
+-/
+#check @fiber_bundle.charted_space_chart_at
 
 /- A smooth map between manifolds induces a map between their tangent bundles. In `mathlib` this is
 called the `tangent_map` (you might instead know it as the "differential" or "pushforward" of the
@@ -559,8 +567,11 @@ begin
   let p : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩,
   let F := chart_at (model_prod ℝ ℝ) p,
   have A : ¬ ((4 : ℝ) < 1), by norm_num,
-  have S : F.source = univ, by simp [F, chart_at, A, @local_homeomorph.refl_source ℝ _],
-  have T : F.target = univ, by simp [F, chart_at, A, @local_homeomorph.refl_target ℝ _],
+  have S : F.source = univ,
+  by simp [F, fiber_bundle.charted_space_chart_at, chart_at, A, local_homeomorph.refl_source ℝ],
+  have T : F.target = univ,
+  by simp [F, fiber_bundle.charted_space_chart_at, chart_at, A, local_homeomorph.refl_source ℝ,
+    local_homeomorph.refl_target ℝ],
   exact F.to_homeomorph_of_source_eq_univ_target_eq_univ S T,
   -- sorry
 end
@@ -636,13 +647,14 @@ begin
   -- are left with a statement speaking of derivatives of real functions, without any manifold code left.
   -- sorry
   have : ¬ ((3 : ℝ) < 1), by norm_num,
-  simp only [chart_at, this, mem_Ioo, if_false, and_false],
-  dsimp [tangent_bundle_core, basic_smooth_vector_bundle_core.chart, bundle.total_space.proj],
+  simp only [chart_at, fiber_bundle.charted_space_chart_at, this, mem_Ioo, if_false, and_false,
+    local_homeomorph.trans_apply, tangent_bundle.trivialization_at_apply, fderiv_within_univ]
+    with mfld_simps,
   split_ifs,
-  { simp only [chart_at, h, my_first_local_homeo, if_true, fderiv_within_univ, mem_Ioo, fderiv_id',
-      continuous_linear_map.coe_id', continuous_linear_map.neg_apply, fderiv_neg] with mfld_simps },
-  { simp only [chart_at, h, fderiv_within_univ, mem_Ioo, if_false, @local_homeomorph.refl_symm ℝ,
-      fderiv_id, continuous_linear_map.coe_id'] with mfld_simps }
+  { simp only [my_first_local_homeo, fderiv_neg, fderiv_id',
+      continuous_linear_map.coe_id', continuous_linear_map.neg_apply] with mfld_simps },
+  { simp only [@local_homeomorph.refl_symm ℝ, fderiv_id,
+      continuous_linear_map.coe_id'] with mfld_simps }
   -- sorry
 end
 
@@ -946,7 +958,7 @@ def G : tangent_bundle (𝓡∂ 1) (Icc (0 : ℝ) 1) → (Icc (0 : ℝ) 1) × �
 lemma continuous_G : continuous G :=
 begin
   -- sorry
-  apply continuous.prod_mk (tangent_bundle_proj_continuous _ _),
+  refine (continuous_proj (euclidean_space ℝ (fin 1)) (tangent_space (𝓡∂ 1))).prod_mk _,
   refine continuous_snd.comp _,
   apply continuous.comp (homeomorph.continuous _),
   apply cont_mdiff.continuous_tangent_map cont_mdiff_g le_top,

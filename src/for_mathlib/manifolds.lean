@@ -21,7 +21,7 @@ include hp
 lemma pi_Lp.norm_coord_le_norm (x : pi_Lp p α) (i : ι) : ‖x i‖ ≤ ‖x‖ :=
 begin
   unfreezingI { rcases p.trichotomy with (rfl | rfl | h) },
-  { exact false.elim (lt_irrefl _ (ennreal.zero_lt_one.trans_le hp.out)) },
+  { exact false.elim (lt_irrefl _ (zero_lt_one.trans_le hp.out)) },
   { rw pi_Lp.norm_eq_csupr,
     exact le_cSup (finite_range _).bdd_above (mem_range_self _) },
   { calc
@@ -74,7 +74,7 @@ begin
     begin
       refine (F i).mk_continuous 1 (λ x, _),
       unfreezingI { rcases p.trichotomy with (rfl | rfl | h) },
-      { exact false.elim (lt_irrefl _ (ennreal.zero_lt_one.trans_le hp.out)) },
+      { exact false.elim (lt_irrefl _ (zero_lt_one.trans_le hp.out)) },
       { haveI : nonempty ι := ⟨i⟩,
         simp only [pi_Lp.norm_eq_csupr, linear_map.coe_mk, one_mul],
         refine cSup_le (range_nonempty _) _,

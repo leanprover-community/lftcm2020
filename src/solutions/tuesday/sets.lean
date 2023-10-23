@@ -1,4 +1,5 @@
 import data.set.basic data.set.lattice data.nat.parity
+import data.nat.prime
 import tactic.linarith
 
 open set nat function

@@ -1,5 +1,5 @@
 import algebra.category.Ring.basic
-import data.polynomial
+import data.polynomial.lifts
 
 noncomputable theory -- the default implementation of polynomials is noncomputable
 

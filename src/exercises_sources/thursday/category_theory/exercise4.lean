@@ -1,4 +1,4 @@
-import algebra.category.Ring
+import algebra.category.Ring.basic
 import category_theory.yoneda
 import data.polynomial.algebra_map
 

@@ -457,13 +457,13 @@ be a smooth manifold. -/
 -- the type `tangent_bundle 𝓡1 myℝ` makes sense
 #check tangent_bundle 𝓡1 myℝ
 
-/- The tangent space above a point of `myℝ` is just a one-dimensional vector space (identified with `ℝ`).
+/- The tangent space above a point of `myℝ` is just a one-dimensional vector space
+(identified with `ℝ`).
 So, one can prescribe an element of the tangent bundle as a pair (more on this below) -/
 example : tangent_bundle 𝓡1 myℝ := ⟨(4 : ℝ), 0⟩
 
-/- Construct the smooth manifold structure on the tangent bundle. Hint: the answer is a one-liner,
-and this instance is not really needed. -/
-instance tangent_bundle_myℝ : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
+/- Type-class inference can construct the smooth manifold structure on the tangent bundle. -/
+example : smooth_manifold_with_corners (𝓡1.prod 𝓡1) (tangent_bundle 𝓡1 myℝ) :=
 sorry
 
 /-
@@ -472,7 +472,13 @@ NB: the model space for the tangent bundle to a product manifold or a tangent sp
 structures with model `ℝ × ℝ`, the identity one and the product one, which are not definitionally
 equal. And this would be bad.
 -/
-#check tangent_bundle.charted_space 𝓡1 myℝ
+example : charted_space (model_prod ℝ ℝ) (tangent_bundle 𝓡1 myℝ) :=
+sorry
+
+/-
+The charts of any smooth vector bundle are characterized by `fiber_bundle.charted_space_chart_at`
+-/
+#check @fiber_bundle.charted_space_chart_at
 
 /- A smooth map between manifolds induces a map between their tangent bundles. In `mathlib` this is
 called the `tangent_map` (you might instead know it as the "differential" or "pushforward" of the

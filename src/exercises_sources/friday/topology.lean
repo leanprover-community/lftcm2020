@@ -1,6 +1,6 @@
 import topology.metric_space.basic
 
-open_locale classical filter topological_space
+open_locale classical filter topology
 
 namespace lftcm
 open filter set

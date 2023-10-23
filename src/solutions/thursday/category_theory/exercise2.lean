@@ -1,5 +1,5 @@
 import algebra.category.Ring.basic
-import data.polynomial
+import data.polynomial.lifts
 
 /-!
 Let's show that taking polynomials over a ring is functor `Ring ⥤ Ring`.
