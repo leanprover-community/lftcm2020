@@ -4,8 +4,11 @@ import analysis.normed_space.pi_Lp
 import analysis.calculus.iterated_deriv
 import analysis.calculus.mean_value
 import analysis.calculus.implicit
+import analysis.calculus.deriv.inv
+import analysis.special_functions.exp_deriv
 import measure_theory.integral.bochner
-import measure_theory.measure.lebesgue
+import measure_theory.measure.lebesgue.eq_haar
+import measure_theory.integral.set_integral
 import linear_algebra.matrix.trace
 
 

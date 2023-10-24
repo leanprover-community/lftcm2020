@@ -590,11 +590,11 @@ to use the library
 section you_should_probably_skip_this
 
 /- If `M` is a manifold modelled on a vector space `E`, then the underlying type for the tangent
-bundle is just `Σ (x : M), tangent_space x M` (i.e., the disjoint union of the tangent spaces,
+bundle is effectively `Σ (x : M), tangent_space x M` (i.e., the disjoint union of the tangent spaces,
 indexed by `x` -- this is a basic object in dependent type theory). And `tangent_space x M`
 is just (a copy of) `E` by definition. -/
 
-lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = Σ (x : myℝ), ℝ :=
+lemma tangent_bundle_myℝ_is_prod : tangent_bundle 𝓡1 myℝ = bundle.total_space ℝ (λ x : myℝ, ℝ) :=
 /- inline sorry -/rfl/- inline sorry -/
 
 /- This means that you can specify a point in the tangent bundle as a pair `⟨x, v⟩`.
@@ -1016,7 +1016,7 @@ begin
   { rcases x with ⟨x', h'⟩,
     simp at h',
     simp [h'] },
-  { have A : unique_mdiff_within_at 𝓡1 (Icc (0 : ℝ) 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).fst,
+  { have A : unique_mdiff_within_at 𝓡1 (Icc (0 : ℝ) 1) (⟨(x : ℝ), v⟩ : tangent_bundle 𝓡1 ℝ).proj,
     { rw unique_mdiff_within_at_iff_unique_diff_within_at,
       apply unique_diff_on_Icc_zero_one _ x.2 },
     change (tangent_map (𝓡∂ 1) 𝓡1 g (tangent_map_within 𝓡1 (𝓡∂ 1) f (Icc 0 1) ⟨x, v⟩)).snd = v,

@@ -4,14 +4,14 @@ import category_theory.functor.basic
 import algebra.category.Group.images
 import algebra.category.Group.colimits
 import algebra.category.Group.abelian
-import algebra.category.Module.monoidal
+import algebra.category.Module.monoidal.basic
 import algebra.category.Ring.basic
 
 import category_theory.abelian.basic
 import category_theory.limits.shapes.finite_limits
 
 import topology.instances.real
-import topology.category.Top.limits
+import topology.category.Top.limits.basic
 import topology.category.UniformSpace
 
 
